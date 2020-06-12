@@ -14,9 +14,9 @@
         <meta name="csrf-token" content="{{ csrf_token() }}">
 
         <!-- Icons -->
-        <link rel="shortcut icon" href="{{ asset('media/favicons/favicon.png') }}">
-        <link rel="icon" sizes="192x192" type="image/png" href="{{ asset('media/favicons/favicon-192x192.png') }}">
-        <link rel="apple-touch-icon" sizes="180x180" href="{{ asset('media/favicons/apple-touch-icon-180x180.png') }}">
+        <link rel="shortcut icon" href="{{ asset('media/custom/logoete.png') }}">
+        <link rel="icon" sizes="192x192" type="logoete/png" href="{{ asset('media/custom/logoete.png') }}">
+        <link rel="apple-touch-icon" sizes="180x180" href="{{ asset('media/custom/logoete.png') }}">
 
         <!-- Fonts and Styles -->
         @yield('css_before')
@@ -149,8 +149,8 @@
                             <!-- Logo -->
                             <div class="content-header-item">
                                 <a class="link-effect font-w700" href="/">
-                                    <i class="si si-fire text-primary"></i>
-                                    <span class="font-size-xl text-dual-primary-dark">code</span><span class="font-size-xl text-primary">base</span>
+                                    <i class="fa fa-book"></i>
+                                    <span class="font-size-xl text-dual-primary-dark">Biblioteca</span><span class="font-size-xl text-primary">AVS</span>
                                 </a>
                             </div>
                             <!-- END Logo -->
@@ -198,35 +198,35 @@
                         <ul class="nav-main">
                             <li>
                                 <a class="{{ request()->is('dashboard') ? ' active' : '' }}" href="/dashboard">
-                                    <i class="si si-cup"></i><span class="sidebar-mini-hide">Dashboard</span>
+                                <i class="fa fa-book"></i><span class="sidebar-mini-hide">Livros</span></img>
                                 </a>
                             </li>
                             <li class="nav-main-heading">
-                                <span class="sidebar-mini-visible">VR</span><span class="sidebar-mini-hidden">Various</span>
+                                <span class="sidebar-mini-visible">VR</span><span class="sidebar-mini-hidden">Outros</span>
                             </li>
                             <li class="{{ request()->is('examples/*') ? ' open' : '' }}">
-                                <a class="nav-submenu" data-toggle="nav-submenu" href="#"><i class="si si-bulb"></i><span class="sidebar-mini-hide">Examples</span></a>
+                                <a class="nav-submenu" data-toggle="nav-submenu" href="#"><i class="si si-bulb"></i><span class="sidebar-mini-hide">Funções</span></a>
                                 <ul>
                                     <li>
-                                        <a class="{{ request()->is('examples/plugin-helper') ? ' active' : '' }}" href="/examples/plugin-helper">Plugin with JS Helper</a>
+                                        <a class="{{ request()->is('examples/plugin-helper') ? ' active' : '' }}" href="/examples/plugin-helper">Adicionar Livro</a>
                                     </li>
                                     <li>
-                                        <a class="{{ request()->is('examples/plugin-init') ? ' active' : '' }}" href="/examples/plugin-init">Plugin with JS Init</a>
+                                        <a class="{{ request()->is('examples/plugin-init') ? ' active' : '' }}" href="/examples/plugin-init">Lista de Livros</a>
                                     </li>
                                     <li>
-                                        <a class="{{ request()->is('examples/blank') ? ' active' : '' }}" href="/examples/blank">Blank</a>
+                                        <a class="{{ request()->is('examples/blank') ? ' active' : '' }}" href="/examples/blank">Livros Alugados</a>
                                     </li>
                                     <li>
-                                        <a class="{{ request()->is('examples/hero') ? ' active' : '' }}" href="{{route('examples.hero')}}">Teste</a>
+                                        <a class="{{ request()->is('examples/hero') ? ' active' : '' }}" href="{{route('examples.hero')}}">Livros não devolvido</a>
                                     </li>
                                 </ul>
                             </li>
                             <li class="nav-main-heading">
-                                <span class="sidebar-mini-visible">MR</span><span class="sidebar-mini-hidden">More</span>
+                                <span class="sidebar-mini-visible">MR</span><span class="sidebar-mini-hidden">Mais</span>
                             </li>
                             <li>
                                 <a href="/">
-                                    <i class="si si-globe"></i><span class="sidebar-mini-hide">Landing</span>
+                                    <i class="fa fa-instagram"></i><span class="sidebar-mini-hide">Instagram</span> <div>
                                 </a>
                             </li>
                         </ul>
@@ -264,8 +264,8 @@
                                 <i class="fa fa-wrench"></i>
                             </button>
                             <div class="dropdown-menu min-width-300" aria-labelledby="page-header-options-dropdown">
-                                <h5 class="h6 text-center py-10 mb-10 border-b text-uppercase">Settings</h5>
-                                <h6 class="dropdown-header">Color Themes</h6>
+                                <h5 class="h6 text-center py-10 mb-10 border-b text-uppercase">Configurações</h5>
+                                <h6 class="dropdown-header">Temas de cores</h6>
                                 <div class="row no-gutters text-center mb-5">
                                     <div class="col-2 mb-5">
                                         <a class="text-default" data-toggle="theme" data-theme="default" href="javascript:void(0)">
@@ -298,27 +298,27 @@
                                         </a>
                                     </div>
                                 </div>
-                                <h6 class="dropdown-header">Header</h6>
+                                <h6 class="dropdown-header">Cabeçalho</h6>
                                 <div class="row gutters-tiny text-center mb-5">
                                     <div class="col-6">
-                                        <button type="button" class="btn btn-sm btn-block btn-alt-secondary" data-toggle="layout" data-action="header_fixed_toggle">Fixed Mode</button>
+                                        <button type="button" class="btn btn-sm btn-block btn-alt-secondary" data-toggle="layout" data-action="header_fixed_toggle">Modo Fixo</button>
                                     </div>
                                     <div class="col-6">
-                                        <button type="button" class="btn btn-sm btn-block btn-alt-secondary d-none d-lg-block mb-10" data-toggle="layout" data-action="header_style_classic">Classic Style</button>
+                                        <button type="button" class="btn btn-sm btn-block btn-alt-secondary d-none d-lg-block mb-10" data-toggle="layout" data-action="header_style_classic">Estilo Clássico</button>
                                     </div>
                                 </div>
-                                <h6 class="dropdown-header">Sidebar</h6>
+                                <h6 class="dropdown-header">Barra Lateral</h6>
                                 <div class="row gutters-tiny text-center mb-5">
                                     <div class="col-6">
-                                        <button type="button" class="btn btn-sm btn-block btn-alt-secondary mb-10" data-toggle="layout" data-action="sidebar_style_inverse_off">Light</button>
+                                        <button type="button" class="btn btn-sm btn-block btn-alt-secondary mb-10" data-toggle="layout" data-action="sidebar_style_inverse_off">Claro</button>
                                     </div>
                                     <div class="col-6">
-                                        <button type="button" class="btn btn-sm btn-block btn-alt-secondary mb-10" data-toggle="layout" data-action="sidebar_style_inverse_on">Dark</button>
+                                        <button type="button" class="btn btn-sm btn-block btn-alt-secondary mb-10" data-toggle="layout" data-action="sidebar_style_inverse_on">Escuro</button>
                                     </div>
                                 </div>
                                 <div class="d-none d-xl-block">
-                                    <h6 class="dropdown-header">Main Content</h6>
-                                    <button type="button" class="btn btn-sm btn-block btn-alt-secondary mb-10" data-toggle="layout" data-action="content_layout_toggle">Toggle Layout</button>
+                                    <h6 class="dropdown-header">Conteúdo Principal</h6>
+                                    <button type="button" class="btn btn-sm btn-block btn-alt-secondary mb-10" data-toggle="layout" data-action="content_layout_toggle">Alternar Layout</button>
                                 </div>
                             </div>
                         </div>
