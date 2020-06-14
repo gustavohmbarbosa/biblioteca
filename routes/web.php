@@ -26,4 +26,5 @@ Auth::routes();
 
 Route::prefix('admin')->name('admin.')->namespace('Admin')->group(function(){
     Route::resource('reader', 'ReaderController');
+    Route::resource('loan', 'LoanController');
 });
