@@ -14,5 +14,8 @@ class Reader extends Model
         'password',
     ];
 
-    
+    /*public function loan()
+    {
+        $this->belongsTo(Loan::class);
+    }*/
 }
