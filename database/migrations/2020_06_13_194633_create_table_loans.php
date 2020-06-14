@@ -15,7 +15,7 @@ class CreateTableLoans extends Migration
     {
         Schema::create('loans', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->unsignedBigInteger('reader_id');
+            //$table->unsignedBigInteger('reader_id');
             //$table->unsignedBigInteger('book_id');
 
             $table->date('estimated_date');
@@ -24,7 +24,7 @@ class CreateTableLoans extends Migration
 
             $table->timestamps();
 
-            $table->foreign('reader_id')->references('id')->on('readers');
+            //$table->foreign('reader_id')->references('id')->on('readers')->onDelete('cascade');
             //$table->foreign('book_id')->references('id')->on('books');
         });
     }

@@ -7,8 +7,8 @@ use Faker\Generator as Faker;
 
 $factory->define(Loan::class, function (Faker $faker) {
     return [
-        'estimated_date' => '2020-06-13',
-        'return_date' => '2020-10-13',
+        'estimated_date' => $faker->date($format = 'Y-m-d', $max = 'now'),
+        'return_date' =>  $faker->date($format = 'Y-m-d', $max = 'now'),
         'status' => 'Ativo',
     ];
 });
