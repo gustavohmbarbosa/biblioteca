@@ -13,6 +13,5 @@ class Reader extends Model
     protected $hidden = [
         'password',
     ];
-
     
 }

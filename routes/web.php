@@ -23,3 +23,7 @@ Route::prefix('examples')->name('examples.')->namespace('examples')->group(funct
 });
 
 Auth::routes();
+
+Route::prefix('admin')->name('admin.')->namespace('Admin')->group(function(){
+    Route::resource('reader', 'ReaderController');
+});
