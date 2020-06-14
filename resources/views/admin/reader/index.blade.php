@@ -44,6 +44,7 @@
                             <td>{{$reader->email}}</td>
                             <td>
                                 <div class="btn-group">
+                                    <a href="{{route('admin.reader.show', ['reader' => $reader->id])}}" class="btn btn-sm btn-success">Visu</a>
                                     <a href="{{route('admin.reader.edit', ['reader' => $reader->id])}}" class="btn btn-sm btn-info">EDITAR</a>
                                     
                                     <form action="{{route('admin.reader.destroy', ['reader' => $reader->id])}}" method="post">

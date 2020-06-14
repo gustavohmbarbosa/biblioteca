@@ -53,7 +53,9 @@ class ReaderController extends Controller
      */
     public function show($id)
     {
-        //
+        $reader = Reader::findOrFail($id);
+       
+        return view('admin.reader.profile', compact('reader'));
     }
 
     /**
@@ -64,7 +66,7 @@ class ReaderController extends Controller
      */
     public function edit($id)
     {
-        $reader = Reader::find($id);
+        $reader = Reader::findOrFail($id);
 
         return view('admin.reader.edit', compact('reader'));
     }
