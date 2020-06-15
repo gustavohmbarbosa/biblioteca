@@ -21,13 +21,13 @@ class CreateBooksTable extends Migration
             $table->decimal('price', 8, 2)->nullable();
             $table->string('isbn');
             $table->text('synopsis')->nullable();
-            $table->integer('pages');
+            $table->string('pages');
             $table->string('language');
             $table->string('observations')->nullable();
-            $table->integer('edition');
+            $table->string('edition');
             $table->date('publication_date');
             $table->string('color');
-            $table->integer('cdd');
+            $table->string('cdd');
             $table->string('cape')->nullable();
             $table->string('company');
             $table->string('author');
