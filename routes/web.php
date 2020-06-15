@@ -25,7 +25,10 @@ Route::prefix('examples')->name('examples.')->namespace('examples')->group(funct
 Auth::routes();
 
 Route::prefix('admin')->name('admin.')->namespace('Admin')->group(function(){
+    Route::get('reader/show-all/{reader}', 'ReaderController@show_all')->name('reader.show.all');
     Route::resource('reader', 'ReaderController');
     Route::resource('loan', 'LoanController');
     Route::resource('book', 'BookController');
+    //    Route::view('reader/all', 'admin.reader.main');
+
 });
