@@ -68,7 +68,7 @@ class ReaderController extends Controller
     {
         $reader = Reader::findOrFail($id);
 
-        return view('admin.reader.edit', compact('reader'));
+        return redirect()->route('admin.reader.show.all', compact('reader'));
     }
 
     /**
@@ -85,7 +85,7 @@ class ReaderController extends Controller
         $reader = Reader::findOrFail($id);
         $reader->update($data);
 
-        return redirect()->route('admin.reader.index');
+        return redirect()->route('admin.reader.show.all', compact('reader'));
     }
 
     /**
@@ -100,5 +100,12 @@ class ReaderController extends Controller
         $reader->delete();
 
         return redirect()->route('admin.reader.index');
+    }
+
+    public function show_all($id)
+    {
+        $reader = Reader::findOrFail($id);
+
+        return view('admin.reader.main', compact('reader'));
     }
 }

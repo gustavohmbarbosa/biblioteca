@@ -43,15 +43,8 @@
                             <td>{{$reader->name}}</td>
                             <td>{{$reader->email}}</td>
                             <td>
-                                <div class="btn-group">
-                                    <a href="{{route('admin.reader.show', ['reader' => $reader->id])}}" class="btn btn-sm btn-success">Visu</a>
-                                    <a href="{{route('admin.reader.edit', ['reader' => $reader->id])}}" class="btn btn-sm btn-info">EDITAR</a>
-                                    
-                                    <form action="{{route('admin.reader.destroy', ['reader' => $reader->id])}}" method="post">
-                                        @csrf
-                                        @method("DELETE")
-                                        <button type="submit" class="btn btn-sm btn-danger">DELETAR</button>
-                                    </form>
+                                <div class="form-group text-center">
+                                    <a href="{{route('admin.reader.show.all', ['reader' => $reader->id])}}" class="btn btn-sm btn-success">Visualizar</a>
                                 </div>
                             </td>
                         </tr>
