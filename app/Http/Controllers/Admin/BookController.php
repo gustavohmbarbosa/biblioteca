@@ -87,7 +87,7 @@ class BookController extends Controller
     {
         $data = $request->all();
 
-        $book = $this->book->find($id);
+        $book = $this->book->findOrFail($id);
         $book->update($data);
 
         return redirect()->route('admin.book.index');
@@ -101,7 +101,7 @@ class BookController extends Controller
      */
     public function destroy($id)
     {
-        $book = $this->book->find($id);
+        $book = $this->book->findOrFail($id);
         $book->delete();
 
         return redirect()->route('admin.book.index');

@@ -82,7 +82,7 @@ class ReaderController extends Controller
     {
         $data = $request->all();
 
-        $reader = Reader::find($id);
+        $reader = Reader::findOrFail($id);
         $reader->update($data);
 
         return redirect()->route('admin.reader.index');
@@ -96,7 +96,7 @@ class ReaderController extends Controller
      */
     public function destroy($id)
     {
-        $reader = Reader::find($id);
+        $reader = Reader::findOrFail($id);
         $reader->delete();
 
         return redirect()->route('admin.reader.index');

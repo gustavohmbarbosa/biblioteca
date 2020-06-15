@@ -64,7 +64,7 @@ class LoanController extends Controller
      */
     public function edit($id)
     {
-        $loan = Loan::find($id);
+        $loan = Loan::findOrFail($id);
 
         return view('admin.loan.edit', compact('loan'));
     }
@@ -80,7 +80,7 @@ class LoanController extends Controller
     {
         $data = $request->all();
 
-        $loan = Loan::find($id);
+        $loan = Loan::findOrFail($id);
         $loan->update($data);
 
         return redirect()->route('admin.loan.index');
@@ -94,7 +94,7 @@ class LoanController extends Controller
      */
     public function destroy($id)
     {
-        $loan = Loan::find($id);
+        $loan = Loan::findOrFail($id);
         $loan->delete();
 
         return redirect()->route('admin.loan.index');
