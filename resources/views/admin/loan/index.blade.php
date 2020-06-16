@@ -19,7 +19,7 @@
 <div class="content">
     <h2>Leitores 
         <a href="{{route('admin.reader.create')}}" type="button" class="btn btn-primary mr-5 mb-5 float-right btn-noborder">
-            <i class="fa fa-plus mr-5"></i>Novo Leitor
+            <i class="fa fa-plus mr-5"></i>Novo Empréstimo
         </a>
     </h2>
     <hr>
@@ -30,21 +30,18 @@
                     <tr>
                         <tr class="text-center">
                             <th>#</th>
-                            <th>Nome</th>
-                            <th>Email</th>
-                            <th>Ações</th>
+                            <th>Devolução prevista</th>
                         </tr>
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach ($readers as $reader)
+                    @foreach ($loans as $loan)
                         <tr>
-                            <td>{{$reader->id}}</td>
-                            <td>{{$reader->name}}</td>
-                            <td>{{$reader->email}}</td>
+                            <td>{{$loan->id}}</td>
+                            <td>{{$loan->estimated_date}}</td>
                             <td>
                                 <div class="form-group text-center">
-                                    <a href="{{route('admin.reader.show', ['reader' => $reader->id])}}" class="btn btn-sm btn-success">Visualizar</a>
+                                    <a href="{{route('admin.loan.show', ['loan' => $loan->id])}}" class="btn btn-sm btn-success">Visualizar</a>
                                 </div>
                             </td>
                         </tr>

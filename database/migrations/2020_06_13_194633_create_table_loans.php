@@ -19,8 +19,8 @@ class CreateTableLoans extends Migration
             //$table->unsignedBigInteger('book_id');
 
             $table->date('estimated_date');
-            $table->date('return_date');
-            $table->string('status');
+            $table->date('return_date')->nullable();
+            $table->string('status')->default('ATIVO');
 
             $table->timestamps();
 

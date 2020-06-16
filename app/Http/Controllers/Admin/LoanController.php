@@ -15,7 +15,7 @@ class LoanController extends Controller
      */
     public function index()
     {
-        $loans = Loan::all(['id', 'estiamted_date', 'return_date']);
+        $loans = Loan::all(['id', 'estimated_date', 'return_date']);
         //dd($loans);
         return view('admin.loan.index', compact('loans'));
     }
@@ -39,7 +39,7 @@ class LoanController extends Controller
     public function store(Request $request)
     {
         $data = $request->all();
-
+        
         $loan = Loan::create($data);
 
         return redirect()->route('admin.loan.index');
@@ -53,7 +53,9 @@ class LoanController extends Controller
      */
     public function show($id)
     {
-        //
+        $loan = Loan::findOrFail($id);
+
+        return view('admin.loan.main', compact('loan'));
     }
 
     /**
@@ -64,9 +66,7 @@ class LoanController extends Controller
      */
     public function edit($id)
     {
-        $loan = Loan::findOrFail($id);
 
-        return view('admin.loan.edit', compact('loan'));
     }
 
     /**
@@ -83,7 +83,7 @@ class LoanController extends Controller
         $loan = Loan::findOrFail($id);
         $loan->update($data);
 
-        return redirect()->route('admin.loan.index');
+        return redirect()->route('admin.loan.show', compact('loan'));
     }
 
     /**

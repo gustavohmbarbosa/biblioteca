@@ -27,7 +27,7 @@ class CreateReadersTable extends Migration
             $table->string('class');
             $table->string('course');
             $table->string('registration');
-            $table->string('status');
+            $table->string('status')->default('ATIVO');
 
             $table->timestamps();
         });
