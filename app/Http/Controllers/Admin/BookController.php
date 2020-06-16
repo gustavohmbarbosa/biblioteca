@@ -60,7 +60,7 @@ class BookController extends Controller
     {
         $book = $this->book->findOrFail($id);
 
-        return view('admin.book.profile', compact('book'));
+        return view('admin.book.main', compact('book'));
     }
 
     /**
@@ -71,9 +71,7 @@ class BookController extends Controller
      */
     public function edit($id)
     {
-        $book = $this->book->findOrFail($id);
-
-        return view('admin.book.edit', compact('book'));
+        
     }
 
     /**
@@ -88,9 +86,9 @@ class BookController extends Controller
         $data = $request->all();
 
         $book = $this->book->findOrFail($id);
-        $book->update($data);
+        $book = $book->update($data);
 
-        return redirect()->route('admin.book.index');
+        return redirect()->route('admin.book.show', compact('book'));
     }
 
     /**

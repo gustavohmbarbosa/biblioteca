@@ -46,14 +46,7 @@
                             <td>{{$book->author}}</td>
                             <td>
                                 <div class="form-group text-center">
-                                    <a href="{{route('admin.book.show', ['book' => $book->id])}}" class="btn btn-sm btn-success">View</a>
-                                    <a href="{{route('admin.book.edit', ['book' => $book->id])}}" class="btn btn-sm btn-info">Editar</a>
-                                    
-                                    <form action="{{route('admin.book.destroy', ['book' => $book->id])}}" method="post" class="d-inline">
-                                        @csrf
-                                        @method("DELETE")
-                                        <button type="submit" class="btn btn-sm btn-danger">Excluir</button>
-                                    </form>
+                                    <a href="{{route('admin.book.show', ['book' => $book->id])}}" class="btn btn-sm btn-success">Visualizar</a>
                                 </div>
                             </td>
                         </tr>
