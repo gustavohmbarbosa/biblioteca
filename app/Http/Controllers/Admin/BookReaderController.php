@@ -4,9 +4,11 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Loan;
+use App\Reader;
+use App\Book;
+use App\BookReader;
 
-class LoanController extends Controller
+class BookReaderController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,8 +17,18 @@ class LoanController extends Controller
      */
     public function index()
     {
-        $loans = Loan::all(['id', 'estimated_date', 'return_date']);
-        //dd($loans);
+        $loans = BookReader::all()->toArray();
+
+        foreach($loans as $key => $loan){
+            //Search reader and book
+            $reader = Reader::findOrFail($loan['reader_id']);
+            $book = Book::findOrFail($loan['book_id']);
+
+            //add reader and book to array
+            $loans[$key]['reader_name'] = $reader->name;
+            $loans[$key]['book_title'] = $book->title;
+        }
+
         return view('admin.loan.index', compact('loans'));
     }
 
@@ -27,7 +39,10 @@ class LoanController extends Controller
      */
     public function create()
     {
-        return view('admin.loan.create');
+        $readers = Reader::all(['id','name']);
+        $books = Book::all(['id', 'title']);
+
+        return view('admin.loan.create', compact('readers', 'books'));
     }
 
     /**
@@ -39,8 +54,12 @@ class LoanController extends Controller
     public function store(Request $request)
     {
         $data = $request->all();
-        
-        $loan = Loan::create($data);
+        $data['estimated_date'] = date('Y-m-d', strtotime('+7 days'));
+
+        $reader = Reader::findOrFail($data['reader_id']);
+        $book = Book::findOrFail($data['book_id']);
+
+        $reader->addBook($book, $data);
 
         return redirect()->route('admin.loan.index');
     }
@@ -53,9 +72,7 @@ class LoanController extends Controller
      */
     public function show($id)
     {
-        $loan = Loan::findOrFail($id);
-
-        return view('admin.loan.main', compact('loan'));
+        //
     }
 
     /**
@@ -66,7 +83,7 @@ class LoanController extends Controller
      */
     public function edit($id)
     {
-
+        //
     }
 
     /**
@@ -78,12 +95,7 @@ class LoanController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $data = $request->all();
-
-        $loan = Loan::findOrFail($id);
-        $loan->update($data);
-
-        return redirect()->route('admin.loan.show', compact('loan'));
+        //
     }
 
     /**
@@ -94,9 +106,6 @@ class LoanController extends Controller
      */
     public function destroy($id)
     {
-        $loan = Loan::findOrFail($id);
-        $loan->delete();
-
-        return redirect()->route('admin.loan.index');
+        //
     }
 }

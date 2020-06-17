@@ -4,11 +4,19 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Book extends Model
+class BookReader extends Model
 {
-    protected $fillable = [
-        'title', 'subtitle', 'origin', 'price', 'isbn', 'synopsis', 'pages', 'language', 'observations', 'edition', 'publication_date', 'color', 'cdd', 'cape', 'company', 'author'
-    ];
+    protected $table = 'book_reader';
+
+    public function books()
+    {
+        return $this->belongsToMany(Book::class)
+            ->withPivot([
+                'estimated_date', 
+                'return_date', 
+                'status'])
+            ->withTimestamps();
+    }
 
     public function readers()
     {

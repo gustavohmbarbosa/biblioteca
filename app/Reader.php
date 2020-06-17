@@ -14,8 +14,25 @@ class Reader extends Model
         'password',
     ];
     
-    /*public function loan()
+    public function books()
     {
-        $this->belongsTo(Loan::class);
-    }*/
+        return $this->belongsToMany(Book::class)
+            ->withPivot([
+                'estimated_date', 
+                'return_date', 
+                'status'])
+            ->withTimestamps();
+    }
+    
+    public function addBook($book_id, $data)
+    {   
+        return $this->books()->attach($book_id,[
+            'estimated_date' => $data['estimated_date'], 
+            ]);
+    }
+
+    public function removeBook($book_id)
+    {
+        return $this->books()->detach($book_id);
+    }
 }

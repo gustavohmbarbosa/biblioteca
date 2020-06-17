@@ -17,9 +17,9 @@
 
 @section('content')
 <div class="content">
-    <h2>Leitores 
-        <a href="{{route('admin.reader.create')}}" type="button" class="btn btn-primary mr-5 mb-5 float-right btn-noborder">
-            <i class="fa fa-plus mr-5"></i>Novo Empréstimo
+    <h2>Empréstimos
+        <a href="{{route('admin.loan.create')}}" type="button" class="btn btn-info mr-5 mb-5 float-right btn-noborder">
+            <i class="fa fa-plus mr-5"></i>Novo Emprétimo
         </a>
     </h2>
     <hr>
@@ -30,18 +30,23 @@
                     <tr>
                         <tr class="text-center">
                             <th>#</th>
-                            <th>Devolução prevista</th>
+                            <th>Leitor</th>
+                            <th>Livro</th>
+                            <th>Devolução Prevista</th>
+                            <th>Ações</th>
                         </tr>
                     </tr>
                 </thead>
                 <tbody>
                     @foreach ($loans as $loan)
                         <tr>
-                            <td>{{$loan->id}}</td>
-                            <td>{{$loan->estimated_date}}</td>
+                            <td>{{$loan['id']}}</td>
+                            <td>{{$loan['reader_name']}}</td>
+                            <td>{{$loan['book_title']}}</td>
+                            <td class="text-center"><Span class="badge {{$loan['status'] == 'ATIVO' ?  'badge-success' : 'badge-danger'}}">{{$loan['status']}}</Span></td>
                             <td>
                                 <div class="form-group text-center">
-                                    <a href="{{route('admin.loan.show', ['loan' => $loan->id])}}" class="btn btn-sm btn-success">Visualizar</a>
+                                    <a href="{{route('admin.loan.show', ['loan' => $loan['id']])}}" class="btn btn-sm btn-primary btn-noborder">Visualizar</a>
                                 </div>
                             </td>
                         </tr>

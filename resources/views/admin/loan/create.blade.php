@@ -2,31 +2,48 @@
 
 @section('content')
 <div class="content">
-    <h2>Novo Emprestimo</h2>
+    <h2>Novo Empréstimo</h2>
     <hr>
     <form action="{{route('admin.loan.store')}}" method="post" enctype="multipart/form-data">
         @csrf
 
         <div class="row">
-            <div class="form-group col-md-6">
-                <label>Leitor</label>
-                <input type="text" name="" class="form-control" autocomplete="">
-            </div>
-            <div class="form-group col-md-6">
-                <label>Livro</label>
-                <input type="text" name="" class="form-control" autocomplete="">
-            </div>
+            @if ($readers)
+                <div class="form-group col-md-6">
+                    <label>Leitor</label>
+                    <select name="reader_id" class="form-control" autocomplete="">
+                        @foreach ($readers as $reader)
+                            <option value="{{$reader->id}}">{{$reader->name}}</option>
+                        @endforeach
+                    </select>
+                </div>
+            @else
+                <a href="{{route('admin.reader.create')}}" type="button" class="btn btn-success mr-5 mb-5 btn-noborder">
+                    <i class="fa fa-plus mr-5"></i>Adicionar Leitores
+                </a>
+            @endif
+
+            @if ($books)
+                <div class="form-group col-md-6">
+                    <label>Livro</label>
+                    <select name="book_id" class="form-control" autocomplete="">
+                        @foreach ($books as $book)
+                            <option value="{{$book->id}}">{{$book->title}}</option>
+                        @endforeach
+                    </select>
+                </div>
+            @else
+                <a href="{{route('admin.book.create')}}" type="button" class="btn btn-success mr-5 mb-5 btn-noborder">
+                    <i class="fa fa-plus mr-5"></i>Adicionar Livros
+                </a>
+            @endif
         </div>
 
-        <div class="row">
-            <div class="form-group col-md-12">
-                <label>Previsão de Devolução</label>
-                <input type="date" name="estimated_date" class="form-control" autocomplete="">
+        @if ($readers && $books)
+            <div class="form-group float-right">
+                <button type="submit" class="btn btn-info btn-lg btn-noborder">Concluir</button>
             </div>
-        </div>
-        <div class="form-group float-right">
-            <button type="submit" class="btn btn-info btn-lg btn-noborder">Concluir</button>
-        </div>
+        @endif
     </form>
 </div>
 @endsection
