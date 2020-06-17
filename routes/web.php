@@ -24,9 +24,12 @@ Route::prefix('examples')->name('examples.')->namespace('examples')->group(funct
 
 Auth::routes();
 
-Route::prefix('admin')->name('admin.')->namespace('Admin')->group(function(){
-    Route::resource('reader', 'ReaderController');
-    Route::resource('loan', 'BookReaderController');
-    Route::resource('book', 'BookController');
-
+Route::group(['middleware'=> ['auth']], function () {
+    Route::prefix('admin')->name('admin.')->namespace('Admin')->group(function(){
+    
+        Route::resource('reader', 'ReaderController');
+        Route::resource('loan', 'BookReaderController');
+        Route::resource('book', 'BookController');
+    
+    });
 });
