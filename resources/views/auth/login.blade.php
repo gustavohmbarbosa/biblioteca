@@ -37,7 +37,7 @@
         <div class="form-group row">
             <div class="col-12">
                 <div class="form-material floating">
-                    <input type="email" class="form-control @error('email') is-invalid @enderror" id="loginEmail" name="email">
+                    <input type="email" class="form-control valid @error('email') is-invalid @enderror" id="loginEmail" name="email">
                     <label for="login-username">{{ __('Usuário') }}</label>
 
                     @error('email')
@@ -52,7 +52,7 @@
         <div class="form-group row">
             <div class="col-12">
                 <div class="form-material floating">
-                    <input type="password" class="form-control @error('password') is-invalid @enderror" id="loginPassword" name="password">
+                    <input type="password" class="form-control valid @error('password') is-invalid @enderror" id="loginPassword" name="password">
                     <label for="login-password">{{ __('Senha') }}</label>
 
                     @error('password')

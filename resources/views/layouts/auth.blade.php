@@ -77,8 +77,9 @@
 
 
 <script src="{{ asset('codebase.app.js') }}"></script>
+<script src="{{ asset('laravel.app.js') }}"></script>
+<script src="{{ asset('app.js') }}"></script>
 {{-- <script src="{{ asset('js/plugins/jquery-validation/jquery.validate.min.js') }}"></script> --}}
-{{-- <script src="{{ mix('js/plugins/op_auth_signin.min.js.download') }}"></script> --}}
     
 </body>
 </html>

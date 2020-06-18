@@ -16,5 +16,6 @@ $factory->define(Reader::class, function (Faker $faker) {
         'class' => 'A',
         'course' => 'Desenvolvimento de Sistemas',
         'registration' => $faker->unique()->postcode,
+        'slug' => $faker->slug,
     ];
 });
