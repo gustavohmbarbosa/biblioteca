@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB; //For querys
 use App\Reader;
 use App\Book;
 use App\BookReader;
@@ -17,18 +18,11 @@ class BookReaderController extends Controller
      */
     public function index()
     {
-        $loans = BookReader::all()->toArray();
-
-        foreach($loans as $key => $loan){
-            //Search reader and book
-            $reader = Reader::findOrFail($loan['reader_id']);
-            $book = Book::findOrFail($loan['book_id']);
-
-            //add reader and book to array
-            $loans[$key]['reader_name'] = $reader->name;
-            $loans[$key]['book_title'] = $book->title;
-        }
-
+        $loans = DB::table('book_reader')
+        ->join('books', 'books.id', '=', 'book_reader.book_id')
+        ->join('readers', 'readers.id', '=', 'book_reader.reader_id')
+        ->select('book_reader.*', 'books.title', 'books.subtitle', 'readers.name', 'readers.year', 'readers.class', 'readers.course')->get();
+        
         return view('admin.loan.index', compact('loans'));
     }
 
@@ -54,6 +48,7 @@ class BookReaderController extends Controller
     public function store(Request $request)
     {
         $data = $request->all();
+        //Estimated date = date now + 7 days
         $data['estimated_date'] = date('Y-m-d', strtotime('+7 days'));
 
         $reader = Reader::findOrFail($data['reader_id']);
@@ -72,7 +67,7 @@ class BookReaderController extends Controller
      */
     public function show($id)
     {
-        //
+        
     }
 
     /**

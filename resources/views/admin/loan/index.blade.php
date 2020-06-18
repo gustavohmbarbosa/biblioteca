@@ -40,13 +40,13 @@
                 <tbody>
                     @foreach ($loans as $loan)
                         <tr>
-                            <td>{{$loan['id']}}</td>
-                            <td>{{$loan['reader_name']}}</td>
-                            <td>{{$loan['book_title']}}</td>
-                            <td class="text-center"><Span class="badge {{$loan['status'] == 'ATIVO' ?  'badge-success' : 'badge-danger'}}">{{$loan['status']}}</Span></td>
+                            <td>{{$loan->id}}</td>
+                            <td>{{$loan->name}}</td>
+                            <td>{{$loan->title}}</td>
+                            <td class="text-center"><Span class="badge {{$loan->status == 'ATIVO' ?  'badge-success' : 'badge-danger'}}">{{$loan->status}}</Span></td>
                             <td>
                                 <div class="form-group text-center">
-                                    <a href="{{route('admin.loan.show', ['loan' => $loan['id']])}}" class="btn btn-sm btn-primary btn-noborder">Visualizar</a>
+                                    <a href="{{route('admin.loan.show', ['loan' => $loan->id])}}" class="btn btn-sm btn-primary btn-noborder">Visualizar</a>
                                 </div>
                             </td>
                         </tr>
