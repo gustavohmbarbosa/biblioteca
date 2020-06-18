@@ -8,6 +8,8 @@ class BookReader extends Model
 {
     protected $table = 'book_reader';
 
+    protected $fillable = ['estimated_date', 'return_date', 'status'];
+
     public function books()
     {
         return $this->belongsToMany(Book::class)

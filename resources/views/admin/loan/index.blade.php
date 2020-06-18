@@ -32,7 +32,7 @@
                             <th>#</th>
                             <th>Leitor</th>
                             <th>Livro</th>
-                            <th>Devolução Prevista</th>
+                            <th>Status</th>
                             <th>Ações</th>
                         </tr>
                     </tr>
@@ -56,5 +56,4 @@
             </table>
         </div>
     </div>
-
 @endsection

@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB; //For querys
+use Illuminate\Support\Facades\DB; //For queries
 use App\Reader;
 use App\Book;
 use App\BookReader;
@@ -48,7 +48,7 @@ class BookReaderController extends Controller
     public function store(Request $request)
     {
         $data = $request->all();
-        //Estimated date = date now + 7 days
+
         $data['estimated_date'] = date('Y-m-d', strtotime('+7 days'));
 
         $reader = Reader::findOrFail($data['reader_id']);
@@ -67,7 +67,13 @@ class BookReaderController extends Controller
      */
     public function show($id)
     {
-        
+        $loan = DB::table('book_reader')
+        ->join('books', 'books.id', '=', 'book_reader.book_id')
+        ->join('readers', 'readers.id', '=', 'book_reader.reader_id')
+        ->where('book_reader.id', '=', $id)
+        ->select('book_reader.*', 'books.title', 'books.subtitle', 'readers.name', 'readers.year', 'readers.class', 'readers.course')->get()->first();
+
+        return view('admin.loan.main', compact('loan'));
     }
 
     /**
@@ -90,7 +96,15 @@ class BookReaderController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $data = $request->all();
+
+        if ($data['status'] != 'ATIVO')
+            $data['return_date'] = date('Y-m-d');
+
+        $loan = BookReader::findOrfail($id);
+        $loan->update($data);
+
+        return redirect()->route('admin.loan.show', compact('loan'));
     }
 
     /**
