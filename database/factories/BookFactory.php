@@ -22,6 +22,7 @@ $factory->define(\App\Book::class, function (Faker $faker) {
         'cdd' => $faker->numerify('###'),
         'cape' => $faker->slug,
         'company' => $faker->name,
-        'author' => $faker->name
+        'author' => $faker->name,
+        'slug' => $faker->slug,
     ];
 });

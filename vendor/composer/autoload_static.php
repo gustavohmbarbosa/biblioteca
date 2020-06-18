@@ -71,6 +71,7 @@ class ComposerStaticInitf9ba45c08a27b73614f4b105f6775f4c
             'Symfony\\Component\\Debug\\' => 24,
             'Symfony\\Component\\CssSelector\\' => 30,
             'Symfony\\Component\\Console\\' => 26,
+            'Spatie\\Sluggable\\' => 17,
         ),
         'R' => 
         array (
@@ -263,6 +264,10 @@ class ComposerStaticInitf9ba45c08a27b73614f4b105f6775f4c
         array (
             0 => __DIR__ . '/..' . '/symfony/console',
         ),
+        'Spatie\\Sluggable\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/spatie/laravel-sluggable/src',
+        ),
         'Ramsey\\Uuid\\' => 
         array (
             0 => __DIR__ . '/..' . '/ramsey/uuid/src',
@@ -412,10 +417,11 @@ class ComposerStaticInitf9ba45c08a27b73614f4b105f6775f4c
 
     public static $classMap = array (
         'App\\Book' => __DIR__ . '/../..' . '/app/Book.php',
+        'App\\BookReader' => __DIR__ . '/../..' . '/app/BookReader.php',
         'App\\Console\\Kernel' => __DIR__ . '/../..' . '/app/Console/Kernel.php',
         'App\\Exceptions\\Handler' => __DIR__ . '/../..' . '/app/Exceptions/Handler.php',
         'App\\Http\\Controllers\\Admin\\BookController' => __DIR__ . '/../..' . '/app/Http/Controllers/Admin/BookController.php',
-        'App\\Http\\Controllers\\Admin\\LoanController' => __DIR__ . '/../..' . '/app/Http/Controllers/Admin/LoanController.php',
+        'App\\Http\\Controllers\\Admin\\BookReaderController' => __DIR__ . '/../..' . '/app/Http/Controllers/Admin/BookReaderController.php',
         'App\\Http\\Controllers\\Admin\\ReaderController' => __DIR__ . '/../..' . '/app/Http/Controllers/Admin/ReaderController.php',
         'App\\Http\\Controllers\\Auth\\ConfirmPasswordController' => __DIR__ . '/../..' . '/app/Http/Controllers/Auth/ConfirmPasswordController.php',
         'App\\Http\\Controllers\\Auth\\ForgotPasswordController' => __DIR__ . '/../..' . '/app/Http/Controllers/Auth/ForgotPasswordController.php',
@@ -432,7 +438,6 @@ class ComposerStaticInitf9ba45c08a27b73614f4b105f6775f4c
         'App\\Http\\Middleware\\TrimStrings' => __DIR__ . '/../..' . '/app/Http/Middleware/TrimStrings.php',
         'App\\Http\\Middleware\\TrustProxies' => __DIR__ . '/../..' . '/app/Http/Middleware/TrustProxies.php',
         'App\\Http\\Middleware\\VerifyCsrfToken' => __DIR__ . '/../..' . '/app/Http/Middleware/VerifyCsrfToken.php',
-        'App\\Loan' => __DIR__ . '/../..' . '/app/Loan.php',
         'App\\Providers\\AppServiceProvider' => __DIR__ . '/../..' . '/app/Providers/AppServiceProvider.php',
         'App\\Providers\\AuthServiceProvider' => __DIR__ . '/../..' . '/app/Providers/AuthServiceProvider.php',
         'App\\Providers\\BroadcastServiceProvider' => __DIR__ . '/../..' . '/app/Providers/BroadcastServiceProvider.php',
@@ -2410,7 +2415,6 @@ class ComposerStaticInitf9ba45c08a27b73614f4b105f6775f4c
         'League\\Flysystem\\Util\\ContentListingFormatter' => __DIR__ . '/..' . '/league/flysystem/src/Util/ContentListingFormatter.php',
         'League\\Flysystem\\Util\\MimeType' => __DIR__ . '/..' . '/league/flysystem/src/Util/MimeType.php',
         'League\\Flysystem\\Util\\StreamHasher' => __DIR__ . '/..' . '/league/flysystem/src/Util/StreamHasher.php',
-        'LoanTableSeeder' => __DIR__ . '/../..' . '/database/seeds/LoanTableSeeder.php',
         'Mockery' => __DIR__ . '/..' . '/mockery/mockery/library/Mockery.php',
         'Mockery\\Adapter\\Phpunit\\MockeryPHPUnitIntegration' => __DIR__ . '/..' . '/mockery/mockery/library/Mockery/Adapter/Phpunit/MockeryPHPUnitIntegration.php',
         'Mockery\\Adapter\\Phpunit\\MockeryPHPUnitIntegrationAssertPostConditions' => __DIR__ . '/..' . '/mockery/mockery/library/Mockery/Adapter/Phpunit/MockeryPHPUnitIntegrationAssertPostConditions.php',
@@ -3722,6 +3726,9 @@ class ComposerStaticInitf9ba45c08a27b73614f4b105f6775f4c
         'SebastianBergmann\\Type\\UnknownType' => __DIR__ . '/..' . '/sebastian/type/src/UnknownType.php',
         'SebastianBergmann\\Type\\VoidType' => __DIR__ . '/..' . '/sebastian/type/src/VoidType.php',
         'SebastianBergmann\\Version' => __DIR__ . '/..' . '/sebastian/version/src/Version.php',
+        'Spatie\\Sluggable\\HasSlug' => __DIR__ . '/..' . '/spatie/laravel-sluggable/src/HasSlug.php',
+        'Spatie\\Sluggable\\InvalidOption' => __DIR__ . '/..' . '/spatie/laravel-sluggable/src/InvalidOption.php',
+        'Spatie\\Sluggable\\SlugOptions' => __DIR__ . '/..' . '/spatie/laravel-sluggable/src/SlugOptions.php',
         'Stringable' => __DIR__ . '/..' . '/symfony/polyfill-php80/Resources/stubs/Stringable.php',
         'Symfony\\Component\\Console\\Application' => __DIR__ . '/..' . '/symfony/console/Application.php',
         'Symfony\\Component\\Console\\CommandLoader\\CommandLoaderInterface' => __DIR__ . '/..' . '/symfony/console/CommandLoader/CommandLoaderInterface.php',
