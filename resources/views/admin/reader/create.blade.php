@@ -11,30 +11,54 @@
         <div class="row">
             <div class="form-group col-md-6">
                 <label>Nome</label>
-                <input type="text" name="name" class="form-control" autocomplete="">
+                <input type="text" name="name" class="form-control @error('name') is-invalid @enderror" value="{{old('name')}}" autocomplete="off">
+                @error('name')
+                    <div class="invalid-feedback">
+                        {{$message}}
+                    </div>
+                @enderror
             </div>
+
             <div class="form-group col-md-6">
                 <label>Email</label>
-                <input type="email" name="email" class="form-control" autocomplete="">
+                <input type="email" name="email" class="form-control @error('email') is-invalid @enderror" value="{{old('email')}}" autocomplete="off">
+                @error('email')
+                    <div class="invalid-feedback">
+                        {{$message}}
+                    </div>
+                @enderror
             </div>
         </div>
 
         <div class="row">
             <div class="form-group col-md-3">
                 <label>Senha</label>
-                <input type="text" name="password" class="form-control" autocomplete="">
+                <input type="text" name="password" class="form-control @error('password') is-invalid @enderror" value="{{old('password')}}" autocomplete="off">
+                @error('password')
+                    <div class="invalid-feedback">
+                        {{$message}}
+                    </div>
+                @enderror
             </div>
+
             <div class="form-group col-md-3">
                 <label>Confirmar Senha</label>
-                <input type="text" name="" class="form-control" autocomplete="">
+                <input type="text" name="" class="form-control" autocomplete="off">
             </div>
+
             <div class="form-group col-md-3">
                 <label>Telefone</label>
-                <input type="text" name="phone" class="form-control" autocomplete="">
+                <input type="text" name="phone" class="form-control @error('phone') is-invalid @enderror" value="{{old('phone')}}" autocomplete="off">
+                @error('phone')
+                    <div class="invalid-feedback">
+                        {{$message}}
+                    </div>
+                @enderror
             </div>
+
             <div class="form-group col-md-3">
                 <label>Gênero</label>
-                <select type="text" name="gender" class="form-control">
+                <select type="text" name="gender" class="form-control @error('gender') is-invalid @enderror">
                     <option value="Masculino">Masculino</option>
                     <option value="Feminino">Feminino</option>
                 </select>
@@ -44,29 +68,37 @@
         <div class="row">
             <div class="form-group col-md-3">
                 <label>Série</label>
-                <select type="text" name="year" class="form-control">
+                <select type="text" name="year" class="form-control @error('year') is-invalid @enderror">
                     <option value="1">1º ano</option>
                     <option value="2">2º ano</option>
                     <option value="3">3º ano</option>
                 </select>
             </div>
+
             <div class="form-group col-md-3">
                 <label>Turma</label>
-                <select type="text" name="class" class="form-control">
+                <select type="text" name="class" class="form-control @error('class') is-invalid @enderror">
                     <option value="A">A</option>
                     <option value="B">B</option>
                 </select>
             </div>
+
             <div class="form-group col-md-3">
                 <label>Curso</label>
-                <select type="text" name="course" class="form-control">
+                <select type="text" name="course" class="form-control @error('course') is-invalid @enderror">
                     <option value="des">Desenvolvimento</option>
                     <option value="log">Logística</option>
                 </select>
             </div>
+
             <div class="form-group col-md-3">
                 <label>Matrícula</label>
-                <input type="text" name="registration" class="form-control" autocomplete="">
+                <input type="text" name="registration" class="form-control @error('registration') is-invalid @enderror" value="{{old('registration')}}" autocomplete="off">
+                @error('registration')
+                    <div class="invalid-feedback">
+                        {{$message}}
+                    </div>
+                @enderror
             </div>
         </div>
 

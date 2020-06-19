@@ -3,8 +3,9 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Book;
 use Illuminate\Http\Request;
+use App\Http\Requests\BookRequest;
+use App\Book;
 
 class BookController extends Controller
 {
@@ -41,7 +42,7 @@ class BookController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(BookRequest $request)
     {
         $data = $request->all();
 
@@ -81,7 +82,7 @@ class BookController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(BookRequest $request, $id)
     {
         $data = $request->all();
 
