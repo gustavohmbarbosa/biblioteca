@@ -6,8 +6,13 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
+    'App\\Book' => $baseDir . '/app/Book.php',
+    'App\\BookReader' => $baseDir . '/app/BookReader.php',
     'App\\Console\\Kernel' => $baseDir . '/app/Console/Kernel.php',
     'App\\Exceptions\\Handler' => $baseDir . '/app/Exceptions/Handler.php',
+    'App\\Http\\Controllers\\Admin\\BookController' => $baseDir . '/app/Http/Controllers/Admin/BookController.php',
+    'App\\Http\\Controllers\\Admin\\BookReaderController' => $baseDir . '/app/Http/Controllers/Admin/BookReaderController.php',
+    'App\\Http\\Controllers\\Admin\\ReaderController' => $baseDir . '/app/Http/Controllers/Admin/ReaderController.php',
     'App\\Http\\Controllers\\Auth\\ConfirmPasswordController' => $baseDir . '/app/Http/Controllers/Auth/ConfirmPasswordController.php',
     'App\\Http\\Controllers\\Auth\\ForgotPasswordController' => $baseDir . '/app/Http/Controllers/Auth/ForgotPasswordController.php',
     'App\\Http\\Controllers\\Auth\\LoginController' => $baseDir . '/app/Http/Controllers/Auth/LoginController.php',
@@ -30,6 +35,7 @@ return array(
     'App\\Providers\\RouteServiceProvider' => $baseDir . '/app/Providers/RouteServiceProvider.php',
     'App\\Reader' => $baseDir . '/app/Reader.php',
     'App\\User' => $baseDir . '/app/User.php',
+    'BooksTableSeeder' => $baseDir . '/database/seeds/BooksTableSeeder.php',
     'Carbon\\Carbon' => $vendorDir . '/nesbot/carbon/src/Carbon/Carbon.php',
     'Carbon\\CarbonImmutable' => $vendorDir . '/nesbot/carbon/src/Carbon/CarbonImmutable.php',
     'Carbon\\CarbonInterface' => $vendorDir . '/nesbot/carbon/src/Carbon/CarbonInterface.php',
@@ -3310,6 +3316,9 @@ return array(
     'SebastianBergmann\\Type\\UnknownType' => $vendorDir . '/sebastian/type/src/UnknownType.php',
     'SebastianBergmann\\Type\\VoidType' => $vendorDir . '/sebastian/type/src/VoidType.php',
     'SebastianBergmann\\Version' => $vendorDir . '/sebastian/version/src/Version.php',
+    'Spatie\\Sluggable\\HasSlug' => $vendorDir . '/spatie/laravel-sluggable/src/HasSlug.php',
+    'Spatie\\Sluggable\\InvalidOption' => $vendorDir . '/spatie/laravel-sluggable/src/InvalidOption.php',
+    'Spatie\\Sluggable\\SlugOptions' => $vendorDir . '/spatie/laravel-sluggable/src/SlugOptions.php',
     'Stringable' => $vendorDir . '/symfony/polyfill-php80/Resources/stubs/Stringable.php',
     'Symfony\\Component\\Console\\Application' => $vendorDir . '/symfony/console/Application.php',
     'Symfony\\Component\\Console\\CommandLoader\\CommandLoaderInterface' => $vendorDir . '/symfony/console/CommandLoader/CommandLoaderInterface.php',

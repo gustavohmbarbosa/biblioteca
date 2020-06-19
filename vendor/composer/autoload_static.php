@@ -71,6 +71,7 @@ class ComposerStaticInitf9ba45c08a27b73614f4b105f6775f4c
             'Symfony\\Component\\Debug\\' => 24,
             'Symfony\\Component\\CssSelector\\' => 30,
             'Symfony\\Component\\Console\\' => 26,
+            'Spatie\\Sluggable\\' => 17,
         ),
         'R' => 
         array (
@@ -263,6 +264,10 @@ class ComposerStaticInitf9ba45c08a27b73614f4b105f6775f4c
         array (
             0 => __DIR__ . '/..' . '/symfony/console',
         ),
+        'Spatie\\Sluggable\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/spatie/laravel-sluggable/src',
+        ),
         'Ramsey\\Uuid\\' => 
         array (
             0 => __DIR__ . '/..' . '/ramsey/uuid/src',
@@ -411,8 +416,13 @@ class ComposerStaticInitf9ba45c08a27b73614f4b105f6775f4c
     );
 
     public static $classMap = array (
+        'App\\Book' => __DIR__ . '/../..' . '/app/Book.php',
+        'App\\BookReader' => __DIR__ . '/../..' . '/app/BookReader.php',
         'App\\Console\\Kernel' => __DIR__ . '/../..' . '/app/Console/Kernel.php',
         'App\\Exceptions\\Handler' => __DIR__ . '/../..' . '/app/Exceptions/Handler.php',
+        'App\\Http\\Controllers\\Admin\\BookController' => __DIR__ . '/../..' . '/app/Http/Controllers/Admin/BookController.php',
+        'App\\Http\\Controllers\\Admin\\BookReaderController' => __DIR__ . '/../..' . '/app/Http/Controllers/Admin/BookReaderController.php',
+        'App\\Http\\Controllers\\Admin\\ReaderController' => __DIR__ . '/../..' . '/app/Http/Controllers/Admin/ReaderController.php',
         'App\\Http\\Controllers\\Auth\\ConfirmPasswordController' => __DIR__ . '/../..' . '/app/Http/Controllers/Auth/ConfirmPasswordController.php',
         'App\\Http\\Controllers\\Auth\\ForgotPasswordController' => __DIR__ . '/../..' . '/app/Http/Controllers/Auth/ForgotPasswordController.php',
         'App\\Http\\Controllers\\Auth\\LoginController' => __DIR__ . '/../..' . '/app/Http/Controllers/Auth/LoginController.php',
@@ -435,6 +445,7 @@ class ComposerStaticInitf9ba45c08a27b73614f4b105f6775f4c
         'App\\Providers\\RouteServiceProvider' => __DIR__ . '/../..' . '/app/Providers/RouteServiceProvider.php',
         'App\\Reader' => __DIR__ . '/../..' . '/app/Reader.php',
         'App\\User' => __DIR__ . '/../..' . '/app/User.php',
+        'BooksTableSeeder' => __DIR__ . '/../..' . '/database/seeds/BooksTableSeeder.php',
         'Carbon\\Carbon' => __DIR__ . '/..' . '/nesbot/carbon/src/Carbon/Carbon.php',
         'Carbon\\CarbonImmutable' => __DIR__ . '/..' . '/nesbot/carbon/src/Carbon/CarbonImmutable.php',
         'Carbon\\CarbonInterface' => __DIR__ . '/..' . '/nesbot/carbon/src/Carbon/CarbonInterface.php',
@@ -3715,6 +3726,9 @@ class ComposerStaticInitf9ba45c08a27b73614f4b105f6775f4c
         'SebastianBergmann\\Type\\UnknownType' => __DIR__ . '/..' . '/sebastian/type/src/UnknownType.php',
         'SebastianBergmann\\Type\\VoidType' => __DIR__ . '/..' . '/sebastian/type/src/VoidType.php',
         'SebastianBergmann\\Version' => __DIR__ . '/..' . '/sebastian/version/src/Version.php',
+        'Spatie\\Sluggable\\HasSlug' => __DIR__ . '/..' . '/spatie/laravel-sluggable/src/HasSlug.php',
+        'Spatie\\Sluggable\\InvalidOption' => __DIR__ . '/..' . '/spatie/laravel-sluggable/src/InvalidOption.php',
+        'Spatie\\Sluggable\\SlugOptions' => __DIR__ . '/..' . '/spatie/laravel-sluggable/src/SlugOptions.php',
         'Stringable' => __DIR__ . '/..' . '/symfony/polyfill-php80/Resources/stubs/Stringable.php',
         'Symfony\\Component\\Console\\Application' => __DIR__ . '/..' . '/symfony/console/Application.php',
         'Symfony\\Component\\Console\\CommandLoader\\CommandLoaderInterface' => __DIR__ . '/..' . '/symfony/console/CommandLoader/CommandLoaderInterface.php',
