@@ -23,13 +23,15 @@ class CreateReadersTable extends Migration
             $table->string('password');
             $table->string('phone');
             $table->string('gender');
-            $table->string('year');
+            $table->string('grade');
             $table->string('class');
             $table->string('course');
             $table->string('registration');
+            $table->year('entry_year');
             $table->string('status')->default('ATIVO');
 
             $table->timestamps();
+            $table->string('slug');
         });
     }
 

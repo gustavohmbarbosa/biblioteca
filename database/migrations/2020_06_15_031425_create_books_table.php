@@ -29,13 +29,15 @@ class CreateBooksTable extends Migration
             $table->string('color');
             $table->string('cdd');
             $table->string('cape')->nullable();
-            $table->string('company');
+
+            $table->unsignedBigInteger('company_id');
+            $table->foreign('company_id')->references('id')->on('companies');
+
             $table->string('author_id');
+            //$table->foreign('author_id')->references('id')->on('author');
 
             $table->timestamps();
-
-            // $table->foreign('author_id')->references('id')->on('author');
-            // $table->foreign('company_id')->references('id')->on('company');
+            $table->string('slug');
         });
     }
 
