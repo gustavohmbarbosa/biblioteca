@@ -127,40 +127,4 @@ class BookController extends Controller
 
         }
     }
-
-    /*
-     * Routes for AJAX 
-     */
-
-    public function storeAuthor(Request $request) {
-        $data = $request->all();
-
-        if (\App\Author::create($data)) {
-
-            $message = [
-                'content' => "Autor criado com sucesso!",
-                'type'    => "success"
-            ];
-
-        } else {
-
-            $message = [
-                'content' => "Falha ao criar autor!",
-                'type'    => "danger"
-            ];
-
-        }
-
-        echo json_encode($message);
-
-        return;
-
-        // return redirect()->route('admin.book.create');
-    }
-
-    public function returnAuthors() {
-        $authors = \App\Author::all(['id', 'name']);
-
-        echo json_encode($authors);
-    }
 }

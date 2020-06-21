@@ -21,7 +21,5 @@ Route::prefix('admin')->name('admin.')->namespace('Admin')->group(function(){
     Route::resource('readers', 'ReaderController');
     Route::resource('loans', 'BookReaderController');
     Route::resource('books', 'BookController');
-
-    //Route::post('/store/author', 'BookController@storeAuthor')->name('book.store.author');
-    //Route::get('/return/authors', 'BookController@returnAuthors')->name('book.return.authors');
+    Route::resource('authors', 'AuthorController');
 });
