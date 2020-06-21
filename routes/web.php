@@ -11,6 +11,7 @@
 |
 */
 
+/*
 Route::view('/', 'landing');
 Route::match(['get', 'post'], '/dashboard', function(){
     return view('dashboard');
@@ -34,3 +35,4 @@ Route::group(['middleware'=> ['auth']], function () {
         Route::get('/return/authors', 'BookController@returnAuthors')->name('book.return.authors');
     });
 });
+*/

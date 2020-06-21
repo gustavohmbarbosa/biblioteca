@@ -16,3 +16,12 @@ use Illuminate\Http\Request;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+Route::prefix('admin')->name('admin.')->namespace('Admin')->group(function(){
+    Route::resource('reader', 'ReaderController');
+    //Route::resource('loan', 'BookReaderController');
+    //Route::resource('book', 'BookController');
+
+    //Route::post('/store/author', 'BookController@storeAuthor')->name('book.store.author');
+    //Route::get('/return/authors', 'BookController@returnAuthors')->name('book.return.authors');
+});

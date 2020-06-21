@@ -16,9 +16,9 @@ class ReaderController extends Controller
      */
     public function index()
     {
-        $readers = Reader::all(['id','name','email']);
-        //dd($readers);
-        return view('admin.reader.index', compact('readers'));
+        $readers = ['data' => Reader::paginate(10)];
+
+        return response()->json($readers);
     }
 
     /**
@@ -28,7 +28,7 @@ class ReaderController extends Controller
      */
     public function create()
     {
-        return view('admin.reader.create');
+        //
     }
 
     /**
@@ -39,11 +39,18 @@ class ReaderController extends Controller
      */
     public function store(ReaderRequest $request)
     {
-        $data = $request->all();
-        
-        $reader = Reader::create($data);
+        try{
 
-        return redirect()->route('admin.reader.index');
+            $data = $request->all();
+            $reader = Reader::create($data);
+
+            return response()->json(['menssage' => 'Leitor criado com sucesso!'], 201);
+
+        } catch (\Exception $error){
+
+            return response()->json(['menssage' => 'Falha ao realizar a operação!'], 1010);
+
+        }
     }
 
     /**
@@ -54,9 +61,9 @@ class ReaderController extends Controller
      */
     public function show($id)
     {
-        $reader = Reader::findOrFail($id);
+        $reader =['data' => Reader::findOrFail($id)];
 
-        return view('admin.reader.main', compact('reader'));
+        return response()->json($reader);
     }
 
     /**
@@ -84,7 +91,7 @@ class ReaderController extends Controller
         $reader = Reader::findOrFail($id);
         $reader->update($data);
 
-        return redirect()->route('admin.reader.show', compact('reader'));
+        //return redirect()->route('admin.reader.show', compact('reader'));
     }
 
     /**
@@ -98,6 +105,6 @@ class ReaderController extends Controller
         $reader = Reader::findOrFail($id);
         $reader->delete();
 
-        return redirect()->route('admin.reader.index');
+        //return redirect()->route('admin.reader.index');
     }
 }
