@@ -31,7 +31,7 @@ class BookController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function create()
-    {
+    {        
         return view('admin.book.create');
     }
 
@@ -103,5 +103,29 @@ class BookController extends Controller
         $book->delete();
 
         return redirect()->route('admin.book.index');
+    }
+
+    public function storeAuthor(Request $request) {
+        $data = $request->all();
+
+        if (\App\Author::create($data)) {
+            $message['content'] = "Autor criado com sucesso!";
+            $message['type'] = "success";
+        } else {
+            $message['content'] = "Erro ao criar o autor!";
+            $message['type'] = "danger";
+        }
+
+        echo json_encode($message);
+
+        return;
+
+        // return redirect()->route('admin.book.create');
+    }
+
+    public function returnAuthors() {
+        $authors = \App\Author::all(['id', 'name']);
+
+        echo json_encode($authors);
     }
 }

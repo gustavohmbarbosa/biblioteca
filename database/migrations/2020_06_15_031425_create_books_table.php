@@ -30,7 +30,7 @@ class CreateBooksTable extends Migration
             $table->string('cdd');
             $table->string('cape')->nullable();
             $table->string('company');
-            $table->string('author');
+            $table->string('author_id');
 
             $table->timestamps();
 
