@@ -12,6 +12,16 @@ use App\BookReader;
 class BookReaderController extends Controller
 {
     /**
+	 * @var Loan
+	 */
+	private $loan;
+
+	public function __construct(BookReader $loan)
+	{
+		$this->BookReader = $loan;
+    }
+
+    /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
@@ -23,7 +33,7 @@ class BookReaderController extends Controller
         ->join('readers', 'readers.id', '=', 'book_reader.reader_id')
         ->select('book_reader.*', 'books.title', 'books.subtitle', 'readers.name', 'readers.year', 'readers.class', 'readers.course')->get();
         
-        return view('admin.loan.index', compact('loans'));
+        return response()->json(['data' => $loans]);
     }
 
     /**
@@ -36,7 +46,7 @@ class BookReaderController extends Controller
         $readers = Reader::all(['id','name']);
         $books = Book::all(['id', 'title']);
 
-        return view('admin.loan.create', compact('readers', 'books'));
+        return response()->json(['data' => ['readers' => $readers, 'books' => $books]]);
     }
 
     /**
@@ -51,12 +61,13 @@ class BookReaderController extends Controller
 
         $data['estimated_date'] = date('Y-m-d', strtotime('+7 days'));
 
-        $reader = Reader::findOrFail($data['reader_id']);
-        $book = Book::findOrFail($data['book_id']);
+        $reader = Reader::find($data['reader_id']);
+        $book = Book::find($data['book_id']);
 
         $reader->addBook($book, $data);
-
-        return redirect()->route('admin.loan.index');
+        
+        $return = ['data' => ['menssage' => 'Empréstimo criado com sucesso!']];
+        return response()->json($return, 201);    
     }
 
     /**
@@ -73,7 +84,7 @@ class BookReaderController extends Controller
         ->where('book_reader.id', '=', $id)
         ->select('book_reader.*', 'books.title', 'books.subtitle', 'readers.name', 'readers.year', 'readers.class', 'readers.course')->get()->first();
 
-        return view('admin.loan.main', compact('loan'));
+        return response()->json(['data' => $loan]);
     }
 
     /**
@@ -101,10 +112,11 @@ class BookReaderController extends Controller
         if ($data['status'] != 'ATIVO')
             $data['return_date'] = date('Y-m-d');
 
-        $loan = BookReader::findOrfail($id);
+        $loan = $this->BookReader->find($id);
         $loan->update($data);
 
-        return redirect()->route('admin.loan.show', compact('loan'));
+        $return = ['data' => ['menssage' => 'Empréstimo atualizado com sucesso!']];
+        return response()->json($return, 201);    
     }
 
     /**
@@ -115,6 +127,10 @@ class BookReaderController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $loan = $this->BookReader->find($id);
+        $loan->delete();
+
+        $return = ['data' => ['menssage' => 'Empréstimo #' . $loan->id . ' excluído com sucesso!']];
+        return response()->json($return, 201);    
     }
 }

@@ -10,13 +10,23 @@ use App\Reader;
 class ReaderController extends Controller
 {
     /**
+	 * @var Reader
+	 */
+	private $reader;
+
+	public function __construct(Reader $reader)
+	{
+		$this->reader = $reader;
+    }
+    
+    /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
     public function index()
     {
-        $readers = ['data' => Reader::paginate(10)];
+        $readers = ['data' => $this->reader->paginate(10)];
 
         return response()->json($readers);
     }
@@ -39,18 +49,11 @@ class ReaderController extends Controller
      */
     public function store(ReaderRequest $request)
     {
-        try{
+        $data = $request->all();
+        $reader = $this->reader->create($data);
 
-            $data = $request->all();
-            $reader = Reader::create($data);
-
-            return response()->json(['menssage' => 'Leitor criado com sucesso!'], 201);
-
-        } catch (\Exception $error){
-
-            return response()->json(['menssage' => 'Falha ao realizar a operação!'], 1010);
-
-        }
+        $return = ['data' => ['menssage' => 'Leitor criado com sucesso!']];
+        return response()->json($return, 201);
     }
 
     /**
@@ -61,7 +64,7 @@ class ReaderController extends Controller
      */
     public function show($id)
     {
-        $reader =['data' => Reader::findOrFail($id)];
+        $reader =['data' => $this->reader->find($id)];
 
         return response()->json($reader);
     }
@@ -88,10 +91,11 @@ class ReaderController extends Controller
     {
         $data = $request->all();
 
-        $reader = Reader::findOrFail($id);
+        $reader = $this->reader->find($id);
         $reader->update($data);
 
-        //return redirect()->route('admin.reader.show', compact('reader'));
+        $return = ['data' => ['menssage' => 'Leitor atualizado com sucesso!']];
+        return response()->json($return, 201);
     }
 
     /**
@@ -102,9 +106,9 @@ class ReaderController extends Controller
      */
     public function destroy($id)
     {
-        $reader = Reader::findOrFail($id);
+        $reader = $this->reader->find($id);
         $reader->delete();
-
-        //return redirect()->route('admin.reader.index');
+    
+        return response()->json(['menssage' => 'Leitor #' . $reader->id . ' foi excluído com sucesso!'], 200);
     }
 }
