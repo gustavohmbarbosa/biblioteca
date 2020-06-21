@@ -21,9 +21,9 @@ class BookController extends Controller
      */
     public function index()
     {
-        $books = $this->book->all();
+        $books = $this->book->paginate(10);
 
-        return view('admin.book.index', compact('books'));
+        return response()->json($books);
     }
 
     /**
@@ -44,11 +44,18 @@ class BookController extends Controller
      */
     public function store(BookRequest $request)
     {
-        $data = $request->all();
+        try {
 
-        $book = $this->book->create($data);
+            $data = $request->all();
+            $this->book->create($data);
 
-        return redirect()->route('admin.book.index');
+            return response()->json(['message' => 'Livro criado com sucesso!'], 201);
+
+        } catch (\Exception $e) {
+           
+            return response()->json(['message' => 'Falha ao criar livro!'], 1010);
+
+        }
     }
 
     /**
@@ -59,9 +66,9 @@ class BookController extends Controller
      */
     public function show($id)
     {
-        $book = $this->book->findOrFail($id);
+        $book = ['data' => $this->book->findOrFail($id)];
 
-        return view('admin.book.main', compact('book'));
+        return response()->json($book);
     }
 
     /**
@@ -82,14 +89,21 @@ class BookController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(BookRequest $request, $id)
+    public function update(Request $request, $id)
     {
-        $data = $request->all();
+        try {
 
-        $book = $this->book->findOrFail($id);
-        $book = $book->update($data);
+            $data = $request->all();
+            $book = $this->book->findOrFail($id);
+            $book->update($data);
 
-        return redirect()->route('admin.book.show', compact('book'));
+            return response()->json(['message' => 'Livro atualizado com sucesso!'], 201);
+
+        } catch (\Exception $e) {
+           
+            return response()->json(['message' => 'Falha ao atualizar livro!'], 1011);
+
+        }
     }
 
     /**
@@ -100,21 +114,41 @@ class BookController extends Controller
      */
     public function destroy($id)
     {
-        $book = $this->book->findOrFail($id);
-        $book->delete();
+        try {
 
-        return redirect()->route('admin.book.index');
+            $book = $this->book->findOrFail($id);
+            $book->delete();
+
+            return response()->json(['message' => 'Livro ' . $book->title . ' deletado com sucesso!']);
+
+        } catch (\Exception $e) {
+            
+            return response()->json(['message' => 'Falha ao deletar livro!'], 1012);
+
+        }
     }
+
+    /*
+     * Routes for AJAX 
+     */
 
     public function storeAuthor(Request $request) {
         $data = $request->all();
 
         if (\App\Author::create($data)) {
-            $message['content'] = "Autor criado com sucesso!";
-            $message['type'] = "success";
+
+            $message = [
+                'content' => "Autor criado com sucesso!",
+                'type'    => "success"
+            ];
+
         } else {
-            $message['content'] = "Erro ao criar o autor!";
-            $message['type'] = "danger";
+
+            $message = [
+                'content' => "Falha ao criar autor!",
+                'type'    => "danger"
+            ];
+
         }
 
         echo json_encode($message);

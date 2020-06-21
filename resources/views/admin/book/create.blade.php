@@ -135,7 +135,7 @@
             </div>
 
             <div class="form-group col-md-3">
-<<<<<<< HEAD
+
                 <label for="author">Autor</label>
                 <div class="input-group">
 					<span class="input-group-btn input-group-prepend">
@@ -154,10 +154,7 @@
                         @endif --}}
 					</select>
 				</div>
-=======
-                <label>Autor</label>
-                <input type="text" name="author" class="form-control @error('author') is-invalid @enderror" value="{{old('author')}}" autocomplete="">
->>>>>>> 08977dc4fd854259cd9175052af107c5618dff29
+
             </div>
         </div>
 
