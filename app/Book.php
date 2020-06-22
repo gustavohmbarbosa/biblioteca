@@ -11,7 +11,7 @@ class Book extends Model
     use HasSlug;
 
     protected $fillable = [
-        'title', 'subtitle', 'origin', 'price', 'isbn', 'synopsis', 'pages', 'language', 'observations', 'edition', 'publication_date', 'color', 'cdd', 'cape', 'company', 'author', 'slug'
+        'title', 'subtitle', 'origin', 'price', 'isbn', 'synopsis', 'pages', 'language', 'observations', 'edition', 'publication_date', 'color', 'cdd', 'cape', 'company_id', 'author_id', 'slug'
     ];
 
     /**

@@ -4,21 +4,20 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Http\Requests\ReaderRequest;
-use App\Reader;
+use App\Company;
 
-class ReaderController extends Controller
+class CompanyController extends Controller
 {
     /**
-	 * @var Reader
+	 * @var Company
 	 */
-	private $reader;
+	private $company;
 
-	public function __construct(Reader $reader)
+	public function __construct(Company $company)
 	{
-		$this->reader = $reader;
+		$this->company = $company;
     }
-    
+
     /**
      * Display a listing of the resource.
      *
@@ -26,9 +25,9 @@ class ReaderController extends Controller
      */
     public function index()
     {
-        $readers = ['data' => $this->reader->paginate(10)];
+        $companies = $this->company->paginate(10);
 
-        return response()->json($readers);
+        return response()->json(['data' => $companies], 200);
     }
 
     /**
@@ -47,12 +46,12 @@ class ReaderController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(ReaderRequest $request)
+    public function store(Request $request)
     {
         $data = $request->all();
-        $reader = $this->reader->create($data);
+        $company = $this->company->create($data);
 
-        $return = ['data' => ['menssage' => 'Leitor criado com sucesso!']];
+        $return = ['data' => ['menssage' => 'Editora criada com sucesso!']];
         return response()->json($return, 201);
     }
 
@@ -64,9 +63,9 @@ class ReaderController extends Controller
      */
     public function show($id)
     {
-        $reader =['data' => $this->reader->find($id)];
+        $company = $this->company->find($id);
 
-        return response()->json($reader);
+        return response()->json(['data' => $company]);
     }
 
     /**
@@ -77,7 +76,7 @@ class ReaderController extends Controller
      */
     public function edit($id)
     {
- 
+        //
     }
 
     /**
@@ -87,15 +86,14 @@ class ReaderController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(ReaderRequest $request, $id)
+    public function update(Request $request, $id)
     {
         $data = $request->all();
+        $company = $this->company->find($id);
+        $company->update($data);
 
-        $reader = $this->reader->find($id);
-        $reader->update($data);
-
-        $return = ['data' => ['menssage' => 'Leitor atualizado com sucesso!']];
-        return response()->json($return, 200);
+        $return = ['data' => ['menssage' => 'Editora #' . $id . ' atulizada com sucesso!']];
+        return response()->json([$return], 200);
     }
 
     /**
@@ -106,9 +104,10 @@ class ReaderController extends Controller
      */
     public function destroy($id)
     {
-        $reader = $this->reader->find($id);
-        $reader->delete();
-    
-        return response()->json(['menssage' => 'Leitor #' . $id . ' foi excluído com sucesso!'], 200);
+        $company = $this->company->find($id);
+        $company->delete();
+
+        $return = ['data' => ['menssage' => 'Editora #' . $id . ' excluída com sucesso!']];
+        return response()->json([$return], 200);
     }
 }

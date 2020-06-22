@@ -18,7 +18,7 @@ class BookReaderController extends Controller
 
 	public function __construct(BookReader $loan)
 	{
-		$this->BookReader = $loan;
+		$this->bookReader = $loan;
     }
 
     /**
@@ -112,7 +112,7 @@ class BookReaderController extends Controller
         if ($data['status'] != 'ATIVO')
             $data['return_date'] = date('Y-m-d');
 
-        $loan = $this->BookReader->find($id);
+        $loan = $this->bookReader->find($id);
         $loan->update($data);
 
         $return = ['data' => ['menssage' => 'Empréstimo atualizado com sucesso!']];
@@ -127,7 +127,7 @@ class BookReaderController extends Controller
      */
     public function destroy($id)
     {
-        $loan = $this->BookReader->find($id);
+        $loan = $this->bookReader->find($id);
         $loan->delete();
 
         $return = ['data' => ['menssage' => 'Empréstimo #' . $loan->id . ' excluído com sucesso!']];

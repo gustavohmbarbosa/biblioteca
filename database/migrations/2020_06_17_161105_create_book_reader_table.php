@@ -18,8 +18,8 @@ class CreateBookReaderTable extends Migration
             $table->unsignedBigInteger('reader_id');
             $table->unsignedBigInteger('book_id');
 
-            $table->foreign('reader_id')->references('id')->on('readers');
-            $table->foreign('book_id')->references('id')->on('books');
+            $table->foreign('reader_id')->references('id')->on('readers')->onDelete('cascade');;
+            $table->foreign('book_id')->references('id')->on('books')->onDelete('cascade');;
 
             $table->date('estimated_date');
             $table->date('return_date')->nullable();

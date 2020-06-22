@@ -22,4 +22,5 @@ Route::prefix('admin')->name('admin.')->namespace('Admin')->group(function(){
     Route::resource('loans', 'BookReaderController');
     Route::resource('books', 'BookController');
     Route::resource('authors', 'AuthorController');
+    Route::resource('companies', 'CompanyController');
 });
