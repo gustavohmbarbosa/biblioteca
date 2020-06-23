@@ -66,7 +66,7 @@ class Reader extends Model
             if ($filter) {
                 $query->where($column, 'LIKE', "%{$filter}%");
             }
-        })->paginate();
+        })->paginate(10);
 
         return $results;
     }

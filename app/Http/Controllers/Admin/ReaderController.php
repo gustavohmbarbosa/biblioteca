@@ -145,9 +145,13 @@ class ReaderController extends Controller
     {
         $filter = $request->filter;
         $column = $request->column;
+
+        if (is_null($column)){
+            $column = 'name';
+        }
         
         $readers = $this->reader->search($filter, $column);
 
-        return $readers;
+        return response()->json(['data' => $readers], 200);
     }
 }

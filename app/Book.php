@@ -43,4 +43,9 @@ class Book extends Model
                 'status'])
             ->withTimestamps();
     }
+
+    public function company()
+    {
+        return $this->belongsTo(Company::class);
+    }
 }
