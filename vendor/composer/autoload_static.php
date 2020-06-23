@@ -421,6 +421,7 @@ class ComposerStaticInitf9ba45c08a27b73614f4b105f6775f4c
         'App\\BookReader' => __DIR__ . '/../..' . '/app/BookReader.php',
         'App\\Company' => __DIR__ . '/../..' . '/app/Company.php',
         'App\\Console\\Kernel' => __DIR__ . '/../..' . '/app/Console/Kernel.php',
+        'App\\Course' => __DIR__ . '/../..' . '/app/Course.php',
         'App\\Exceptions\\Handler' => __DIR__ . '/../..' . '/app/Exceptions/Handler.php',
         'App\\Http\\Controllers\\Admin\\AuthorController' => __DIR__ . '/../..' . '/app/Http/Controllers/Admin/AuthorController.php',
         'App\\Http\\Controllers\\Admin\\BookController' => __DIR__ . '/../..' . '/app/Http/Controllers/Admin/BookController.php',

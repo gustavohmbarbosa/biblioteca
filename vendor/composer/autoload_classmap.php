@@ -11,6 +11,7 @@ return array(
     'App\\BookReader' => $baseDir . '/app/BookReader.php',
     'App\\Company' => $baseDir . '/app/Company.php',
     'App\\Console\\Kernel' => $baseDir . '/app/Console/Kernel.php',
+    'App\\Course' => $baseDir . '/app/Course.php',
     'App\\Exceptions\\Handler' => $baseDir . '/app/Exceptions/Handler.php',
     'App\\Http\\Controllers\\Admin\\AuthorController' => $baseDir . '/app/Http/Controllers/Admin/AuthorController.php',
     'App\\Http\\Controllers\\Admin\\BookController' => $baseDir . '/app/Http/Controllers/Admin/BookController.php',

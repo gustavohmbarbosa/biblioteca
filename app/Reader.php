@@ -42,6 +42,19 @@ class Reader extends Model
     }
 
     /**
+     * Relation with courses
+     */
+    public function course()
+    {
+        return $this->belongsTo(Course::class)
+            ->withPivot([
+                'estimated_date', 
+                'return_date', 
+                'status'])
+            ->withTimestamps();
+    }
+
+    /**
      * Search reader
      * 
      * @param string $filter
