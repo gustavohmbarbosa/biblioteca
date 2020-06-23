@@ -65,7 +65,34 @@ class CompanyController extends Controller
     {
         $company = $this->company->find($id);
 
-        return response()->json(['data' => $company]);
+        return response()->json(['data' => $company], 200);
+    }
+
+    /**
+     * Shows children of the given resource.
+     *
+     * @param  int  $company
+     * @return \Illuminate\Http\Response
+     */
+    public function showBooks($company)
+    {
+        $books = $this->company->find($company)->books;
+
+        return response()->json(['data' => $books], 200);
+    }
+
+    /**
+     * Shows child of the given resource.
+     *
+     * @param  int  $company
+     * @param  int  $book
+     * @return \Illuminate\Http\Response
+     */
+    public function showBook($company, $book)
+    {
+        $book = $this->company->find($company)->books->find($book);
+
+        return response()->json(['data' => $book], 200);
     }
 
     /**

@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Http\Requests\ReaderRequest;
 use App\Reader;
 
 class ReaderController extends Controller
@@ -47,7 +46,7 @@ class ReaderController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(ReaderRequest $request)
+    public function store(Request $request)
     {
         $data = $request->all();
         $reader = $this->reader->create($data);
@@ -87,7 +86,7 @@ class ReaderController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(ReaderRequest $request, $id)
+    public function update(Request $request, $id)
     {
         $data = $request->all();
 

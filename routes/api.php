@@ -23,4 +23,9 @@ Route::prefix('admin')->name('admin.')->namespace('Admin')->group(function(){
     Route::resource('books', 'BookController');
     Route::resource('authors', 'AuthorController');
     Route::resource('companies', 'CompanyController');
+    Route::prefix('companies')->name('companies.')->group(function () {
+        Route::get('{company}/books', 'CompanyController@showBooks')->name('books');
+        Route::get('{company}/books/{book}', 'CompanyController@showBook')->name('books');
+    });
+    
 });
