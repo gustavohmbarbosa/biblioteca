@@ -137,4 +137,17 @@ class ReaderController extends Controller
     
         return response()->json(['menssage' => 'Leitor #' . $id . ' foi excluído com sucesso!'], 200);
     }
+
+    /**
+     * Seach Reader
+     */
+    public function search(Request $request)
+    {
+        $filter = $request->filter;
+        $column = $request->column;
+        
+        $readers = $this->reader->search($filter, $column);
+
+        return $readers;
+    }
 }

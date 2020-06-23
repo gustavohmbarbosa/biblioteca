@@ -28,6 +28,9 @@ class Reader extends Model
         'password',
     ];
     
+    /**
+     * Relation with books
+     */
     public function books()
     {
         return $this->belongsToMany(Book::class)
@@ -36,5 +39,22 @@ class Reader extends Model
                 'return_date', 
                 'status'])
             ->withTimestamps();
+    }
+
+    /**
+     * Search reader
+     * 
+     * @param string $filter
+     * @param string $column default: "name"
+     */
+    public function search($filter = null, $column = "name")
+    {
+        $results = $this->where(function ($query) use ($filter, $column) {
+            if ($filter) {
+                $query->where($column, 'LIKE', "%{$filter}%");
+            }
+        })->paginate();
+
+        return $results;
     }
 }

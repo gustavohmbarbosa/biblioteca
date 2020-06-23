@@ -20,6 +20,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 Route::prefix('admin')->name('admin.')->namespace('Admin')->group(function(){
     Route::resource('readers', 'ReaderController');
     Route::prefix('readers')->name('readers.')->group(function () {
+        Route::any('search', 'ReaderController@search')->name('search');
         Route::get('{reader}/books', 'ReaderController@showBooks')->name('books');
         Route::get('{reader}/books/{book}', 'ReaderController@showBook')->name('books');
     });
