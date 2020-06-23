@@ -69,6 +69,33 @@ class ReaderController extends Controller
     }
 
     /**
+     * Show all books already borrowed.
+     *
+     * @param  int  $reader
+     * @return \Illuminate\Http\Response
+     */
+    public function showBooks($reader)
+    {
+        $books = $this->reader->find($reader)->books;
+
+        return response()->json(['data' => $books], 200);
+    }
+
+    /**
+     * Show book already borrowed.
+     *
+     * @param  int  $reader
+     * @param  int  $book
+     * @return \Illuminate\Http\Response
+     */
+    public function showBook($reader, $book)
+    {
+        $book = $this->reader->find($reader)->books->find($book);
+
+        return response()->json(['data' => $book], 200);
+    }
+
+    /**
      * Show the form for editing the specified resource.
      *
      * @param  int  $id

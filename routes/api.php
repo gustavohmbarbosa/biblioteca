@@ -19,9 +19,15 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 Route::prefix('admin')->name('admin.')->namespace('Admin')->group(function(){
     Route::resource('readers', 'ReaderController');
+    Route::prefix('readers')->name('readers.')->group(function () {
+        Route::get('{reader}/books', 'ReaderController@showBooks')->name('books');
+        Route::get('{reader}/books/{book}', 'ReaderController@showBook')->name('books');
+    });
+
     Route::resource('loans', 'BookReaderController');
     Route::resource('books', 'BookController');
     Route::resource('authors', 'AuthorController');
+
     Route::resource('companies', 'CompanyController');
     Route::prefix('companies')->name('companies.')->group(function () {
         Route::get('{company}/books', 'CompanyController@showBooks')->name('books');

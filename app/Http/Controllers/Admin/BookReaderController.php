@@ -5,9 +5,9 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB; //For queries
+use App\BookReader;
 use App\Reader;
 use App\Book;
-use App\BookReader;
 
 class BookReaderController extends Controller
 {
@@ -61,10 +61,7 @@ class BookReaderController extends Controller
 
         $data['estimated_date'] = date('Y-m-d', strtotime('+7 days'));
 
-        $reader = Reader::find($data['reader_id']);
-        $book = Book::find($data['book_id']);
-
-        $reader->addBook($book, $data);
+        $this->bookReader->create($data);
         
         $return = ['data' => ['menssage' => 'Empréstimo criado com sucesso!']];
         return response()->json($return, 201);    

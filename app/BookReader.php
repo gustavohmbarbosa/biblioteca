@@ -8,7 +8,7 @@ class BookReader extends Model
 {
     protected $table = 'book_reader';
 
-    protected $fillable = ['estimated_date', 'return_date', 'status'];
+    protected $fillable = ['reader_id', 'book_id', 'estimated_date', 'return_date', 'status'];
 
     public function books()
     {
