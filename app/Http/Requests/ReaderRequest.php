@@ -29,10 +29,11 @@ class ReaderRequest extends FormRequest
             'password' => 'required',
             'phone' => 'required',
             'gender' => 'required',
-            'year' => 'required',
+            'grade' => 'required',
             'class' => 'required',
             'course' => 'required',
             'registration' => 'required',
+            'entry_year' => 'required',
         ];
     }
 
