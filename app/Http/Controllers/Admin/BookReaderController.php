@@ -31,7 +31,17 @@ class BookReaderController extends Controller
         $loans = DB::table('book_reader')
         ->join('books', 'books.id', '=', 'book_reader.book_id')
         ->join('readers', 'readers.id', '=', 'book_reader.reader_id')
-        ->select('book_reader.*', 'books.title', 'books.subtitle', 'readers.name', 'readers.grade', 'readers.class', 'readers.course')->get();
+        ->join('courses', 'courses.id', '=', 'readers.course_id')
+        ->select(
+            'books.title', 
+            'books.subtitle', 
+            'readers.name AS name', 
+            'readers.grade', 
+            'readers.class',
+            'readers.course_id', 
+            'courses.name AS course_name', 
+            'book_reader.*', 
+        )->paginate(10);
         
         return response()->json(['data' => $loans]);
     }

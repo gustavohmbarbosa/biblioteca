@@ -26,7 +26,7 @@ class ReaderController extends Controller
      */
     public function index()
     {
-        $readers = ['data' => $this->reader->paginate(10)];
+        $readers = $this->reader->paginate(10);
 
         return response()->json($readers);
     }
@@ -65,9 +65,10 @@ class ReaderController extends Controller
      */
     public function show($id)
     {
-        $reader =['data' => $this->reader->find($id)];
+        $reader = $this->reader->find($id);
+        $reader->course;
 
-        return response()->json($reader);
+        return response()->json(['data' => $reader]);
     }
 
     /**

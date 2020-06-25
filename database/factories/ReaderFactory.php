@@ -14,7 +14,7 @@ $factory->define(Reader::class, function (Faker $faker) {
         'gender' => 'Masculino',
         'grade' => rand(1,3),
         'class' => 'A',
-        'course' => 'Desenvolvimento de Sistemas',
+        'course_id' => rand(1,2),
         'registration' => $faker->unique()->postcode,
         'entry_year' => '2020',
         'slug' => $faker->slug,

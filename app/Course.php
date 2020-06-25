@@ -15,11 +15,6 @@ class Course extends Model
      */
     public function readers()
     {
-        return $this->hasMany(Reader::class)
-            ->withPivot([
-                'estimated_date', 
-                'return_date', 
-                'status'])
-            ->withTimestamps();
+        return $this->hasMany(Reader::class);
     }
 }

@@ -25,13 +25,15 @@ class CreateReadersTable extends Migration
             $table->string('gender');
             $table->string('grade');
             $table->string('class');
-            $table->string('course');
+            $table->unsignedBigInteger('course_id');
             $table->string('registration');
             $table->year('entry_year');
             $table->string('status')->default('ATIVO');
 
             $table->timestamps();
             $table->string('slug');
+
+            $table->foreign('course_id')->references('id')->on('courses');
         });
     }
 
