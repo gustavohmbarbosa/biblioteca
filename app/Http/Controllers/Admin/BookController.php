@@ -23,6 +23,7 @@ class BookController extends Controller
     {
         $books = $this->book->all();
         
+        // Retornando os Autores de Todos os Livros...
         foreach ($books as $key => $book) {
             $books[$key]['authors'] = $book->authors()->get();
         }
