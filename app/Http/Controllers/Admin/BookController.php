@@ -21,10 +21,11 @@ class BookController extends Controller
      */
     public function index()
     {
-        $books = $this->book->all();
+        $books = $this->book->paginate(10);
         
         foreach ($books as $key => $book) {
-            $books[$key]['authors'] = $book->authors()->get();
+            $books[$key]['company'] = $book->company;
+            $books[$key]['authors'] = $book->authors;
         }
 
         return response()->json($books);
@@ -70,9 +71,11 @@ class BookController extends Controller
      */
     public function show($id)
     {
-        $book = ['data' => $this->book->findOrFail($id)];
+        $book = $this->book->find($id);
+        $book->company;
+        $book->authors;
 
-        return response()->json($book);
+        return response()->json(['data' => $book]);
     }
 
     /**
@@ -98,7 +101,7 @@ class BookController extends Controller
         try {
 
             $data = $request->all();
-            $book = $this->book->findOrFail($id);
+            $book = $this->book->find($id);
             $book->update($data);
 
             return response()->json(['message' => 'Livro atualizado com sucesso!'], 201);
@@ -120,7 +123,7 @@ class BookController extends Controller
     {
         try {
 
-            $book = $this->book->findOrFail($id);
+            $book = $this->book->find($id);
             $book->delete();
 
             return response()->json(['message' => 'Livro ' . $book->title . ' deletado com sucesso!']);
