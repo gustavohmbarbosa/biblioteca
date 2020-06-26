@@ -3,11 +3,14 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
+use App\Http\Requests\AuthorRequest;
+use App\Traits\Messages;
 use App\Author;
 
 class AuthorController extends Controller
 {
+    use Messages;
+
     private $author;
     
     public function __construct(Author $author){
@@ -29,46 +32,17 @@ class AuthorController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(AuthorRequest $request)
     {
-        $data = $request->all();
+        $data = $request->validated();
+        $this->author->create($data);
 
-        try {
-
-            $this->author->create($data);
-
-            $message = [
-                'content' => "Autor criado com sucesso!",
-                'type'    => "success"
-            ];
-
-        } catch (\Exception $e) {
-
-            $message = [
-                'content' => "Falha ao criar autor!",
-                'type'    => "danger"
-            ];
-
-        }
-
-        // echo json_encode($message);
-
-        return response()->json($message);
+        return $this->message("Author created successfully", 201);
     }
 
     /**
@@ -79,20 +53,13 @@ class AuthorController extends Controller
      */
     public function show($id)
     {
-        $author = ['data' => $this->author->findOrFail($id)];
+        $author = $this->author->find($id);
 
-        return response()->json($author);
-    }
+        if(is_null($author)){
+            return $this->message("Author not found", 404, true);
+        }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
+        return response()->json(['data' => $author]);
     }
 
     /**
@@ -102,32 +69,18 @@ class AuthorController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(AuthorRequest $request, $id)
     {
-        $data = $request->all();
-        $author = $this->author->findOrFail($id);
+        $author = $this->author->find($id);
 
-        try {
-
-            $author->update($data);
-
-            $message = [
-                'content' => "Autor atualizado com sucesso!",
-                'type'    => "success"
-            ];
-
-        } catch (\Exception $e) {
-
-            $message = [
-                'content' => "Falha ao atualizar autor!",
-                'type'    => "danger"
-            ];
-
+        if(is_null($author)){
+            return $this->message("Author not found", 404, true);
         }
 
-        // echo json_encode($message);
+        $data = $request->validated();
+        $author->update($data);
 
-        return response()->json($message);
+        return $this->message('Author updated successfully!');
     }
 
     /**
@@ -138,17 +91,14 @@ class AuthorController extends Controller
      */
     public function destroy($id)
     {
-        try {
+        $author = $this->author->find($id);
 
-            $author = $this->author->findOrFail($id);
-            $author->delete();
-
-            return response()->json(['message' => 'Autor ' . $author->name . ' deletado com sucesso!']);
-
-        } catch (\Exception $e) {
-            
-            return response()->json(['message' => 'Falha ao deletar autor!'], 1012);
-
+        if(is_null($author)){
+            return $this->message("Author not found", 404, true);
         }
+
+        $author->delete();
+
+        return $this->message('Author ' . $author->name . ' deleted successfully!');
     }
 }

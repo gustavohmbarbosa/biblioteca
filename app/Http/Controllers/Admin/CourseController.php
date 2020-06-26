@@ -3,11 +3,14 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
+use App\Http\Requests\CourseRequest;
+use App\Traits\Messages;
 use App\Course;
 
 class CourseController extends Controller
 {
+    use Messages;
+
     private $course;
     
     public function __construct(Course $course){
@@ -34,31 +37,12 @@ class CourseController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(CourseRequest $request)
     {
-        $data = $request->all();
+        $data = $request->validated();
+        $this->course->create($data);
 
-        try {
-
-            $this->course->create($data);
-
-            $message = [
-                'content' => "Curso criado com sucesso!",
-                'type'    => "success"
-            ];
-
-        } catch (\Exception $e) {
-
-            $message = [
-                'content' => "Falha ao criar curso!",
-                'type'    => "danger"
-            ];
-
-        }
-
-        // echo json_encode($message);
-
-        return response()->json($message);
+        return $this->message("Course created successfully", 201);
     }
 
     /**
@@ -69,9 +53,13 @@ class CourseController extends Controller
      */
     public function show($id)
     {
-        $course = ['data' => $this->course->findOrFail($id)];
+        $course = $this->course->find($id);
 
-        return response()->json($course);
+        if(is_null($course)){
+            return $this->message("Course not found", 404, true);
+        }
+
+        return response()->json(['data' => $course]);
     }
 
     /**
@@ -81,32 +69,18 @@ class CourseController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(CourseRequest $request, $id)
     {
-        $data = $request->all();
-        $course = $this->course->findOrFail($id);
+        $course = $this->course->find($id);
 
-        try {
-
-            $course->update($data);
-
-            $message = [
-                'content' => "Curso atualizado com sucesso!",
-                'type'    => "success"
-            ];
-
-        } catch (\Exception $e) {
-
-            $message = [
-                'content' => "Falha ao atualizar curso!",
-                'type'    => "danger"
-            ];
-
+        if(is_null($course)){
+            return $this->message("Course not found", 404, true);
         }
 
-        // echo json_encode($message);
+        $data = $request->validated();
+        $course->update($data);
 
-        return response()->json($message);
+        return $this->message('Course updated successfully!');
     }
 
     /**
@@ -117,17 +91,14 @@ class CourseController extends Controller
      */
     public function destroy($id)
     {
-        try {
+        $course = $this->course->find($id);
 
-            $course = $this->course->findOrFail($id);
-            $course->delete();
-
-            return response()->json(['message' => 'Curso ' . $course->name . ' deletado com sucesso!']);
-
-        } catch (\Exception $e) {
-            
-            return response()->json(['message' => 'Falha ao deletar curso!'], 1012);
-
+        if(is_null($course)){
+            return $this->message("Course not found", 404, true);
         }
+
+        $course->delete();
+
+        return $this->message('Course "' . $course->name . '" deleted successfully!');
     }
 }
