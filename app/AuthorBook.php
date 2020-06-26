@@ -25,10 +25,6 @@ class AuthorBook extends Model
     public function authors()
     {
         return $this->belongsToMany(Author::class)
-            ->withPivot([
-                'estimated_date', 
-                'return_date', 
-                'status'])
             ->withTimestamps();
     }
 }

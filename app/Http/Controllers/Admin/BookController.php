@@ -21,7 +21,11 @@ class BookController extends Controller
      */
     public function index()
     {
-        $books = $this->book->paginate(10);
+        $books = $this->book->all();
+        
+        foreach ($books as $key => $book) {
+            $books[$key]['authors'] = $book->authors()->get();
+        }
 
         return response()->json($books);
     }
