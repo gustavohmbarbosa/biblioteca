@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB; //For queries
 use App\Company;
 
 class CompanyController extends Controller
@@ -64,6 +65,13 @@ class CompanyController extends Controller
     public function show($id)
     {
         $company = $this->company->find($id);
+
+        $books = DB::table('books')
+        ->where('books.company_id', $id)
+        ->select('books.title as book_title', 'books.id as book_id')
+        ->get();
+
+        $company['books'] = $books;
 
         return response()->json(['data' => $company], 200);
     }

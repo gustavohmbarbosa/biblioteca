@@ -23,6 +23,7 @@ class BookController extends Controller
     {
         $books = $this->book->paginate(10);
         
+        // Retornando os Autores de Todos os Livros...
         foreach ($books as $key => $book) {
             $books[$key]['company'] = $book->company;
             $books[$key]['authors'] = $book->authors;
