@@ -88,8 +88,9 @@ class BookReaderController extends Controller
         $loan = DB::table('book_reader')
         ->join('books', 'books.id', '=', 'book_reader.book_id')
         ->join('readers', 'readers.id', '=', 'book_reader.reader_id')
+        ->join('courses', 'courses.id', '=', 'readers.course_id')
         ->where('book_reader.id', '=', $id)
-        ->select('book_reader.*', 'books.title', 'books.subtitle', 'readers.name', 'readers.grade', 'readers.class', 'readers.course')->get()->first();
+        ->select('book_reader.*', 'books.title', 'books.subtitle', 'readers.name', 'readers.grade', 'readers.class', 'courses.name as course_name')->get()->first();
 
         return response()->json(['data' => $loan]);
     }
@@ -123,7 +124,7 @@ class BookReaderController extends Controller
         $loan->update($data);
 
         $return = ['data' => ['menssage' => 'Empréstimo atualizado com sucesso!']];
-        return response()->json($return, 201);    
+        return response()->json($return, 201);
     }
 
     /**
