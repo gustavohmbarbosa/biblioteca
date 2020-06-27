@@ -24,21 +24,22 @@ class BookRequest extends FormRequest
     public function rules()
     {
         return [
-            'title' => 'required|max:190',
-            'subtitle' =>'required|max:190',
-            'origin' => 'required',
-            'price' => '',
-            'isbn' => 'required',
-            'cdd' => 'required',
-            'language' => 'required',
-            'pages' => 'required',
-            'edition' => 'required',
-            'author' => 'required',
-            'publication_date' => 'required',
-            'color' => 'required',
-            'cape' => '',
-            'company' => 'required',
-            'cape' => 'required',
+            'title' =>              'required|max:190',
+            'subtitle' =>           'required|max:190',
+            'origin' =>             'required',
+            'price' =>              '',
+            'isbn' =>               'required',
+            'synopsis' =>           '',
+            'cdd' =>                'required',
+            'language' =>           'required',
+            'observations' =>       'required',
+            'pages' =>              'required',
+            'edition' =>            'required',
+            'publication_date' =>   'required',
+            'color' =>              'required',
+            'cape' =>               '',
+            'company_id' =>         'required',
+            'cape' =>               'required',
         ];
     }
 
@@ -46,7 +47,7 @@ class BookRequest extends FormRequest
     {
         return [
             'required' => 'Este campo é obrigatório!',
-            'max' => 'Campo deve ter no mínimo :max caracteres',
+            'max' => 'Campo deve ter no máximo :max caracteres',
         ];
     }
 }

@@ -17,10 +17,10 @@ use Illuminate\Http\Request;
 //    return $request->user();
 //});
 
-Route::post('auth/login', 'Api\\AuthController@login');
+Route::post('auth/login', 'ApiAuth\\AuthController@login');
 
 Route::group(['middleware' => 'apiJwtAdmin'], function () {
-    Route::post('auth/logout', 'Api\\AuthController@logout');
+    Route::post('auth/logout', 'ApiAuth\\AuthController@logout');
     
     Route::prefix('admin')->name('admin.')->namespace('Admin')->group(function(){
         Route::resource('readers', 'ReaderController');

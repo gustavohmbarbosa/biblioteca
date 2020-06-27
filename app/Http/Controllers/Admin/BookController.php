@@ -33,16 +33,6 @@ class BookController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {        
-        return view('admin.book.create');
-    }
-
-    /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -50,18 +40,11 @@ class BookController extends Controller
      */
     public function store(BookRequest $request)
     {
-        try {
+        $data = $request->validated();
 
-            $data = $request->all();
-            $this->book->create($data);
+        $this->book->create($data);
 
-            return response()->json(['message' => 'Livro criado com sucesso!'], 201);
-
-        } catch (\Exception $e) {
-           
-            return response()->json(['message' => 'Falha ao criar livro!'], 1010);
-
-        }
+        return response()->json(['message' => 'Livro criado com sucesso!'], 201);
     }
 
     /**
@@ -77,17 +60,6 @@ class BookController extends Controller
         $book->authors;
 
         return response()->json(['data' => $book]);
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        
     }
 
     /**

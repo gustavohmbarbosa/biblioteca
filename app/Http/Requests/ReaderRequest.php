@@ -24,16 +24,16 @@ class ReaderRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'required|max:190',
-            'email' =>'required|email',
-            'password' => 'required',
-            'phone' => 'required',
-            'gender' => 'required',
-            'grade' => 'required',
-            'class' => 'required',
-            'course' => 'required',
-            'registration' => 'required',
-            'entry_year' => 'required',
+            'name' =>           'required|string|max:190',
+            'email' =>          'required|string|email',
+            'password' =>       'required|string|min:8',
+            'phone' =>          'required|string',
+            'gender' =>         'required|string',
+            'grade' =>          'required|string|max:1',
+            'class' =>          'required|string|max:1',
+            'course_id' =>      'required|string|max:1',
+            'registration' =>   'required|string',
+            'entry_year' =>     'required|string|max:4',
         ];
     }
 
@@ -41,7 +41,9 @@ class ReaderRequest extends FormRequest
     {
         return [
             'required' => 'Este campo é obrigatório!',
-            'max' => 'Campo deve ter no mínimo :max caracteres',
+            'string' => 'Insira caracteres válidos!',
+            'min' => 'Campo deve ter no mínimo :min caracteres',
+            'max' => 'Campo deve ter no máximo :max caracteres',
             'email' => 'Insira um endereço de e-mail válido!',
         ];
     }

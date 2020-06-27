@@ -11,7 +11,7 @@ class Reader extends Model
     use HasSlug;
 
     protected $fillable = [
-        'name', 'email', 'password', 'phone', 'gender', 'grade', 'class', 'course', 'registration', 'entry_year', 'status', 'slug'
+        'name', 'email', 'password', 'phone', 'gender', 'grade', 'class', 'course_id', 'registration', 'entry_year', 'status', 'slug'
     ];
 
     /**

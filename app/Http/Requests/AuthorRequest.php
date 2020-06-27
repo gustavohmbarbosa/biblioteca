@@ -24,7 +24,7 @@ class AuthorRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'required|max:190',
+            'name' => 'required|string|max:190',
         ];
     }
 
@@ -32,7 +32,8 @@ class AuthorRequest extends FormRequest
     {
         return [
             'required' => 'Este campo é obrigatório!',
-            'max' => 'Campo deve ter no mínimo :max caracteres',
+            'string' => 'Insira caracteres válidos!',
+            'max' => 'Campo deve ter no máximo :max caracteres',
         ];
     }
 }
