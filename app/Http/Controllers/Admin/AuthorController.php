@@ -42,7 +42,7 @@ class AuthorController extends Controller
         $data = $request->validated();
         $this->author->create($data);
 
-        return $this->message("Author created successfully", 201);
+        return $this->message("Author created successfully!", 201);
     }
 
     /**

@@ -3,12 +3,14 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 use App\Http\Requests\BookRequest;
+use App\Traits\Messages;
 use App\Book;
 
 class BookController extends Controller
 {
+    use Messages;
+
     private $book;
     
     public function __construct(Book $book){
@@ -44,7 +46,7 @@ class BookController extends Controller
 
         $this->book->create($data);
 
-        return response()->json(['message' => 'Livro criado com sucesso!'], 201);
+        return $this->message("Book created successfully!", 201);
     }
 
     /**
@@ -56,6 +58,11 @@ class BookController extends Controller
     public function show($id)
     {
         $book = $this->book->find($id);
+
+        if (is_null($book)) {
+            return $this->message("Book not found.", 404, true);
+        }
+
         $book->company;
         $book->authors;
 
@@ -69,21 +76,18 @@ class BookController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(BookRequest $request, $id)
     {
-        try {
+        $book = $this->book->find($id);
 
-            $data = $request->all();
-            $book = $this->book->find($id);
-            $book->update($data);
-
-            return response()->json(['message' => 'Livro atualizado com sucesso!'], 201);
-
-        } catch (\Exception $e) {
-           
-            return response()->json(['message' => 'Falha ao atualizar livro!'], 1011);
-
+        if (is_null($book)) {
+            return $this->message("Book not found", 404, true);
         }
+
+        $data = $request->validated();
+        $book->update($data);
+
+        return $this->message("Book updated successfully!", 200);
     }
 
     /**
@@ -94,17 +98,14 @@ class BookController extends Controller
      */
     public function destroy($id)
     {
-        try {
+        $book = $this->book->find($id);
 
-            $book = $this->book->find($id);
-            $book->delete();
-
-            return response()->json(['message' => 'Livro ' . $book->title . ' deletado com sucesso!']);
-
-        } catch (\Exception $e) {
-            
-            return response()->json(['message' => 'Falha ao deletar livro!'], 1012);
-
+        if (is_null($book)) {
+            return $this->message("Book not found", 404, true);
         }
+
+        $book->delete();
+
+        return $this->message('Book ' . $book->title . ' deleted successfully!');
     }
 }
