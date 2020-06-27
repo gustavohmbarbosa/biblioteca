@@ -34,7 +34,8 @@ class BookReaderRequest extends FormRequest
     {
         return [
             'required' => 'Este campo é obrigatório!',
-            'integer'  => 'Este campo foi violado!'
+            'integer'  => 'Este campo foi violado!',
+            'date'     => 'Este campo precisa ser uma data!'
         ];
     }
 }
