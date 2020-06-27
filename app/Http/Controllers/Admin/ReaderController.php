@@ -43,7 +43,7 @@ class ReaderController extends Controller
 
         $reader = $this->reader->create($data);
 
-        $return = ['data' => ['menssage' => 'Leitor criado com sucesso!']];
+        $return = ['data' => ['message' => 'Leitor criado com sucesso!']];
         return response()->json($return, 201);
     }
 
@@ -113,7 +113,7 @@ class ReaderController extends Controller
         $reader = $this->reader->find($id);
         $reader->update($data);
 
-        $return = ['data' => ['menssage' => 'Leitor atualizado com sucesso!']];
+        $return = ['data' => ['message' => 'Leitor atualizado com sucesso!']];
         return response()->json($return, 200);
     }
 
@@ -128,7 +128,7 @@ class ReaderController extends Controller
         $reader = $this->reader->find($id);
         $reader->delete();
     
-        return response()->json(['menssage' => 'Leitor #' . $id . ' foi excluído com sucesso!'], 200);
+        return response()->json(['message' => 'Leitor #' . $id . ' foi excluído com sucesso!'], 200);
     }
 
     /**

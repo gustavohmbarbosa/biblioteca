@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class CourseRequest extends FormRequest
+class CompanyRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,16 +24,14 @@ class CourseRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'required|string|max:190',
+            'name' => 'required'
         ];
     }
 
     public function messages()
     {
         return [
-            'required' => 'Este campo é obrigatório!',
-            'string'   => 'Insira caracteres válidos!',
-            'max'      => 'Campo deve ter no máximo :max caracteres',
+            'required' => 'Este campo é obrigatório!'
         ];
     }
 }

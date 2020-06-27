@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Http\Requests\CompanyRequest;
 use Illuminate\Support\Facades\DB; //For queries
 use App\Company;
 
@@ -44,15 +45,15 @@ class CompanyController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\Requests\CompanyRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(CompanyRequest $request)
     {
-        $data = $request->all();
+        $data = $request->validated();
         $company = $this->company->create($data);
 
-        $return = ['data' => ['menssage' => 'Editora criada com sucesso!']];
+        $return = ['data' => ['message' => 'Editora criada com sucesso!']];
         return response()->json($return, 201);
     }
 
@@ -117,17 +118,17 @@ class CompanyController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\Requests\CompanyRequest  $request
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(CompanyRequest $request, $id)
     {
-        $data = $request->all();
+        $data = $request->validated();
         $company = $this->company->find($id);
         $company->update($data);
 
-        $return = ['data' => ['menssage' => 'Editora #' . $id . ' atulizada com sucesso!']];
+        $return = ['data' => ['message' => 'Editora #' . $id . ' atulizada com sucesso!']];
         return response()->json([$return], 200);
     }
 
@@ -142,7 +143,7 @@ class CompanyController extends Controller
         $company = $this->company->find($id);
         $company->delete();
 
-        $return = ['data' => ['menssage' => 'Editora #' . $id . ' excluída com sucesso!']];
+        $return = ['data' => ['message' => 'Editora #' . $id . ' excluída com sucesso!']];
         return response()->json([$return], 200);
     }
 }

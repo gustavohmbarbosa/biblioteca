@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Http\Requests\BookReaderRequest;
 use Illuminate\Support\Facades\DB; //For queries
 use App\BookReader;
 use App\Reader;
@@ -65,15 +66,15 @@ class BookReaderController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(BookReaderRequest $request)
     {
-        $data = $request->all();
+        $data = $request->validated();
 
         $data['estimated_date'] = date('Y-m-d', strtotime('+7 days'));
 
-        $this->bookReader->create($data);
+        $loan = $this->bookReader->create($data);
         
-        $return = ['data' => ['menssage' => 'Empréstimo criado com sucesso!']];
+        $return = ['data' => ['message' => 'Empréstimo criado com sucesso!']];
         return response()->json($return, 201);    
     }
 
@@ -113,9 +114,9 @@ class BookReaderController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(BookReaderRequest $request, $id)
     {
-        $data = $request->all();
+        $data = $request->validated();
 
         if ($data['status'] != 'ATIVO')
             $data['return_date'] = date('Y-m-d');
@@ -123,7 +124,7 @@ class BookReaderController extends Controller
         $loan = $this->bookReader->find($id);
         $loan->update($data);
 
-        $return = ['data' => ['menssage' => 'Empréstimo atualizado com sucesso!']];
+        $return = ['data' => ['message' => 'Empréstimo atualizado com sucesso!']];
         return response()->json($return, 201);
     }
 
@@ -138,7 +139,7 @@ class BookReaderController extends Controller
         $loan = $this->bookReader->find($id);
         $loan->delete();
 
-        $return = ['data' => ['menssage' => 'Empréstimo #' . $loan->id . ' excluído com sucesso!']];
+        $return = ['data' => ['message' => 'Empréstimo #' . $loan->id . ' excluído com sucesso!']];
         return response()->json($return, 201);    
     }
 }

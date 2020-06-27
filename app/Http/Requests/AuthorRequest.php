@@ -32,8 +32,8 @@ class AuthorRequest extends FormRequest
     {
         return [
             'required' => 'Este campo é obrigatório!',
-            'string' => 'Insira caracteres válidos!',
-            'max' => 'Campo deve ter no máximo :max caracteres',
+            'string'   => 'Insira caracteres válidos!',
+            'max'      => 'Campo deve ter no máximo :max caracteres',
         ];
     }
 }
