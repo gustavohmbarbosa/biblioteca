@@ -23,6 +23,9 @@ Route::group(['middleware' => 'apiJwtAdmin'], function () {
     Route::post('auth/logout', 'ApiAuth\\AuthController@logout');
     
     Route::prefix('admin')->name('admin.')->namespace('Admin')->group(function(){
+        
+        Route::resource('users', 'UserController');
+
         Route::resource('readers', 'ReaderController');
         Route::prefix('readers')->name('readers.')->group(function () {
             Route::any('search', 'ReaderController@search')->name('search');

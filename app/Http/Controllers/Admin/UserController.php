@@ -3,11 +3,21 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
+use App\Http\Requests\UserRequest;
+use App\Traits\Messages;
 use App\User;
 
 class UserController extends Controller
 {
+    use Messages;
+
+    private $user;
+
+    public function __construct(User $user)
+    {
+        $this->user = $user;
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -15,7 +25,9 @@ class UserController extends Controller
      */
     public function index()
     {
-        //
+        $users = $this->user->paginate(10);
+
+        return response()->json($users);
     }
 
     /**
@@ -24,9 +36,13 @@ class UserController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(UserRequest $request)
     {
-        //
+        $data = $request->validated();
+
+        $this->user->create($data);
+
+        return $this->message("User created!", 201);
     }
 
     /**
@@ -37,7 +53,13 @@ class UserController extends Controller
      */
     public function show($id)
     {
-        //
+        $user = $this->user->find($id);
+
+        if(is_null($user)){
+            return $this->message("User not found", 404, true);
+        }
+
+        return response()->json(['data' => $user]);
     }
 
     /**
@@ -47,9 +69,18 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(UserRequest $request, $id)
     {
-        //
+        $user = $this->user->find($id);
+
+        if(is_null($user)){
+            return $this->message("User not found", 404, true);
+        }
+
+        $data = $request->validated();
+        $this->user->update($data);
+
+        return $this->message("User updated!", 200);
     }
 
     /**
@@ -60,6 +91,14 @@ class UserController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $user = $this->user->find($id);
+
+        if(is_null($user)){
+            return $this->message("User not found", 404, true);
+        }
+
+        $user->delete();
+
+        return $this->message('user ' . $user->name . ' deleted successfully!');
     }
 }
