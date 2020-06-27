@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\User;
 use Illuminate\Foundation\Http\FormRequest;
 
 class UserRequest extends FormRequest
@@ -24,19 +25,20 @@ class UserRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => ['required', 'string', 'max:190'],
-            'email' => ['required', 'string', 'email', 'max:190', 'unique:users'],
-            'password' => ['required', 'string', 'min:8', 'confirmed'],
-            'type' => ['required', 'string', 'max:10']
+            'name'      =>  'required|string|max:190',
+            'email'     =>  'required|string|email|max:190',
+            'password'  =>  'required|string|min:8|confirmed',
+            'type'      =>  'required|string'
         ];
     }
 
     public function messages()
     {
         return [
-            'required' => 'Este campo é obrigatório!',
-            'max' => 'Campo deve ter no mínimo :max caracteres',
-            'email' => 'Insira um endereço de e-mail válido!',
+            'required'  =>  'Este campo é obrigatório!',
+            'max'       =>  'Campo deve ter no mínimo :max caracteres',
+            'email'     =>  'Insira um endereço de e-mail válido!',
+            'string'    =>  'Insira caracteres válidos!',
         ];
     }
 }
