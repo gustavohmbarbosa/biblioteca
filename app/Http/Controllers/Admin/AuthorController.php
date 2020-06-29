@@ -12,7 +12,7 @@ class AuthorController extends Controller
     use Messages;
 
     private $author;
-    
+
     public function __construct(Author $author){
 
         $this->author = $author;
@@ -42,7 +42,7 @@ class AuthorController extends Controller
         $data = $request->validated();
         $this->author->create($data);
 
-        return $this->message("Author created successfully!", 201);
+        return $this->message("Author created successfully!", "success", 201);
     }
 
     /**
@@ -56,7 +56,7 @@ class AuthorController extends Controller
         $author = $this->author->find($id);
 
         if(is_null($author)){
-            return $this->message("Author not found", 404, true);
+            return $this->message("Author not found", "warning", 404, true);
         }
 
         return response()->json(['data' => $author]);
@@ -74,13 +74,13 @@ class AuthorController extends Controller
         $author = $this->author->find($id);
 
         if(is_null($author)){
-            return $this->message("Author not found", 404, true);
+            return $this->message("Author not found", "warning", 404, true);
         }
 
         $data = $request->validated();
         $author->update($data);
 
-        return $this->message('Author updated successfully!');
+        return $this->message('Author updated successfully!', "success");
     }
 
     /**
@@ -94,11 +94,11 @@ class AuthorController extends Controller
         $author = $this->author->find($id);
 
         if(is_null($author)){
-            return $this->message("Author not found", 404, true);
+            return $this->message("Author not found", "warning", 404, true);
         }
 
         $author->delete();
 
-        return $this->message('Author ' . $author->name . ' deleted successfully!');
+        return $this->message('Author ' . $author->name . ' deleted successfully!', "success");
     }
 }

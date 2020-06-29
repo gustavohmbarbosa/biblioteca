@@ -12,7 +12,7 @@ class BookController extends Controller
     use Messages;
 
     private $book;
-    
+
     public function __construct(Book $book){
         $this->book = $book;
     }
@@ -24,7 +24,7 @@ class BookController extends Controller
     public function index()
     {
         $books = $this->book->paginate(10);
-        
+
         // Retornando os Autores de Todos os Livros...
         foreach ($books as $key => $book) {
             $books[$key]['company'] = $book->company;
@@ -46,7 +46,7 @@ class BookController extends Controller
 
         $this->book->create($data);
 
-        return $this->message("Book created successfully!", 201);
+        return $this->message("Book created successfully!", "success", 201);
     }
 
     /**
@@ -60,7 +60,7 @@ class BookController extends Controller
         $book = $this->book->find($id);
 
         if (is_null($book)) {
-            return $this->message("Book not found.", 404, true);
+            return $this->message("Book not found.", "warning", 404, true);
         }
 
         $book->company;
@@ -81,13 +81,13 @@ class BookController extends Controller
         $book = $this->book->find($id);
 
         if (is_null($book)) {
-            return $this->message("Book not found", 404, true);
+            return $this->message("Book not found", "warning", 404, true);
         }
 
         $data = $request->validated();
         $book->update($data);
 
-        return $this->message("Book updated successfully!", 200);
+        return $this->message("Book updated successfully!", "success", 200);
     }
 
     /**
@@ -101,11 +101,11 @@ class BookController extends Controller
         $book = $this->book->find($id);
 
         if (is_null($book)) {
-            return $this->message("Book not found", 404, true);
+            return $this->message("Book not found", "warning", 404, true);
         }
 
         $book->delete();
 
-        return $this->message('Book ' . $book->title . ' deleted successfully!');
+        return $this->message('Book ' . $book->title . ' deleted successfully!', "success");
     }
 }

@@ -5,11 +5,14 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Http\Requests\CompanyRequest;
+use App\Traits\Messages;
 use Illuminate\Support\Facades\DB; //For queries
 use App\Company;
 
 class CompanyController extends Controller
 {
+    use Messages;
+
     /**
 	 * @var Company
 	 */
@@ -53,8 +56,7 @@ class CompanyController extends Controller
         $data = $request->validated();
         $company = $this->company->create($data);
 
-        $return = ['data' => ['message' => 'Editora criada com sucesso!']];
-        return response()->json($return, 201);
+        return $this->message("Company created successfully", "success", 201);
     }
 
     /**
@@ -66,6 +68,10 @@ class CompanyController extends Controller
     public function show($id)
     {
         $company = $this->company->find($id);
+
+        if (is_null($company)) {
+            return $this->message("Company not found", "warning", 404, true);
+        }
 
         $books = DB::table('books')
         ->where('books.company_id', $id)
@@ -87,6 +93,10 @@ class CompanyController extends Controller
     {
         $books = $this->company->find($company)->books;
 
+        if (empty($books)) {
+            return $this->message("Books not found", "warning", 404, true);
+        }
+
         return response()->json(['data' => $books], 200);
     }
 
@@ -100,6 +110,10 @@ class CompanyController extends Controller
     public function showBook($company, $book)
     {
         $book = $this->company->find($company)->books->find($book);
+
+        if (is_null($books)) {
+            return $this->message("Book not found", "warning", 404, true);
+        }
 
         return response()->json(['data' => $book], 200);
     }
@@ -124,12 +138,16 @@ class CompanyController extends Controller
      */
     public function update(CompanyRequest $request, $id)
     {
-        $data = $request->validated();
         $company = $this->company->find($id);
+
+        if (is_null($company)) {
+            return $this->message("Company not found", "warning", 404);
+        }
+
+        $data = $request->validated();
         $company->update($data);
 
-        $return = ['data' => ['message' => 'Editora #' . $id . ' atulizada com sucesso!']];
-        return response()->json([$return], 200);
+        return $this->message("Company updated successfully!", "success", 201);
     }
 
     /**
@@ -141,9 +159,13 @@ class CompanyController extends Controller
     public function destroy($id)
     {
         $company = $this->company->find($id);
+
+        if (is_null($company)) {
+            return $this->message("Company not found", "warning", 404, true);
+        }
+
         $company->delete();
 
-        $return = ['data' => ['message' => 'Editora #' . $id . ' excluída com sucesso!']];
-        return response()->json([$return], 200);
+        return $this->message('Company #' . $id . ' deleted successfully!', 'success', 201);
     }
 }

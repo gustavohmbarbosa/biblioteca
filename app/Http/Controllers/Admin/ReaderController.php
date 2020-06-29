@@ -5,10 +5,13 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Http\Requests\ReaderRequest;
+use App\Traits\Messages;
 use App\Reader;
 
 class ReaderController extends Controller
 {
+    use Messages;
+
     /**
 	 * @var Reader
 	 */
@@ -18,7 +21,7 @@ class ReaderController extends Controller
 	{
 		$this->reader = $reader;
     }
-    
+
     /**
      * Display a listing of the resource.
      *
@@ -43,8 +46,7 @@ class ReaderController extends Controller
 
         $reader = $this->reader->create($data);
 
-        $return = ['data' => ['message' => 'Leitor criado com sucesso!']];
-        return response()->json($return, 201);
+        return $this->message("Reader created successfully!", "success", 201);
     }
 
     /**
@@ -56,6 +58,11 @@ class ReaderController extends Controller
     public function show($id)
     {
         $reader = $this->reader->find($id);
+
+        if (is_null($reader)) {
+            return $this->message("Reader not found", "warning", 404, true);
+        }
+
         $reader->course;
 
         return response()->json(['data' => $reader]);
@@ -71,6 +78,10 @@ class ReaderController extends Controller
     {
         $books = $this->reader->find($reader)->books;
 
+        if (empty($books)) {
+            return $this->message("Books not found", "warning", 404, true);
+        }
+
         return response()->json(['data' => $books], 200);
     }
 
@@ -85,6 +96,10 @@ class ReaderController extends Controller
     {
         $book = $this->reader->find($reader)->books->find($book);
 
+        if (is_null($bokk)) {
+            return $this->message("Reader not found", "warning", 404, true);
+        }
+
         return response()->json(['data' => $book], 200);
     }
 
@@ -96,7 +111,7 @@ class ReaderController extends Controller
      */
     public function edit($id)
     {
- 
+
     }
 
     /**
@@ -108,13 +123,17 @@ class ReaderController extends Controller
      */
     public function update(ReaderRequest $request, $id)
     {
+        $reader = $this->reader->find($id);
+
+        if (is_null($reader)) {
+            return $this->message("Reader not found", "warning", 404, true);
+        }
+
         $data = $request->validated();
 
-        $reader = $this->reader->find($id);
         $reader->update($data);
 
-        $return = ['data' => ['message' => 'Leitor atualizado com sucesso!']];
-        return response()->json($return, 200);
+        return $this->message("Reader updated successfully!", "success", 201);
     }
 
     /**
@@ -126,9 +145,14 @@ class ReaderController extends Controller
     public function destroy($id)
     {
         $reader = $this->reader->find($id);
+
+        if (is_null($reader)) {
+            return $this->message("Reader not found", "warning", 404, true);
+        }
+
         $reader->delete();
-    
-        return response()->json(['message' => 'Leitor #' . $id . ' foi excluído com sucesso!'], 200);
+
+        return $this->message('Reader #' . $id . ' deleted successfully!', "success");
     }
 
     /**
@@ -142,8 +166,12 @@ class ReaderController extends Controller
         if (is_null($column)){
             $column = 'name';
         }
-        
+
         $readers = $this->reader->search($filter, $column);
+
+        if (empty($readers)) {
+            return $this->message("Readers not found", "warning", 404, true);
+        }
 
         return response()->json(['data' => $readers], 200);
     }

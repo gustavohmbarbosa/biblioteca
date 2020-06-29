@@ -12,7 +12,7 @@ class CourseController extends Controller
     use Messages;
 
     private $course;
-    
+
     public function __construct(Course $course){
 
         $this->course = $course;
@@ -42,7 +42,7 @@ class CourseController extends Controller
         $data = $request->validated();
         $this->course->create($data);
 
-        return $this->message("Course created successfully", 201);
+        return $this->message("Course created successfully", "success", 201);
     }
 
     /**
@@ -56,7 +56,7 @@ class CourseController extends Controller
         $course = $this->course->find($id);
 
         if(is_null($course)){
-            return $this->message("Course not found", 404, true);
+            return $this->message("Course not found", "warning", 404, true);
         }
 
         return response()->json(['data' => $course]);
@@ -74,13 +74,13 @@ class CourseController extends Controller
         $course = $this->course->find($id);
 
         if(is_null($course)){
-            return $this->message("Course not found", 404, true);
+            return $this->message("Course not found", "warning", 404, true);
         }
 
         $data = $request->validated();
         $course->update($data);
 
-        return $this->message('Course updated successfully!');
+        return $this->message('Course updated successfully!', "success");
     }
 
     /**
@@ -94,11 +94,11 @@ class CourseController extends Controller
         $course = $this->course->find($id);
 
         if(is_null($course)){
-            return $this->message("Course not found", 404, true);
+            return $this->message("Course not found", "warning", 404, true);
         }
 
         $course->delete();
 
-        return $this->message('Course "' . $course->name . '" deleted successfully!');
+        return $this->message('Course "' . $course->name . '" deleted successfully!', "success");
     }
 }

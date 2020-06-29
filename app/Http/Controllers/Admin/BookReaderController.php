@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Http\Requests\BookReaderRequest;
+use App\Traits\Messages;
 use Illuminate\Support\Facades\DB; //For queries
 use App\BookReader;
 use App\Reader;
@@ -12,6 +13,8 @@ use App\Book;
 
 class BookReaderController extends Controller
 {
+    use Messages;
+
     /**
 	 * @var Loan
 	 */
@@ -34,16 +37,16 @@ class BookReaderController extends Controller
         ->join('readers', 'readers.id', '=', 'book_reader.reader_id')
         ->join('courses', 'courses.id', '=', 'readers.course_id')
         ->select(
-            'books.title', 
-            'books.subtitle', 
-            'readers.name AS name', 
-            'readers.grade', 
+            'books.title',
+            'books.subtitle',
+            'readers.name AS name',
+            'readers.grade',
             'readers.class',
-            'readers.course_id', 
-            'courses.name AS course_name', 
-            'book_reader.*', 
+            'readers.course_id',
+            'courses.name AS course_name',
+            'book_reader.*',
         )->paginate(10);
-        
+
         return response()->json(['data' => $loans]);
     }
 
@@ -73,9 +76,9 @@ class BookReaderController extends Controller
         $data['estimated_date'] = date('Y-m-d', strtotime('+7 days'));
 
         $loan = $this->bookReader->create($data);
-        
+
         $return = ['data' => ['message' => 'Empréstimo criado com sucesso!']];
-        return response()->json($return, 201);    
+        return $this->message("Loan created successfully", "success", 201);//response()->json($return, 201);
     }
 
     /**
@@ -91,7 +94,19 @@ class BookReaderController extends Controller
         ->join('readers', 'readers.id', '=', 'book_reader.reader_id')
         ->join('courses', 'courses.id', '=', 'readers.course_id')
         ->where('book_reader.id', '=', $id)
-        ->select('book_reader.*', 'books.title', 'books.subtitle', 'readers.name', 'readers.grade', 'readers.class', 'courses.name as course_name')->get()->first();
+        ->select(
+        'book_reader.*',
+        'books.title',
+        'books.subtitle',
+        'readers.name',
+        'readers.grade',
+        'readers.class',
+        'courses.name as course_name'
+        )->get()->first();
+
+        if (is_null($loan)) {
+            return $this->message("Loan not found", "warning", 404, true);
+        }
 
         return response()->json(['data' => $loan]);
     }
@@ -100,11 +115,16 @@ class BookReaderController extends Controller
      * Show the form for editing the specified resource.
      *
      * @param  int  $id
+     * @var string $readers
+     * @var string $books
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
     {
-        //
+        $readers = Reader::all(['id','name']);
+        $books = Book::all(['id', 'title']);
+
+        return response()->json(['data' => ['readers' => $readers, 'books' => $books]]);
     }
 
     /**
@@ -116,16 +136,20 @@ class BookReaderController extends Controller
      */
     public function update(BookReaderRequest $request, $id)
     {
+        $loan = $this->bookReader->find($id);
+
+        if (is_null($loan)) {
+            return $this->message("Loan not found", "warning", 404, true);
+        }
+
         $data = $request->validated();
 
         if ($data['status'] != 'ATIVO')
             $data['return_date'] = date('Y-m-d');
 
-        $loan = $this->bookReader->find($id);
         $loan->update($data);
 
-        $return = ['data' => ['message' => 'Empréstimo atualizado com sucesso!']];
-        return response()->json($return, 201);
+        return $this->message("Loan updated successfully", "success", 201, true);
     }
 
     /**
@@ -137,9 +161,13 @@ class BookReaderController extends Controller
     public function destroy($id)
     {
         $loan = $this->bookReader->find($id);
+
+        if (is_null($loan)) {
+            return $this->message("Loan not found", "warning", 404, true);
+        }
+
         $loan->delete();
 
-        $return = ['data' => ['message' => 'Empréstimo #' . $loan->id . ' excluído com sucesso!']];
-        return response()->json($return, 201);    
+        return $this->message("Loan deleted successfully", "success");
     }
 }

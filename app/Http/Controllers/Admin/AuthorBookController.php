@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Http\Requests\AuthorBookRequest;
+use App\Traits\Messages;
 use Illuminate\Support\Facades\DB; //For queries
 use App\Author;
 use App\Book;
@@ -11,6 +13,8 @@ use App\AuthorBook;
 
 class AuthorBookController extends Controller
 {
+    use Messages;
+
     /**
 	 * @var Loan
 	 */
@@ -32,7 +36,7 @@ class AuthorBookController extends Controller
         ->join('books', 'books.id', '=', 'author_book.book_id')
         ->join('authors', 'authors.id', '=', 'author_book.author_id')
         ->select('author_book.*', 'books.title as book_title', 'books.subtitle as book_subtitle', 'authors.name as author_name')->get();
-        
+
         return response()->json(['data' => $authorBook]);
     }
 
@@ -55,14 +59,12 @@ class AuthorBookController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(AuthorBookRequest $request)
     {
         $data = $request->all();
 
         $this->authorBook->create($data);
-        
-        $return = ['data' => ['menssage' => 'Relação Autor-Livro criada com sucesso!']];
-        return response()->json($return, 201);    
+        return $this->message('Relation Author-Book created successfully', 'success', 201);// response()->json($return, 201);
     }
 
     /**
@@ -79,6 +81,10 @@ class AuthorBookController extends Controller
         ->where('author_book.id', '=', $id)
         ->select('author_book.*', 'books.title as book_title', 'books.subtitle as book_subtitle', 'authors.name as author_name')->get()->first();
 
+        if (is_null($authorBook)) {
+            return $this->message("Relation Author-Book not found", "warning", 404, true);
+        }
+
         return response()->json(['data' => $authorBook]);
     }
 
@@ -86,6 +92,8 @@ class AuthorBookController extends Controller
      * Show the form for editing the specified resource.
      *
      * @param  int  $id
+     * @var string $authors
+     * @var string $books
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
@@ -95,7 +103,7 @@ class AuthorBookController extends Controller
 
         return response()->json(['data' => ['authors' => $authors, 'books' => $books]]);
     }
-    
+
     /**
      * Update the specified resource in storage.
      *
@@ -103,15 +111,18 @@ class AuthorBookController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(AuthorBookRequest $request, $id)
     {
-        $data = $request->all();
-
         $authorBook = $this->authorBook->find($id);
+
+        if (is_null($authorBook)) {
+            return $this->message("Relation Author-Book not found", "warning", 404, true);
+        }
+
+        $data = $request->validated();
         $authorBook->update($data);
 
-        $return = ['data' => ['menssage' => 'Relacionamento Autor-Livro atualizado com sucesso!']];
-        return response()->json($return, 201);    
+        return $this->message("Relation Author-Book updated successfully", "success");
     }
 
     /**
@@ -123,9 +134,13 @@ class AuthorBookController extends Controller
     public function destroy($id)
     {
         $authorBook = $this->authorBook->find($id);
+
+        if (is_null($authorBook)) {
+            return $this->message("Relation Author-Book not found", "warning", 404, true);
+        }
+
         $authorBook->delete();
 
-        $return = ['data' => ['menssage' => 'Relacionamento Autor-Livro #' . $authorBook->id . ' desfeito com sucesso!']];
-        return response()->json($return, 201);   
+        return $this->message("Relation Author-Book deleted successfully", "success");
     }
 }
