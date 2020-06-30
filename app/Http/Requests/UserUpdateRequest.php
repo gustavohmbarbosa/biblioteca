@@ -2,10 +2,9 @@
 
 namespace App\Http\Requests;
 
-use App\User;
 use Illuminate\Foundation\Http\FormRequest;
 
-class UserRequest extends FormRequest
+class UserUpdateRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -26,8 +25,8 @@ class UserRequest extends FormRequest
     {
         return [
             'name'      =>  'required|string|max:190',
-            'email'     =>  'required|string|email|max:190|unique:users',
-            'password'  =>  'required|string|min:8|confirmed',
+            'email'     =>  'required|string|email|max:190',
+            //'password'  =>  'required|string|min:8|confirmed',
             'type'      =>  'required|string'
         ];
     }
@@ -36,9 +35,8 @@ class UserRequest extends FormRequest
     {
         return [
             'required'  =>  'Este campo é obrigatório!',
-            'max'       =>  'Campo deve ter no mínimo :max caracteres.',
+            'max'       =>  'Campo deve ter no mínimo :max caracteres',
             'email'     =>  'Insira um endereço de e-mail válido!',
-            'unique'    =>  'Este e-mail já esta em uso. Tente outro.',
             'string'    =>  'Insira caracteres válidos!',
         ];
     }

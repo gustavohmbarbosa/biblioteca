@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Controllers\ApiAuth;
+namespace App\Http\Controllers\Admin\Auth;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
-class AuthController extends Controller
+class SessionController extends Controller
 {
         /**
      * Get a JWT via given credentials.
