@@ -36,10 +36,12 @@ class UserRequest extends FormRequest
     {
         return [
             'required'  =>  'Este campo é obrigatório!',
-            'max'       =>  'Campo deve ter no mínimo :max caracteres.',
+            'max'       =>  'Campo deve ter no máximo :max caracteres.',
             'email'     =>  'Insira um endereço de e-mail válido!',
             'unique'    =>  'Este e-mail já esta em uso. Tente outro.',
             'string'    =>  'Insira caracteres válidos!',
+            'confirmed' =>  'As senhas não coincidem. Tente novamente.',
+            'min'       =>  'Campo deve ter no mínimo :min caracteres.',
         ];
     }
 }

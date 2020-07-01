@@ -12,13 +12,13 @@ trait Messages
      * @param int $status
      * @param boolean $error
      */
-    private function message($message = "", $type = "success", $status = 200, $error = false)
+    private function message($message = "", $status = 200, $type = "success", $error = false)
     {
         return response()->json(["message" => [
             "error" => $error,
-            "code" => $status,
             "message" => $message,
-            "type" => $type
+            "type" => $type,
+            "code" => $status,
         ]], $status);
     }
 }

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\UserRequest;
+use Illuminate\Support\Facades\Hash;
 use App\Traits\Messages;
 use App\User;
 
@@ -40,6 +41,7 @@ class AuthController extends Controller
     {
         $data = $request->validated();
 
+        $data['password'] = Hash::make($data['password']);
         $this->user->create($data);
 
         return $this->message("User created!", 201);
