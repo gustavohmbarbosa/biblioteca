@@ -1,13 +1,14 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers\Admin\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\UserRequest;
+use Illuminate\Support\Facades\Hash;
 use App\Traits\Messages;
 use App\User;
 
-class UserController extends Controller
+class AuthController extends Controller
 {
     use Messages;
 
@@ -40,6 +41,7 @@ class UserController extends Controller
     {
         $data = $request->validated();
 
+        $data['password'] = Hash::make($data['password']);
         $this->user->create($data);
 
         return $this->message("User created!", 201);
@@ -60,27 +62,6 @@ class UserController extends Controller
         }
 
         return response()->json(['data' => $user]);
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(UserRequest $request, $id)
-    {
-        $user = $this->user->find($id);
-
-        if(is_null($user)){
-            return $this->message("User not found", 404, true);
-        }
-
-        $data = $request->validated();
-        $this->user->update($data);
-
-        return $this->message("User updated!", 200);
     }
 
     /**

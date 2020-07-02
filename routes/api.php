@@ -17,14 +17,25 @@ use Illuminate\Http\Request;
 //    return $request->user();
 //});
 
-Route::post('auth/login', 'ApiAuth\\AuthController@login');
+Route::post('admin/login', 'Admin\\Auth\\SessionController@login');
 
 Route::group(['middleware' => 'apiJwtAdmin'], function () {
+<<<<<<< HEAD
     Route::post('auth/logout', 'ApiAuth\\AuthController@logout');
 
     Route::prefix('admin')->name('admin.')->namespace('Admin')->group(function(){
 
         Route::resource('users', 'UserController');
+=======
+    Route::prefix('admin')->name('admin.')->namespace('Admin')->group(function(){
+
+        Route::name('users.')->namespace('auth')->group(function(){
+            Route::put('users/{id}', 'UpdateController@update');
+            Route::put('users/{id}/password', 'UpdateController@updatePassword');
+            Route::resource('users', 'AuthController');
+            Route::post('logout', 'SessionController@logout');
+        });
+>>>>>>> d1d3c9510213f29599946627e2199b10b798fd0f
 
         Route::resource('readers', 'ReaderController');
         Route::prefix('readers')->name('readers.')->group(function () {
