@@ -21,9 +21,9 @@ Route::post('auth/login', 'ApiAuth\\AuthController@login');
 
 Route::group(['middleware' => 'apiJwtAdmin'], function () {
     Route::post('auth/logout', 'ApiAuth\\AuthController@logout');
-    
+
     Route::prefix('admin')->name('admin.')->namespace('Admin')->group(function(){
-        
+
         Route::resource('users', 'UserController');
 
         Route::resource('readers', 'ReaderController');
@@ -33,9 +33,13 @@ Route::group(['middleware' => 'apiJwtAdmin'], function () {
             Route::get('{reader}/books/{book}', 'ReaderController@showBook')->name('books');
         });
 
+        Route::resource('books', 'BookController');
+        Route::prefix('books')->name('books.')->group(function() {
+            Route::any('search', 'BookController@search')->name('search');
+        });
+
         Route::resource('loans', 'BookReaderController');
         Route::resource('author_book', 'AuthorBookController');
-        Route::resource('books', 'BookController');
         Route::resource('authors', 'AuthorController');
         Route::resource('courses', 'CourseController');
 

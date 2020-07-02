@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
 use App\Http\Requests\BookRequest;
 use App\Traits\Messages;
 use App\Book;
@@ -107,5 +108,28 @@ class BookController extends Controller
         $book->delete();
 
         return $this->message('Book ' . $book->title . ' deleted successfully!', "success");
+    }
+
+    /**
+     * Seach Books
+     * @var array $request
+     *
+     */
+    public function search(Request $request)
+    {
+        $filter = $request->filter;
+        $column = $request->column;
+
+        if (is_null($column)){
+            $column = 'title';
+        }
+
+        $books = $this->book->search($filter, $column);
+
+        if (empty($books)) {
+            return $this->message("Books not found", "warning", 404, true);
+        }
+
+        return response()->json(['data' => $books], 200);
     }
 }
