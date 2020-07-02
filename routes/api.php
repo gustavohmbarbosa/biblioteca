@@ -20,6 +20,13 @@ use Illuminate\Http\Request;
 Route::post('admin/login', 'Admin\\Auth\\SessionController@login');
 
 Route::group(['middleware' => 'apiJwtAdmin'], function () {
+<<<<<<< HEAD
+    Route::post('auth/logout', 'ApiAuth\\AuthController@logout');
+
+    Route::prefix('admin')->name('admin.')->namespace('Admin')->group(function(){
+
+        Route::resource('users', 'UserController');
+=======
     Route::prefix('admin')->name('admin.')->namespace('Admin')->group(function(){
 
         Route::name('users.')->namespace('auth')->group(function(){
@@ -28,6 +35,7 @@ Route::group(['middleware' => 'apiJwtAdmin'], function () {
             Route::resource('users', 'AuthController');
             Route::post('logout', 'SessionController@logout');
         });
+>>>>>>> d1d3c9510213f29599946627e2199b10b798fd0f
 
         Route::resource('readers', 'ReaderController');
         Route::prefix('readers')->name('readers.')->group(function () {
@@ -36,9 +44,13 @@ Route::group(['middleware' => 'apiJwtAdmin'], function () {
             Route::get('{reader}/books/{book}', 'ReaderController@showBook')->name('books');
         });
 
+        Route::resource('books', 'BookController');
+        Route::prefix('books')->name('books.')->group(function() {
+            Route::any('search', 'BookController@search')->name('search');
+        });
+
         Route::resource('loans', 'BookReaderController');
         Route::resource('author_book', 'AuthorBookController');
-        Route::resource('books', 'BookController');
         Route::resource('authors', 'AuthorController');
         Route::resource('courses', 'CourseController');
 

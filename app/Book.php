@@ -13,7 +13,7 @@ class Book extends Model
     protected $fillable = [
         'title', 'subtitle', 'origin', 'price',
         'isbn', 'synopsis', 'pages', 'language',
-        'observations', 'edition', 'publication_date', 
+        'observations', 'edition', 'publication_date',
         'color', 'cdd', 'cape', 'company_id', 'slug'
     ];
 
@@ -31,8 +31,8 @@ class Book extends Model
     {
         return $this->belongsToMany(Reader::class)
             ->withPivot([
-                'estimated_date', 
-                'return_date', 
+                'estimated_date',
+                'return_date',
                 'status'])
             ->withTimestamps();
     }
@@ -46,5 +46,22 @@ class Book extends Model
     public function company()
     {
         return $this->belongsTo(Company::class);
+    }
+
+    /**
+     * Search reader
+     *
+     * @param string $filter
+     * @param string $column default: "title"
+     */
+    public function search($filter = null, $column = "title")
+    {
+        $results = $this->where(function ($query) use ($filter, $column) {
+            if ($filter) {
+                $query->where($column, 'LIKE', "%{$filter}%");
+            }
+        })->paginate(10);
+
+        return $results;
     }
 }

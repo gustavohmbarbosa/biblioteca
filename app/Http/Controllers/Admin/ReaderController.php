@@ -146,6 +146,7 @@ class ReaderController extends Controller
 
     /**
      * Search Reader
+     * @var array $request
      */
     public function search(Request $request)
     {
