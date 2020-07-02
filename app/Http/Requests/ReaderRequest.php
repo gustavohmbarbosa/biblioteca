@@ -25,8 +25,8 @@ class ReaderRequest extends FormRequest
     {
         return [
             'name'         => 'required|string|max:190',
-            'email'        => 'required|string|email',
-            'password'     => 'required|string|min:8',
+            'email'        => 'required|string|email|max:190|unique:readers',
+            'password'     => 'required|string|min:8|confirmed',
             'phone'        => 'required|string',
             'gender'       => 'required|string',
             'grade'        => 'required|string|max:1',
@@ -34,7 +34,7 @@ class ReaderRequest extends FormRequest
             'course_id'    => 'required|string|max:1',
             'registration' => 'required|string',
             'entry_year'   => 'required|string|max:4',
-            'status'       => ''
+
         ];
     }
 
@@ -46,6 +46,8 @@ class ReaderRequest extends FormRequest
             'min'      => 'Campo deve ter no mínimo :min caracteres',
             'max'      => 'Campo deve ter no máximo :max caracteres',
             'email'    => 'Insira um endereço de e-mail válido!',
+            'unique'    =>  'Este e-mail já esta em uso. Tente outro.',
+            'confirmed' =>  'As senhas não coincidem. Tente novamente.',
         ];
     }
 }

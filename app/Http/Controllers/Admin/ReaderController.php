@@ -104,28 +104,6 @@ class ReaderController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
-     *
-     * @param  ReaderRequest  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(ReaderRequest $request, $id)
-    {
-        $reader = $this->reader->find($id);
-
-        if (is_null($reader)) {
-            return $this->errorMessage("Leitor não encontrado.");
-        }
-
-        $data = $request->validated();
-
-        $reader->update($data);
-
-        return $this->message("Leitor atualizado com sucesso!");
-    }
-
-    /**
      * Remove the specified resource from storage.
      *
      * @param  int  $id

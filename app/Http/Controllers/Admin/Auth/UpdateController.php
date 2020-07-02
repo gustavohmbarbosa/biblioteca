@@ -69,7 +69,6 @@ class UpdateController extends Controller
         return $this->message("Senha atualizada com sucesso!");
     }
 
-
     /**
      *Get a validator for user update.
      *
