@@ -53,7 +53,7 @@ class Reader extends Model
      * Search reader
      * 
      * @param string $filter
-     * @param string $column default: "name"
+     * @param string $column
      */
     public function search($filter = null, $column = "name")
     {

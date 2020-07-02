@@ -111,7 +111,7 @@ class BookController extends Controller
     }
 
     /**
-     * Seach Books
+     * Search Books
      * @var array $request
      *
      */
@@ -127,7 +127,7 @@ class BookController extends Controller
         $books = $this->book->search($filter, $column);
 
         if (empty($books)) {
-            return $this->message("Books not found", "warning", 404, true);
+            return $this->errorMessage("Nenhum livro foi encontrado.");
         }
 
         return response()->json(['data' => $books], 200);

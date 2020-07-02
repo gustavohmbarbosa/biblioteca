@@ -52,7 +52,7 @@ class Book extends Model
      * Search reader
      *
      * @param string $filter
-     * @param string $column default: "title"
+     * @param string $column
      */
     public function search($filter = null, $column = "title")
     {
