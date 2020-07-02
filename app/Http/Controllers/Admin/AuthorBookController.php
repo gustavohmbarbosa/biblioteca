@@ -64,7 +64,7 @@ class AuthorBookController extends Controller
         $data = $request->all();
 
         $this->authorBook->create($data);
-        return $this->message('Relation Author-Book created successfully', 'success', 201);// response()->json($return, 201);
+        return $this->message('Relation Author-Book created successfully', 201);
     }
 
     /**
@@ -82,7 +82,7 @@ class AuthorBookController extends Controller
         ->select('author_book.*', 'books.title as book_title', 'books.subtitle as book_subtitle', 'authors.name as author_name')->get()->first();
 
         if (is_null($authorBook)) {
-            return $this->message("Relation Author-Book not found", "warning", 404, true);
+            return $this->errorMessage("Relation Author-Book not found");
         }
 
         return response()->json(['data' => $authorBook]);
@@ -116,13 +116,13 @@ class AuthorBookController extends Controller
         $authorBook = $this->authorBook->find($id);
 
         if (is_null($authorBook)) {
-            return $this->message("Relation Author-Book not found", "warning", 404, true);
+            return $this->errorMessage("Relation Author-Book not found");
         }
 
         $data = $request->validated();
         $authorBook->update($data);
 
-        return $this->message("Relation Author-Book updated successfully", "success");
+        return $this->message("Relation Author-Book updated successfully");
     }
 
     /**
@@ -136,11 +136,11 @@ class AuthorBookController extends Controller
         $authorBook = $this->authorBook->find($id);
 
         if (is_null($authorBook)) {
-            return $this->message("Relation Author-Book not found", "warning", 404, true);
+            return $this->errorMessage("Relation Author-Book not found");
         }
 
         $authorBook->delete();
 
-        return $this->message("Relation Author-Book deleted successfully", "success");
+        return $this->message("Relation Author-Book deleted successfully");
     }
 }

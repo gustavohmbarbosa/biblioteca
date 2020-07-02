@@ -44,7 +44,7 @@ class AuthController extends Controller
         $data['password'] = Hash::make($data['password']);
         $this->user->create($data);
 
-        return $this->message("User created!", 201);
+        return $this->message("Usuário criado!", 201);
     }
 
     /**
@@ -58,7 +58,7 @@ class AuthController extends Controller
         $user = $this->user->find($id);
 
         if(is_null($user)){
-            return $this->message("User not found", 404, true);
+            return $this->errorMessage("Usuário não encontrado");
         }
 
         return response()->json(['data' => $user]);
@@ -75,11 +75,11 @@ class AuthController extends Controller
         $user = $this->user->find($id);
 
         if(is_null($user)){
-            return $this->message("User not found", 404, true);
+            return $this->errorMessage("Usuário não encontrado");
         }
 
         $user->delete();
 
-        return $this->message('user ' . $user->name . ' deleted successfully!');
+        return $this->message($user->name . ' foi removido do sistema!');
     }
 }

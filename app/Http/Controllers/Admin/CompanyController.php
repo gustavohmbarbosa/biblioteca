@@ -36,16 +36,6 @@ class CompanyController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Requests\CompanyRequest  $request
@@ -56,7 +46,7 @@ class CompanyController extends Controller
         $data = $request->validated();
         $company = $this->company->create($data);
 
-        return $this->message("Company created successfully", "success", 201);
+        return $this->message("Editora criada com sucesso!", 201);
     }
 
     /**
@@ -70,7 +60,7 @@ class CompanyController extends Controller
         $company = $this->company->find($id);
 
         if (is_null($company)) {
-            return $this->message("Company not found", "warning", 404, true);
+            return $this->errorMessage("Editora não encontrada.");
         }
 
         $books = DB::table('books')
@@ -94,7 +84,7 @@ class CompanyController extends Controller
         $books = $this->company->find($company)->books;
 
         if (empty($books)) {
-            return $this->message("Books not found", "warning", 404, true);
+            return $this->errorMessage("Nenhum livro encontrada.");
         }
 
         return response()->json(['data' => $books], 200);
@@ -111,22 +101,11 @@ class CompanyController extends Controller
     {
         $book = $this->company->find($company)->books->find($book);
 
-        if (is_null($books)) {
-            return $this->message("Book not found", "warning", 404, true);
+        if (is_null($book)) {
+            return $this->errorMessage("Nenhum livro encontrado.");
         }
 
         return response()->json(['data' => $book], 200);
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
     }
 
     /**
@@ -141,13 +120,13 @@ class CompanyController extends Controller
         $company = $this->company->find($id);
 
         if (is_null($company)) {
-            return $this->message("Company not found", "warning", 404);
+            return $this->errorMessage("Editora não encontrada.");
         }
 
         $data = $request->validated();
         $company->update($data);
 
-        return $this->message("Company updated successfully!", "success", 201);
+        return $this->message("Editora atualizada com sucesso!", 200);
     }
 
     /**
@@ -161,11 +140,11 @@ class CompanyController extends Controller
         $company = $this->company->find($id);
 
         if (is_null($company)) {
-            return $this->message("Company not found", "warning", 404, true);
+            return $this->errorMessage("Editora não encontrada.");
         }
 
         $company->delete();
 
-        return $this->message('Company #' . $id . ' deleted successfully!', 'success', 201);
+        return $this->message('Editora #' . $company->id . ' deletada com sucesso!');
     }
 }

@@ -72,13 +72,11 @@ class BookReaderController extends Controller
     public function store(BookReaderRequest $request)
     {
         $data = $request->validated();
-
         $data['estimated_date'] = date('Y-m-d', strtotime('+7 days'));
 
         $loan = $this->bookReader->create($data);
 
-        $return = ['data' => ['message' => 'Empréstimo criado com sucesso!']];
-        return $this->message("Loan created successfully", "success", 201);//response()->json($return, 201);
+        return $this->message("Empréstimo criado com sucesso!", 201);
     }
 
     /**
@@ -105,7 +103,7 @@ class BookReaderController extends Controller
         )->get()->first();
 
         if (is_null($loan)) {
-            return $this->message("Loan not found", "warning", 404, true);
+            return $this->errorMessage("Nenhum dado foi encontrado.");
         }
 
         return response()->json(['data' => $loan]);
@@ -139,7 +137,7 @@ class BookReaderController extends Controller
         $loan = $this->bookReader->find($id);
 
         if (is_null($loan)) {
-            return $this->message("Loan not found", "warning", 404, true);
+            return $this->errorMessage("Nenhum dado foi encontrado.");
         }
 
         $data = $request->validated();
@@ -149,7 +147,7 @@ class BookReaderController extends Controller
 
         $loan->update($data);
 
-        return $this->message("Loan updated successfully", "success", 201, true);
+        return $this->message("Os dados atualizados com sucesso!");
     }
 
     /**
@@ -163,11 +161,11 @@ class BookReaderController extends Controller
         $loan = $this->bookReader->find($id);
 
         if (is_null($loan)) {
-            return $this->message("Loan not found", "warning", 404, true);
+            return $this->errorMessage("Nenhum dado foi encontrado.");
         }
 
         $loan->delete();
 
-        return $this->message("Loan deleted successfully", "success");
+        return $this->message('Empréstimo #' . $loan->id . ' deletado com sucesso!');
     }
 }

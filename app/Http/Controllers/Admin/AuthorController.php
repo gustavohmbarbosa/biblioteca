@@ -42,7 +42,7 @@ class AuthorController extends Controller
         $data = $request->validated();
         $this->author->create($data);
 
-        return $this->message("Author created successfully!", "success", 201);
+        return $this->message("Autor adicionado com sucesso!", 201);
     }
 
     /**
@@ -56,7 +56,7 @@ class AuthorController extends Controller
         $author = $this->author->find($id);
 
         if(is_null($author)){
-            return $this->message("Author not found", "warning", 404, true);
+            return $this->errorMessage("Autor não encontrado.");
         }
 
         return response()->json(['data' => $author]);
@@ -74,13 +74,13 @@ class AuthorController extends Controller
         $author = $this->author->find($id);
 
         if(is_null($author)){
-            return $this->message("Author not found", "warning", 404, true);
+            return $this->errorMessage("Autor não encontrado.");
         }
 
         $data = $request->validated();
         $author->update($data);
 
-        return $this->message('Author updated successfully!', "success");
+        return $this->message('Dados do autor atualizados com sucesso!');
     }
 
     /**
@@ -94,11 +94,11 @@ class AuthorController extends Controller
         $author = $this->author->find($id);
 
         if(is_null($author)){
-            return $this->message("Author not found", "warning", 404, true);
+            return $this->errorMessage("Autor não encontrado.");
         }
 
         $author->delete();
 
-        return $this->message('Author ' . $author->name . ' deleted successfully!', "success");
+        return $this->message('Autor #' . $author->id . ' removido com sucesso!');
     }
 }

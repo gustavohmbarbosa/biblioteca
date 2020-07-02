@@ -46,7 +46,7 @@ class BookController extends Controller
 
         $this->book->create($data);
 
-        return $this->message("Book created successfully!", "success", 201);
+        return $this->message("Livro adicionado ao acervo com sucesso!", 201);
     }
 
     /**
@@ -60,7 +60,7 @@ class BookController extends Controller
         $book = $this->book->find($id);
 
         if (is_null($book)) {
-            return $this->message("Book not found.", "warning", 404, true);
+            return $this->errorMessage("Livro não encontrado.");
         }
 
         $book->company;
@@ -81,13 +81,13 @@ class BookController extends Controller
         $book = $this->book->find($id);
 
         if (is_null($book)) {
-            return $this->message("Book not found", "warning", 404, true);
+            return $this->errorMessage("Livro não encontrado.");
         }
 
         $data = $request->validated();
         $book->update($data);
 
-        return $this->message("Book updated successfully!", "success", 200);
+        return $this->message("Dados do livro atualizado com sucesso!");
     }
 
     /**
@@ -101,11 +101,11 @@ class BookController extends Controller
         $book = $this->book->find($id);
 
         if (is_null($book)) {
-            return $this->message("Book not found", "warning", 404, true);
+            return $this->errorMessage("Livro não encontrado.");
         }
 
         $book->delete();
 
-        return $this->message('Book ' . $book->title . ' deleted successfully!', "success");
+        return $this->message('O livro ' . $book->title . ' foi removido do acervo!');
     }
 }

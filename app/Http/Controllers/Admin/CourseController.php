@@ -42,7 +42,7 @@ class CourseController extends Controller
         $data = $request->validated();
         $this->course->create($data);
 
-        return $this->message("Course created successfully", "success", 201);
+        return $this->message("Curso criado com sucesso!", 201);
     }
 
     /**
@@ -56,7 +56,7 @@ class CourseController extends Controller
         $course = $this->course->find($id);
 
         if(is_null($course)){
-            return $this->message("Course not found", "warning", 404, true);
+            return $this->errorMessage("Curso não encontrado.");
         }
 
         return response()->json(['data' => $course]);
@@ -74,13 +74,13 @@ class CourseController extends Controller
         $course = $this->course->find($id);
 
         if(is_null($course)){
-            return $this->message("Course not found", "warning", 404, true);
+            return $this->errorMessage("Curso não encontrado.");
         }
 
         $data = $request->validated();
         $course->update($data);
 
-        return $this->message('Course updated successfully!', "success");
+        return $this->message("Cuso atualizado com sucesso!");
     }
 
     /**
@@ -94,11 +94,11 @@ class CourseController extends Controller
         $course = $this->course->find($id);
 
         if(is_null($course)){
-            return $this->message("Course not found", "warning", 404, true);
+            return $this->errorMessage("Curso não encontrado.");
         }
 
         $course->delete();
 
-        return $this->message('Course "' . $course->name . '" deleted successfully!', "success");
+        return $this->message('Curso de ' . $course->name . ' deletado com sucesso!');
     }
 }

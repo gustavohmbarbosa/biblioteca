@@ -33,7 +33,7 @@ class UpdateController extends Controller
         $user = $this->user->find($id);
 
         if(is_null($user)){
-            return $this->message("User not found", 404, true);
+            return $this->errorMessage("Usuário não encontrado");
         }
 
         $this->validator($request, $user->id);
@@ -56,7 +56,7 @@ class UpdateController extends Controller
         $user = $this->user->find($id);
 
         if(is_null($user)){
-            return $this->message("User not found", 404, true);
+            return $this->errorMessage("Usuário não encontrado");
         }
 
         $this->passwordValidator($request);
