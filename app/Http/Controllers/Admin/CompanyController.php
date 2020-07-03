@@ -3,10 +3,9 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
-use App\Http\Requests\CompanyRequest;
 use App\Traits\Messages;
-use Illuminate\Support\Facades\DB; //For queries
 use App\Company;
 
 class CompanyController extends Controller
@@ -24,7 +23,7 @@ class CompanyController extends Controller
     }
 
     /**
-     * Display a listing of the resource.
+     * Display a list of companies.
      *
      * @return \Illuminate\Http\Response
      */
@@ -36,21 +35,21 @@ class CompanyController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Store a newly created company in storage.
      *
      * @param  \Illuminate\Http\Requests\CompanyRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(CompanyRequest $request)
+    public function store(Request $request)
     {
-        $data = $request->validated();
+        $data = $this->validator($request);
         $company = $this->company->create($data);
 
         return $this->message("Editora criada com sucesso!", 201);
     }
 
     /**
-     * Display the specified resource.
+     * Display the specified company.
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
@@ -74,7 +73,7 @@ class CompanyController extends Controller
     }
 
     /**
-     * Shows children of the given resource.
+     * Shows children of the given company.
      *
      * @param  int  $company
      * @return \Illuminate\Http\Response
@@ -91,7 +90,7 @@ class CompanyController extends Controller
     }
 
     /**
-     * Shows child of the given resource.
+     * Shows child of the given company.
      *
      * @param  int  $company
      * @param  int  $book
@@ -109,13 +108,13 @@ class CompanyController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
+     * Update the specified company in storage.
      *
      * @param  \Illuminate\Http\Requests\CompanyRequest  $request
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(CompanyRequest $request, $id)
+    public function update(Request $request, $id)
     {
         $company = $this->company->find($id);
 
@@ -123,14 +122,14 @@ class CompanyController extends Controller
             return $this->errorMessage("Editora não encontrada.");
         }
 
-        $data = $request->validated();
+        $data = $this->validator($request);
         $company->update($data);
 
         return $this->message("Editora atualizada com sucesso!", 200);
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Remove the specified company from storage.
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
@@ -147,4 +146,25 @@ class CompanyController extends Controller
 
         return $this->message('Editora #' . $company->id . ' deletada com sucesso!');
     }
+
+    /**
+    * Get a validator.
+    *
+    * @param  array  $data
+    * @return \Illuminate\Contracts\Validation\Validator
+    */
+   protected function validator($data)
+   {
+        $fields = [
+            'name' => ['required', 'string', 'max:190'],
+        ];
+
+        $messages = [
+            'required'  =>  'Este campo é obrigatório!',
+            'string'    =>  'Insira caracteres válidos!',
+            'max'       =>  'Campo deve ter no máximo :max caracteres.',
+        ];
+
+        return $data->validate($fields, $messages);
+   }
 }

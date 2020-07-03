@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\CourseRequest;
+use Illuminate\Http\Request;
 use App\Traits\Messages;
 use App\Course;
 
@@ -20,7 +20,7 @@ class CourseController extends Controller
     }
 
     /**
-     * Display a listing of the resource.
+     * Display a list of courses.
      *
      * @return \Illuminate\Http\Response
      */
@@ -32,21 +32,21 @@ class CourseController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Store a newly created course in storage.
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(CourseRequest $request)
+    public function store(Request $request)
     {
-        $data = $request->validated();
+        $data = $this->validator($request);
         $this->course->create($data);
 
         return $this->message("Curso criado com sucesso!", 201);
     }
 
     /**
-     * Display the specified resource.
+     * Display the specified course.
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
@@ -63,13 +63,13 @@ class CourseController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
+     * Update the specified course in storage.
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(CourseRequest $request, $id)
+    public function update(Request $request, $id)
     {
         $course = $this->course->find($id);
 
@@ -77,14 +77,14 @@ class CourseController extends Controller
             return $this->errorMessage("Curso não encontrado.");
         }
 
-        $data = $request->validated();
+        $data = $this->validator($request);
         $course->update($data);
 
         return $this->message("Cuso atualizado com sucesso!");
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Remove the specified course from storage.
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
@@ -101,4 +101,25 @@ class CourseController extends Controller
 
         return $this->message('Curso de ' . $course->name . ' deletado com sucesso!');
     }
+
+    /**
+    * Get a validator.
+    *
+    * @param  array  $data
+    * @return \Illuminate\Contracts\Validation\Validator
+    */
+   protected function validator($data)
+   {
+        $fields = [
+            'name' => ['required', 'string', 'max:190'],
+        ];
+
+        $messages = [
+            'required'  =>  'Este campo é obrigatório!',
+            'string'    =>  'Insira caracteres válidos!',
+            'max'       =>  'Campo deve ter no máximo :max caracteres.',
+        ];
+
+        return $data->validate($fields, $messages);
+   }
 }
