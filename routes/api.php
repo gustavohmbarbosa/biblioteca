@@ -31,16 +31,13 @@ Route::group(['middleware' => 'apiJwtAdmin'], function () {
             Route::post('logout', 'SessionController@logout');
         });
 
-        
+        Route::resource('readers', 'ReaderController');
         Route::prefix('readers')->name('readers.')->group(function () {
-            Route::put('/{id}', 'ReaderUpdateController@update');
-            //Route::put('{id}/password', 'ReaderUpdateController@updatePassword');
-            Route::any('search', 'ReaderController@search')->name('search');
             Route::get('{reader}/books', 'ReaderController@showBooks')->name('books');
             Route::get('{reader}/books/{book}', 'ReaderController@showBook')->name('books');
+            Route::any('search', 'ReaderController@search')->name('search');
         });
-        Route::resource('readers', 'ReaderController');
-
+        
         Route::resource('books', 'BookController');
         Route::prefix('books')->name('books.')->group(function() {
             Route::any('search', 'BookController@search')->name('search');
