@@ -25,8 +25,6 @@ Route::group(['middleware' => 'apiJwtAdmin'], function () {
     Route::prefix('admin')->name('admin.')->namespace('Admin')->group(function(){
 
         Route::name('users.')->namespace('Auth')->group(function(){
-            Route::put('users/{id}', 'UpdateController@update');
-            Route::put('users/{id}/password', 'UpdateController@updatePassword');
             Route::resource('users', 'AuthController');
             Route::post('logout', 'SessionController@logout');
         });

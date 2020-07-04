@@ -3,10 +3,9 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
-use App\Http\Requests\AuthorBookRequest;
 use App\Traits\Messages;
-use Illuminate\Support\Facades\DB; //For queries
 use App\Author;
 use App\Book;
 use App\AuthorBook;
@@ -59,9 +58,9 @@ class AuthorBookController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(AuthorBookRequest $request)
+    public function store(Request $request)
     {
-        $data = $request->all();
+        $data = $this->validator($request);
 
         $this->authorBook->create($data);
         return $this->message('Relation Author-Book created successfully', 201);
@@ -111,7 +110,7 @@ class AuthorBookController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(AuthorBookRequest $request, $id)
+    public function update(Request $request, $id)
     {
         $authorBook = $this->authorBook->find($id);
 
@@ -119,7 +118,7 @@ class AuthorBookController extends Controller
             return $this->errorMessage("Relation Author-Book not found");
         }
 
-        $data = $request->validated();
+        $data = $this->validator($request);
         $authorBook->update($data);
 
         return $this->message("Relation Author-Book updated successfully");
@@ -143,4 +142,28 @@ class AuthorBookController extends Controller
 
         return $this->message("Relation Author-Book deleted successfully");
     }
+
+    /**
+    * Get a validator.
+    *
+    * @param  array  $data
+    * @return \Illuminate\Contracts\Validation\Validator
+    */
+   protected function validator($data)
+   {
+        $fields = [
+            'author_id' =>  ['required', 'string', 'exists:authors,id'],
+            'book_id'   =>  ['required', 'string', 'exists:books,id'],
+        ];
+
+        $messages = [
+            'required'          =>  'Este campo é obrigatório!',
+            'string'            =>  'Insira caracteres válidos!',
+            'author_id.exists'  =>  'Esse escritor não está cadastrado no sistema. Tente novamente.',
+            'book_id.exists'    =>  'Esse livro não existe no arcevo. Tente novamente.',
+            'in'                =>  'Selecione um dos valores pré-informados.',
+        ];
+
+        return $data->validate($fields, $messages);
+   }
 }

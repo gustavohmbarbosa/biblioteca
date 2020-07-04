@@ -3,7 +3,8 @@
 namespace App\Http\Controllers\Admin\Auth;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\UserRequest;
+use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Hash;
 use App\Traits\Messages;
 use App\User;
@@ -37,11 +38,11 @@ class AuthController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(UserRequest $request)
+    public function store(Request $request)
     {
-        $data = $request->validated();
-
+        $data = $this->validator($request);
         $data['password'] = Hash::make($data['password']);
+
         $this->user->create($data);
 
         return $this->message("Usuário criado!", 201);
@@ -65,6 +66,32 @@ class AuthController extends Controller
     }
 
     /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Requests\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function update(Request $request, $id)
+    {
+        $user = $this->user->find($id);
+
+        if(is_null($user)){
+            return $this->errorMessage("Usuário não encontrado");
+        }
+
+        $data = $this->validator($request, $user->id);
+
+        if(array_key_exists('password', $data)){
+            $data['password'] = Hash::make($data['password']);
+        }
+
+        $user->update($data);
+
+        return $this->message("Usuário atualizado com sucesso!");
+    }
+
+    /**
      * Remove the specified resource from storage.
      *
      * @param  int  $id
@@ -81,5 +108,35 @@ class AuthController extends Controller
         $user->delete();
 
         return $this->message($user->name . ' foi removido do sistema!');
+    }
+
+    /**
+     * Get a validator.
+     *
+     * @param  array  $data
+     * @param  int    $id
+     * @return \Illuminate\Contracts\Validation\Validator
+     */
+    protected function validator($data, $id = null)
+    {
+        $fields = [
+            'name'      => ['required', 'string', 'max:190'],
+            'email'     => ['required', 'string', 'max:190' , 'email', Rule::unique('users')->ignore($id)],
+            'password'  => [Rule::requiredIf(!$id), 'string', 'min:8', 'confirmed'],
+            'type'      => ['required', Rule::in(['SIMPLES', 'MASTER'])]
+        ];
+
+        $messages = [
+            'required'  =>  'Este campo é obrigatório!',
+            'max'       =>  'Campo deve ter no mínimo :max caracteres.',
+            'email'     =>  'Insira um endereço de e-mail válido!',
+            'unique'    =>  'Este e-mail já esta em uso. Tente outro.',
+            'confirmed' =>  'As senhas não coincidem. Tente novamente.',
+            'string'    =>  'Insira caracteres válidos!',
+            'min'       =>  'Campo deve ter no mínimo :min caracteres.',
+            'in'        =>  'Selecione um dos valores pré-informados.',
+        ];
+
+        return $data->validate($fields, $messages);
     }
 }

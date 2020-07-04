@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Hash;
 use App\Traits\Messages;
@@ -175,7 +174,7 @@ class ReaderController extends Controller
     }
 
     /**
-    *Get a validator for user update.
+    * Get a validator.
     *
     * @param  array  $data
     * @param  int    $id
@@ -183,29 +182,33 @@ class ReaderController extends Controller
     */
    protected function validator($data, $id = null)
    {
-       return $data->validate([
-           'name'         => ['required', 'string', 'max:190'],
-           'email'        => ['required', 'string', 'email', 'max:190', Rule::unique('readers')->ignore($id)],
-           'password'     => [Rule::requiredIf(!$id), 'string', 'min:8', 'confirmed'],
-           'phone'        => ['required', 'string'],
-           'gender'       => ['required', Rule::in(['Masculino', 'Feminino'])],
-           'grade'        => ['required', Rule::in(['1', '2', '3'])],
-           'class'        => ['required', Rule::in(['A', 'B', 'C'])],
-           'course_id'    => ['required', 'string', 'exists:courses,id'],
-           'registration' => ['required', 'string'],
-           'entry_year'   => ['required', 'size:4', 'date_format:Y'],
-       ],
-       [
-           'required'       =>  'Este campo é obrigatório!',
-           'date_format'    =>  'Essa não é uma data válida.',
-           'size'           =>  'Campo deve ter exatamente :size números.',
-           'min'            =>  'Campo deve ter no mínimo :min caracteres.',
-           'email'          =>  'Insira um endereço de e-mail válido!',
-           'unique'         =>  'Este e-mail já esta em uso. Tente outro.',
-           'confirmed'      =>  'As senhas não coincidem. Tente novamente.',
-           'string'         =>  'Insira caracteres válidos!',
-           'in'             =>  'Selecione um dos valores pré-informados.',
-           'exists'         =>  'Esse curso não existe. Tente novamente.',
-       ]);
+        $fields = [
+            'name'         => ['required', 'string', 'max:190'],
+            'email'        => ['required', 'string', 'email', 'max:190', Rule::unique('readers')->ignore($id)],
+            'password'     => [Rule::requiredIf(!$id), 'string', 'min:8', 'confirmed'],
+            'phone'        => ['required', 'string'],
+            'gender'       => ['required', Rule::in(['Masculino', 'Feminino'])],
+            'grade'        => ['required', Rule::in(['1', '2', '3'])],
+            'class'        => ['required', Rule::in(['A', 'B', 'C'])],
+            'course_id'    => ['required', 'string', 'exists:courses,id'],
+            'registration' => ['required', 'string'],
+            'entry_year'   => ['required', 'size:4', 'date_format:Y'],
+        ];
+
+        $messages = [
+            'required'       =>  'Este campo é obrigatório!',
+            'date_format'    =>  'Essa não é uma data válida.',
+            'size'           =>  'Campo deve ter exatamente :size números.',
+            'min'            =>  'Campo deve ter no mínimo :min caracteres.',
+            'max'            =>  'Campo deve ter no máximo :max caracteres.',
+            'email'          =>  'Insira um endereço de e-mail válido!',
+            'unique'         =>  'Este e-mail já esta em uso. Tente outro.',
+            'confirmed'      =>  'As senhas não coincidem. Tente novamente.',
+            'string'         =>  'Insira caracteres válidos!',
+            'in'             =>  'Selecione um dos valores pré-informados.',
+            'exists'         =>  'Esse curso não existe. Tente novamente.',
+        ];
+
+        return $data->validate($fields, $messages);
    }
 }

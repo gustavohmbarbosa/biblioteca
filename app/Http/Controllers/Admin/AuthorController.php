@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\AuthorRequest;
+use Illuminate\Http\Request;
 use App\Traits\Messages;
 use App\Author;
 
@@ -20,7 +20,7 @@ class AuthorController extends Controller
     }
 
     /**
-     * Display a listing of the resource.
+     * Display a listing of authors.
      *
      * @return \Illuminate\Http\Response
      */
@@ -32,21 +32,21 @@ class AuthorController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Store a newly created author in storage.
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(AuthorRequest $request)
+    public function store(Request $request)
     {
-        $data = $request->validated();
+        $data = $this->validator($request);
         $this->author->create($data);
 
         return $this->message("Autor adicionado com sucesso!", 201);
     }
 
     /**
-     * Display the specified resource.
+     * Display the specified author.
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
@@ -63,13 +63,13 @@ class AuthorController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
+     * Update the specified author in storage.
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(AuthorRequest $request, $id)
+    public function update(Request $request, $id)
     {
         $author = $this->author->find($id);
 
@@ -77,14 +77,14 @@ class AuthorController extends Controller
             return $this->errorMessage("Autor não encontrado.");
         }
 
-        $data = $request->validated();
+        $data = $this->validator($request);
         $author->update($data);
 
         return $this->message('Dados do autor atualizados com sucesso!');
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Remove the specified author from storage.
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
@@ -101,4 +101,25 @@ class AuthorController extends Controller
 
         return $this->message('Autor #' . $author->id . ' removido com sucesso!');
     }
+
+    /**
+    * Get a validator.
+    *
+    * @param  array  $data
+    * @return \Illuminate\Contracts\Validation\Validator
+    */
+   protected function validator($data)
+   {
+        $fields = [
+            'name' => ['required', 'string', 'max:190'],
+        ];
+
+        $messages = [
+            'required'  =>  'Este campo é obrigatório!',
+            'string'    =>  'Insira caracteres válidos!',
+            'max'       =>  'Campo deve ter no máximo :max caracteres.',
+        ];
+
+        return $data->validate($fields, $messages);
+   }
 }

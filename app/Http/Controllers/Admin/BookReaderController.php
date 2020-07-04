@@ -3,10 +3,10 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Validation\Rule;
 use Illuminate\Http\Request;
-use App\Http\Requests\BookReaderRequest;
 use App\Traits\Messages;
-use Illuminate\Support\Facades\DB; //For queries
 use App\BookReader;
 use App\Reader;
 use App\Book;
@@ -26,7 +26,7 @@ class BookReaderController extends Controller
     }
 
     /**
-     * Display a listing of the resource.
+     * Display a listing of the loans.
      *
      * @return \Illuminate\Http\Response
      */
@@ -51,7 +51,7 @@ class BookReaderController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Show the form for creating a new loan.
      *
      * @return \Illuminate\Http\Response
      */
@@ -64,14 +64,14 @@ class BookReaderController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Store a newly created loan in storage.
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(BookReaderRequest $request)
+    public function store(Request $request)
     {
-        $data = $request->validated();
+        $data = $this->validator($request);
         $data['estimated_date'] = date('Y-m-d', strtotime('+7 days'));
 
         $loan = $this->bookReader->create($data);
@@ -80,7 +80,7 @@ class BookReaderController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * Display the specified loan.
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
@@ -110,7 +110,7 @@ class BookReaderController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
+     * Show the form for editing the specified loan.
      *
      * @param  int  $id
      * @var string $readers
@@ -126,13 +126,13 @@ class BookReaderController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
+     * Update the specified loan in storage.
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(BookReaderRequest $request, $id)
+    public function update(Request $request, $id)
     {
         $loan = $this->bookReader->find($id);
 
@@ -140,18 +140,19 @@ class BookReaderController extends Controller
             return $this->errorMessage("Nenhum dado foi encontrado.");
         }
 
-        $data = $request->validated();
+        $data = $this->updateValidator($request);
 
-        if ($data['status'] != 'ATIVO')
+        if ($data['status'] != 'ATIVO') {
             $data['return_date'] = date('Y-m-d');
-
+        }
+ 
         $loan->update($data);
 
         return $this->message("Os dados atualizados com sucesso!");
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Remove the specified loan from storage.
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
@@ -167,5 +168,49 @@ class BookReaderController extends Controller
         $loan->delete();
 
         return $this->message('Empréstimo #' . $loan->id . ' deletado com sucesso!');
+    }
+
+    /**
+    * Get a validator.
+    *
+    * @param  array  $data
+    * @return \Illuminate\Contracts\Validation\Validator
+    */
+   protected function validator($data)
+   {
+        $fields = [
+            'reader_id' =>  ['required', 'string', 'exists:readers,id'],
+            'book_id'   =>  ['required', 'string', 'exists:books,id'],
+        ];
+
+        $messages = [
+            'required'          =>  'Este campo é obrigatório!',
+            'string'            =>  'Insira caracteres válidos!',
+            'reader_id.exists'  =>  'Esse leitor não está cadastrado no sistema. Tente novamente.',
+            'book_id.exists'    =>  'Esse livro não existe no arcevo. Tente novamente.',
+            'in'                =>  'Selecione um dos valores pré-informados.',
+        ];
+
+        return $data->validate($fields, $messages);
+   }
+
+    /**
+    * Get a validator for update.
+    *
+    * @param  array  $data
+    * @return \Illuminate\Contracts\Validation\Validator
+    */
+    protected function updateValidator($data)
+    {
+         $fields = [
+             'status'    =>  ['required', Rule::in(['ATIVO', 'INATIVO'])],
+         ];
+ 
+         $messages = [
+             'required'          =>  'Este campo é obrigatório!',
+             'in'                =>  'Selecione um dos valores pré-informados.',
+         ];
+ 
+         return $data->validate($fields, $messages);
     }
 }

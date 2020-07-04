@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Http\Requests\BookRequest;
+use Illuminate\Validation\Rule;
 use App\Traits\Messages;
 use App\Traits\Upload;
 use App\Book;
@@ -20,7 +20,7 @@ class BookController extends Controller
         $this->book = $book;
     }
     /**
-     * Display a listing of the resource.
+     * Display a list of books.
      *
      * @return \Illuminate\Http\Response
      */
@@ -28,7 +28,6 @@ class BookController extends Controller
     {
         $books = $this->book->paginate(10);
 
-        // Retornando os Autores de Todos os Livros...
         foreach ($books as $key => $book) {
             $books[$key]['company'] = $book->company;
             $books[$key]['authors'] = $book->authors;
@@ -38,14 +37,15 @@ class BookController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Store a newly created book in storage.
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(BookRequest $request)
+    public function store(Request $request)
     {
-        $data = $request->validated();
+        $data = $this->validator($request);
+        $data['publication_date'] = date('Y-m-d');
 
         if($request->hasFile('cape')) {
             $data['cape'] = $this->imageUpload($request->file('cape'));
@@ -57,7 +57,7 @@ class BookController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * Display the specified book.
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
@@ -77,13 +77,13 @@ class BookController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
+     * Update the specified book in storage.
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(BookRequest $request, $id)
+    public function update(Request $request, $id)
     {
         $book = $this->book->find($id);
 
@@ -91,14 +91,16 @@ class BookController extends Controller
             return $this->errorMessage("Livro não encontrado.");
         }
 
-        $data = $request->validated();
+        $data = $this->validator($request);
+        $data['publication_date'] = date('Y-m-d');
+
         $book->update($data);
 
         return $this->message("Dados do livro atualizado com sucesso!");
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Remove the specified book from storage.
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
@@ -138,4 +140,42 @@ class BookController extends Controller
 
         return response()->json(['data' => $books], 200);
     }
+
+    /**
+    * Get a validator.
+    *
+    * @param  array  $data
+    * @return \Illuminate\Contracts\Validation\Validator
+    */
+   protected function validator($data)
+   {
+        $fields = [
+            'title'             =>  ['required', 'string', 'max:190'],
+            'subtitle'          =>  ['string', 'max:190'],
+            'origin'            =>  ['required', Rule::in(['Doado', 'Comprado'])],
+            'price'             =>  ['string'],
+            'isbn'              =>  ['required', 'string', 'max:13'],
+            'synopsis'          =>  ['string'],
+            'pages'             =>  ['required', 'string', 'max:5'],
+            'language'          =>  ['required', 'string', 'max:190'],
+            'observations'      =>  ['string'],
+            'edition'           =>  ['required', 'string', 'max:3'],
+            'publication_date'  =>  ['required', 'date_format:d/m/Y'],
+            'color'             =>  ['required', 'string'],
+            'cdd'               =>  ['required', 'string'],
+            'cape'              =>  ['string'],
+            'company_id'        =>  ['required', 'string', 'exists:companies,id'],
+        ];
+
+        $messages = [
+            'required'      =>  'Este campo é obrigatório!',
+            'string'        =>  'Insira caracteres válidos!',
+            'max'           =>  'Campo deve ter no máximo :max caracteres.',
+            'in'            =>  'Selecione um dos valores pré-informados.',
+            'exists'        =>  'Essa editora não existe. Tente novamente.',
+            'date_format'   =>  'Essa não é uma data válida.',
+        ];
+
+        return $data->validate($fields, $messages);
+   }
 }
