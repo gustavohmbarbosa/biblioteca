@@ -37,7 +37,7 @@ Route::group(['middleware' => 'apiJwtAdmin'], function () {
             Route::get('{reader}/books/{book}', 'ReaderController@showBook')->name('books');
             Route::any('search', 'ReaderController@search')->name('search');
         });
-        
+
         Route::resource('books', 'BookController');
         Route::prefix('books')->name('books.')->group(function() {
             Route::any('search', 'BookController@search')->name('search');

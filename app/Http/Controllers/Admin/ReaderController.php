@@ -153,7 +153,7 @@ class ReaderController extends Controller
 
     /**
      * Search Reader
-     * 
+     *
      * @param  array  $request
      */
     public function search(Request $request)
@@ -194,7 +194,7 @@ class ReaderController extends Controller
            'course_id'    => ['required', 'string', 'exists:courses,id'],
            'registration' => ['required', 'string'],
            'entry_year'   => ['required', 'size:4', 'date_format:Y'],
-       ], 
+       ],
        [
            'required'       =>  'Este campo é obrigatório!',
            'date_format'    =>  'Essa não é uma data válida.',

@@ -2,11 +2,13 @@
 
 namespace App;
 
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
+use Tymon\JWTAuth\Contracts\JWTSubject;
 use Spatie\Sluggable\HasSlug;
 use Spatie\Sluggable\SlugOptions;
 
-class Reader extends Model
+class Reader extends Authenticatable implements JWTSubject
 {
     use HasSlug;
 
@@ -27,7 +29,7 @@ class Reader extends Model
     protected $hidden = [
         'password',
     ];
-    
+
     /**
      * Relation with books
      */
@@ -35,8 +37,8 @@ class Reader extends Model
     {
         return $this->belongsToMany(Book::class)
             ->withPivot([
-                'estimated_date', 
-                'return_date', 
+                'estimated_date',
+                'return_date',
                 'status'])
             ->withTimestamps();
     }
@@ -51,7 +53,7 @@ class Reader extends Model
 
     /**
      * Search reader
-     * 
+     *
      * @param string $filter
      * @param string $column
      */
@@ -64,5 +66,25 @@ class Reader extends Model
         })->paginate(10);
 
         return $results;
+    }
+
+    /**
+     * Get the identifier that will be stored in the subject claim of the JWT.
+     *
+     * @return mixed
+     */
+    public function getJWTIdentifier()
+    {
+        return $this->getKey();
+    }
+
+    /**
+     * Return a key value array, containing any custom claims to be added to the JWT.
+     *
+     * @return array
+     */
+    public function getJWTCustomClaims()
+    {
+        return [];
     }
 }

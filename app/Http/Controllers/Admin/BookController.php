@@ -6,11 +6,13 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Http\Requests\BookRequest;
 use App\Traits\Messages;
+use App\Traits\Upload;
 use App\Book;
 
 class BookController extends Controller
 {
     use Messages;
+    use Upload;
 
     private $book;
 
@@ -44,6 +46,10 @@ class BookController extends Controller
     public function store(BookRequest $request)
     {
         $data = $request->validated();
+
+        if($request->hasFile('cape')) {
+            $data['cape'] = $this->imageUpload($request->file('cape'));
+        }
 
         $this->book->create($data);
 
