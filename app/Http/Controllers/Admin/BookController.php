@@ -19,6 +19,7 @@ class BookController extends Controller
     public function __construct(Book $book){
         $this->book = $book;
     }
+    
     /**
      * Display a list of books.
      *
