@@ -8,9 +8,9 @@ class CreateReadersTable extends Migration
 {
     /**
      * Run the migrations.
-     * 
+     *
      * @return void
-     * 
+     *
      * Columns:
      * id, name, email, password, phone, gender, year, class, course, registration, status
      */
@@ -29,6 +29,7 @@ class CreateReadersTable extends Migration
             $table->string('registration');
             $table->year('entry_year');
             $table->string('status')->default('ATIVO');
+            $table->string('image')->nullable();
 
             $table->timestamps();
             $table->string('slug');

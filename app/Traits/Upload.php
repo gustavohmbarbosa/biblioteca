@@ -3,10 +3,26 @@ namespace App\Traits;
 use Illuminate\Http\Request;
 
 trait Upload {
-    private function imageUpload($image)
+    /**
+     * @param object $image
+     * @param string $table
+     */
+
+    private function imageUpload($image, $table)
     {
 
-        $uploadedImage = $image->store('book_cape', 'public');
+        switch ($table) {
+            case 'books':
+                $uploadedImage = $image->store('book_cape', 'public');
+                break;
+
+            case 'readers':
+                $uploadedImage = $image->store('reader_photo', 'public');
+                break;
+
+            default:
+                break;
+        }
 
         return $uploadedImage;
     }

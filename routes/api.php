@@ -47,7 +47,7 @@ Route::group(['middleware' => 'auth.admin.jwt'], function () {
         });
 
         // Readers
-        Route::resource('readers', 'Reader\\ReaderController');
+        Route::resource('readers', 'ReaderController');
         Route::prefix('readers')->name('readers.')->group(function () {
             Route::get('{reader}/books', 'ReaderController@showBooks')->name('books');
             Route::get('{reader}/books/{book}', 'ReaderController@showBook')->name('books');

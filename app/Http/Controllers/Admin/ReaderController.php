@@ -7,11 +7,13 @@ use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Hash;
 use App\Traits\Messages;
+use App\Traits\Upload;
 use App\Reader;
 
 class ReaderController extends Controller
 {
     use Messages;
+    use Upload;
 
     /**
 	 * @var Reader
@@ -44,7 +46,12 @@ class ReaderController extends Controller
     public function store(Request $request)
     {
         $data = $this->validator($request);
+        dd();
         $data['password'] = Hash::make($data['password']);
+
+        if($request->hasFile('image')) {
+            $data['image'] = $this->imageUpload($request->file('image'), 'readers');
+        }
 
         $reader = $this->reader->create($data);
 

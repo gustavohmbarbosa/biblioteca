@@ -48,7 +48,7 @@ class BookController extends Controller
         $data['publication_date'] = date('Y-m-d');
 
         if($request->hasFile('cape')) {
-            $data['cape'] = $this->imageUpload($request->file('cape'));
+            $data['cape'] = $this->imageUpload($request->file('cape'), 'books');
         }
 
         $this->book->create($data);
