@@ -46,7 +46,6 @@ class ReaderController extends Controller
     public function store(Request $request)
     {
         $data = $this->validator($request);
-        dd();
         $data['password'] = Hash::make($data['password']);
 
         if($request->hasFile('image')) {

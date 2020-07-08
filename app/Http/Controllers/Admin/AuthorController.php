@@ -5,11 +5,13 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Traits\Messages;
+use App\Traits\Upload;
 use App\Author;
 
 class AuthorController extends Controller
 {
     use Messages;
+    use Upload;
 
     private $author;
 
@@ -40,6 +42,11 @@ class AuthorController extends Controller
     public function store(Request $request)
     {
         $data = $this->validator($request);
+
+        if($request->hasFile('image')) {
+            $data['image'] = $this->imageUpload($request->file('image'), 'authors');
+        }
+
         $this->author->create($data);
 
         return $this->message("Autor adicionado com sucesso!", 201);
@@ -111,7 +118,8 @@ class AuthorController extends Controller
    protected function validator($data)
    {
         $fields = [
-            'name' => ['required', 'string', 'max:190'],
+            'name'      => ['required', 'string', 'max:190'],
+            'biography' => ['string'],
         ];
 
         $messages = [

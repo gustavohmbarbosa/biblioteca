@@ -20,6 +20,10 @@ trait Upload {
                 $uploadedImage = $image->store('reader_photo', 'public');
                 break;
 
+            case 'authors':
+                $uploadedImage = $image->store('author_photo', 'public');
+                break;
+
             default:
                 break;
         }
