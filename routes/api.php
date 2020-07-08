@@ -13,45 +13,70 @@ use Illuminate\Http\Request;
 |
 */
 
-//Route::middleware('auth:api')->get('/user', function (Request $request) {
-//    return $request->user();
-//});
+/*
+|--------------------------------------------------------------------------
+| Reader Routes
+|--------------------------------------------------------------------------
+|
+| Here are all reader's routes!
+|
+*/
+Route::post('login', 'Reader\\AuthController@login');
+Route::group(['middleware' => 'auth.reader.jwt'], function () {
+    Route::name('reader.')->namespace('Reader')->group(function () {
+        Route::post('logout', 'AuthController@logout');
+    });
+});
 
-Route::post('admin/login', 'Admin\\Auth\\SessionController@login');
-
-Route::group(['middleware' => 'apiJwtAdmin'], function () {
-    Route::post('auth/logout', 'ApiAuth\\AuthController@logout');
-
+/*
+|--------------------------------------------------------------------------
+| Admin Routes
+|--------------------------------------------------------------------------
+|
+| Here are all admin routes!
+|
+*/
+Route::post('admin/login', 'Admin\\AuthController@login');
+Route::group(['middleware' => 'auth.admin.jwt'], function () {
     Route::prefix('admin')->name('admin.')->namespace('Admin')->group(function(){
 
-        Route::name('users.')->namespace('Auth')->group(function(){
-            Route::resource('users', 'AuthController');
-            Route::post('logout', 'SessionController@logout');
+        // Users
+        Route::name('users.')->group(function(){
+            Route::resource('users', 'UserController');
+            Route::post('logout', 'AuthController@logout');
         });
 
-        Route::resource('readers', 'ReaderController');
+        // Readers
+        Route::resource('readers', 'Reader\\ReaderController');
         Route::prefix('readers')->name('readers.')->group(function () {
             Route::get('{reader}/books', 'ReaderController@showBooks')->name('books');
             Route::get('{reader}/books/{book}', 'ReaderController@showBook')->name('books');
             Route::any('search', 'ReaderController@search')->name('search');
         });
 
+        // Courses
+        Route::resource('courses', 'CourseController');
+
+        // Loans - Boook_Reader
+        Route::resource('loans', 'BookReaderController');
+
+        // Books
         Route::resource('books', 'BookController');
         Route::prefix('books')->name('books.')->group(function() {
             Route::any('search', 'BookController@search')->name('search');
         });
 
-        Route::resource('loans', 'BookReaderController');
-        Route::resource('author_book', 'AuthorBookController');
-        Route::resource('authors', 'AuthorController');
-        Route::resource('courses', 'CourseController');
-
+        // Companies
         Route::resource('companies', 'CompanyController');
         Route::prefix('companies')->name('companies.')->group(function () {
             Route::get('{company}/books', 'CompanyController@showBooks')->name('books');
             Route::get('{company}/books/{book}', 'CompanyController@showBook')->name('books');
         });
 
-    });
+        // Authors
+        Route::resource('authors', 'AuthorController');
 
+        // Author_Book
+        Route::resource('author_book', 'AuthorBookController');
+    });
 });

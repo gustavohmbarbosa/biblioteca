@@ -46,6 +46,12 @@ return [
             'provider' => 'users',
             'hash' => false,
         ],
+
+        'reader' => [
+            'driver' => 'jwt',
+            'provider' => 'readers',
+            'hash' => false,
+        ],
     ],
 
     /*
@@ -69,6 +75,11 @@ return [
         'users' => [
             'driver' => 'eloquent',
             'model' => App\User::class,
+        ],
+
+        'readers' => [
+            'driver' => 'eloquent',
+            'model' => App\Reader::class,
         ],
 
         // 'users' => [

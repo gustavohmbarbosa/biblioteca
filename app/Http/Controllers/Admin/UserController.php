@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Admin\Auth;
+namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Hash;
 use App\Traits\Messages;
 use App\User;
 
-class AuthController extends Controller
+class UserController extends Controller
 {
     use Messages;
 

@@ -2,9 +2,9 @@
 
 namespace App;
 
-use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Tymon\JWTAuth\Contracts\JWTSubject;
+use Illuminate\Foundation\Auth\User as Authenticatable;
 use Spatie\Sluggable\HasSlug;
 use Spatie\Sluggable\SlugOptions;
 
@@ -52,23 +52,6 @@ class Reader extends Authenticatable implements JWTSubject
     }
 
     /**
-     * Search reader
-     *
-     * @param string $filter
-     * @param string $column
-     */
-    public function search($filter = null, $column = "name")
-    {
-        $results = $this->where(function ($query) use ($filter, $column) {
-            if ($filter) {
-                $query->where($column, 'LIKE', "%{$filter}%");
-            }
-        })->paginate(10);
-
-        return $results;
-    }
-
-    /**
      * Get the identifier that will be stored in the subject claim of the JWT.
      *
      * @return mixed
@@ -86,5 +69,22 @@ class Reader extends Authenticatable implements JWTSubject
     public function getJWTCustomClaims()
     {
         return [];
+    }
+
+    /**
+     * Search reader
+     *
+     * @param string $filter
+     * @param string $column
+     */
+    public function search($filter = null, $column = "name")
+    {
+        $results = $this->where(function ($query) use ($filter, $column) {
+            if ($filter) {
+                $query->where($column, 'LIKE', "%{$filter}%");
+            }
+        })->paginate(10);
+
+        return $results;
     }
 }
