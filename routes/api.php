@@ -13,6 +13,12 @@ use Illuminate\Http\Request;
 |
 */
 
+Route::get('/', 'HomeController@index')->name('home');
+Route::get('livros/', 'BookController@index')->name('Books.index');
+Route::any('livros/{slug}', 'BookController@show')->name('Books.show');
+Route::get('autores/', 'AuthorController@index')->name('authors.index');
+Route::get('autores/{slug}/livros', 'AuthorController@show')->name('authors.show');
+
 /*
 |--------------------------------------------------------------------------
 | Reader Routes
@@ -21,10 +27,10 @@ use Illuminate\Http\Request;
 | Here are all reader's routes!
 |
 */
-Route::post('login', 'Reader\\AuthController@login');
+Route::post('login', 'Reader\\AuthController@login')->name('login');
 Route::group(['middleware' => 'auth.reader.jwt'], function () {
     Route::name('reader.')->namespace('Reader')->group(function () {
-        Route::post('logout', 'AuthController@logout');
+        Route::post('logout', 'AuthController@logout')->name('logout');
     });
 });
 
@@ -36,18 +42,18 @@ Route::group(['middleware' => 'auth.reader.jwt'], function () {
 | Here are all admin routes!
 |
 */
-Route::post('admin/login', 'Admin\\AuthController@login');
+Route::post('admin/login', 'Admin\\AuthController@login')->name('admin.login');
 Route::group(['middleware' => 'auth.admin.jwt'], function () {
     Route::prefix('admin')->name('admin.')->namespace('Admin')->group(function(){
 
         // Users
         Route::name('users.')->group(function(){
             Route::resource('users', 'UserController');
-            Route::post('logout', 'AuthController@logout');
+            Route::post('logout', 'AuthController@logout')->name('logout');
         });
 
         // Readers
-        Route::resource('readers', 'Reader\\ReaderController');
+        Route::resource('readers', 'ReaderController');
         Route::prefix('readers')->name('readers.')->group(function () {
             Route::get('{reader}/books', 'ReaderController@showBooks')->name('books');
             Route::get('{reader}/books/{book}', 'ReaderController@showBook')->name('books');
