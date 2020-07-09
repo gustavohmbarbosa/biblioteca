@@ -14,10 +14,10 @@ use Illuminate\Http\Request;
 */
 
 Route::get('/', 'HomeController@index')->name('home');
-Route::get('livros/', 'BookController@index')->name('Books.index');
-Route::any('livros/{slug}', 'BookController@show')->name('Books.show');
-Route::get('autores/', 'AuthorController@index')->name('authors.index');
-Route::get('autores/{slug}/livros', 'AuthorController@show')->name('authors.show');
+Route::get('books/', 'BookController@index')->name('Books.index');
+Route::any('books/{slug}', 'BookController@show')->name('Books.show');
+Route::get('authors/', 'AuthorController@index')->name('authors.index');
+Route::get('authors/{slug}/books', 'AuthorController@show')->name('authors.show');
 
 /*
 |--------------------------------------------------------------------------
@@ -27,10 +27,10 @@ Route::get('autores/{slug}/livros', 'AuthorController@show')->name('authors.show
 | Here are all reader's routes!
 |
 */
-Route::post('entrar', 'Reader\\AuthController@login')->name('login');
+Route::post('login', 'Reader\\AuthController@login')->name('login');
 Route::group(['middleware' => 'auth.reader.jwt'], function () {
     Route::name('reader.')->namespace('Reader')->group(function () {
-        Route::post('sair', 'AuthController@logout')->name('logout');
+        Route::post('logout', 'AuthController@logout')->name('logout');
     });
 });
 
@@ -42,45 +42,45 @@ Route::group(['middleware' => 'auth.reader.jwt'], function () {
 | Here are all admin routes!
 |
 */
-Route::post('administrativo/entrar', 'Admin\\AuthController@login')->name('admin.login');
+Route::post('admin/login', 'Admin\\AuthController@login')->name('admin.login');
 Route::group(['middleware' => 'auth.admin.jwt'], function () {
-    Route::prefix('administrativo')->name('admin.')->namespace('Admin')->group(function(){
+    Route::prefix('admin')->name('admin.')->namespace('Admin')->group(function(){
 
         // Users
         Route::name('users.')->group(function(){
-            Route::resource('usuarios', 'UserController');
-            Route::post('sair', 'AuthController@logout')->name('logout');
+            Route::resource('users', 'UserController');
+            Route::post('logout', 'AuthController@logout')->name('logout');
         });
 
         // Readers
-        Route::resource('leitores', 'ReaderController');
-        Route::prefix('leitores')->name('readers.')->group(function () {
-            Route::get('{reader}/livros', 'ReaderController@showBooks')->name('books');
-            Route::get('{reader}/livros/{book}', 'ReaderController@showBook')->name('books');
-            Route::any('busca', 'ReaderController@search')->name('search');
+        Route::resource('readers', 'ReaderController');
+        Route::prefix('readers')->name('readers.')->group(function () {
+            Route::get('{reader}/books', 'ReaderController@showBooks')->name('books');
+            Route::get('{reader}/books/{book}', 'ReaderController@showBook')->name('books');
+            Route::any('search', 'ReaderController@search')->name('search');
         });
 
         // Courses
-        Route::resource('cursos', 'CourseController');
+        Route::resource('courses', 'CourseController');
 
         // Loans - Boook_Reader
         Route::resource('loans', 'BookReaderController');
 
         // Books
-        Route::resource('livros', 'BookController');
-        Route::prefix('livros')->name('books.')->group(function() {
-            Route::any('busca', 'BookController@search')->name('search');
+        Route::resource('books', 'BookController');
+        Route::prefix('books')->name('books.')->group(function() {
+            Route::any('search', 'BookController@search')->name('search');
         });
 
         // Companies
-        Route::resource('editoras', 'CompanyController');
-        Route::prefix('editoras')->name('companies.')->group(function () {
-            Route::get('{company}/livros', 'CompanyController@showBooks')->name('books');
-            Route::get('{company}/livros/{book}', 'CompanyController@showBook')->name('books');
+        Route::resource('companies', 'CompanyController');
+        Route::prefix('companies')->name('companies.')->group(function () {
+            Route::get('{company}/books', 'CompanyController@showBooks')->name('books');
+            Route::get('{company}/books/{book}', 'CompanyController@showBook')->name('books');
         });
 
         // Authors
-        Route::resource('autores', 'AuthorController');
+        Route::resource('authors', 'AuthorController');
 
         // Author_Book
         Route::resource('author_book', 'AuthorBookController');
