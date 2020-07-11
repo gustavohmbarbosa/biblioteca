@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\Request;
 use App\Traits\Messages;
 use App\Traits\Upload;
@@ -85,6 +86,14 @@ class AuthorController extends Controller
         }
 
         $data = $this->validator($request);
+
+        if($request->hasFile('image')) {
+            if(Storage::disk('public')->exists($author->image)) {
+                Storage::disk('public')->delete($author->image);
+            }
+            $data['image'] = $this->imageUpload($request->file('image'), 'authors');
+        }
+
         $author->update($data);
 
         return $this->message('Dados do autor atualizados com sucesso!');

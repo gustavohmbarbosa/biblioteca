@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Hash;
@@ -76,6 +77,13 @@ class ReaderController extends Controller
 
         if(array_key_exists('password', $data)){
             $data['password'] = Hash::make($data['password']);
+        }
+
+        if($request->hasFile('image')) {
+            if(Storage::disk('public')->exists($reader->image)) {
+                Storage::disk('public')->delete($reader->image);
+            }
+            $data['image'] = $this->imageUpload($request->file('image'), 'readers');
         }
 
         $reader->update($data);

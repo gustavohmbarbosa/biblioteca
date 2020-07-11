@@ -8,25 +8,10 @@ trait Upload {
      * @param string $table
      */
 
-    private function imageUpload($image, $table)
+    private function imageUpload($image, $directory)
     {
 
-        switch ($table) {
-            case 'books':
-                $uploadedImage = $image->store('book_cape', 'public');
-                break;
-
-            case 'readers':
-                $uploadedImage = $image->store('reader_photo', 'public');
-                break;
-
-            case 'authors':
-                $uploadedImage = $image->store('author_photo', 'public');
-                break;
-
-            default:
-                break;
-        }
+        $uploadedImage = $image->store($directory, 'public');
 
         return $uploadedImage;
     }

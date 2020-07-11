@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use App\Traits\Messages;
@@ -19,7 +20,7 @@ class BookController extends Controller
     public function __construct(Book $book){
         $this->book = $book;
     }
-    
+
     /**
      * Display a list of books.
      *
@@ -93,6 +94,14 @@ class BookController extends Controller
         }
 
         $data = $this->validator($request);
+
+        if($request->hasFile('cape')) {
+            if(Storage::disk('public')->exists($book->cape)) {
+                Storage::disk('public')->delete($book->cape);
+            }
+            $data['cape'] = $this->imageUpload($request->file('cape'), 'books');
+        }
+
         $data['publication_date'] = date('Y-m-d');
 
         $book->update($data);
@@ -164,7 +173,7 @@ class BookController extends Controller
             'publication_date'  =>  ['required', 'date_format:d/m/Y'],
             'color'             =>  ['required', 'string'],
             'cdd'               =>  ['required', 'string'],
-            'cape'              =>  ['string'],
+            'cape'              =>  ['image'],
             'company_id'        =>  ['required', 'string', 'exists:companies,id'],
         ];
 
