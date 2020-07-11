@@ -4,10 +4,13 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Traits\Messages;
 use App\Author;
 
 class AuthorController extends Controller
 {
+    use Messages;
+
     private $author;
 
     public function __construct(Author $author)
@@ -36,6 +39,11 @@ class AuthorController extends Controller
     public function show($slug)
     {
         $author = $this->author->where('id', $slug)->first();
+
+        if(is_null($author)){
+            return $this->errorMessage("Autor não encontrado.");
+        }
+        
         $author->books;
 
         return response()->json(['data' => $author]);

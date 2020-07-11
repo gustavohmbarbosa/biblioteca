@@ -18,6 +18,10 @@ Route::get('books/', 'BookController@index')->name('Books.index');
 Route::any('books/{slug}', 'BookController@show')->name('Books.show');
 Route::get('authors/', 'AuthorController@index')->name('authors.index');
 Route::get('authors/{slug}/books', 'AuthorController@show')->name('authors.show');
+<<<<<<< HEAD
+=======
+Route::post('/register', 'Reader\\ReaderController@store')->name('register');
+>>>>>>> bf75719bdb12e3cf933181cff9e4e46eedb97188
 
 /*
 |--------------------------------------------------------------------------
@@ -31,6 +35,12 @@ Route::post('login', 'Reader\\AuthController@login')->name('login');
 Route::group(['middleware' => 'auth.reader.jwt'], function () {
     Route::name('reader.')->namespace('Reader')->group(function () {
         Route::post('logout', 'AuthController@logout')->name('logout');
+<<<<<<< HEAD
+=======
+        Route::get('{slug}', 'ReaderController@show')->name('show');
+        Route::put('{slug}', 'ReaderController@update')->name('update');
+        Route::get('{slug}/books', 'ReaderController@showBooks')->name('books');
+>>>>>>> bf75719bdb12e3cf933181cff9e4e46eedb97188
     });
 });
 
@@ -48,7 +58,11 @@ Route::group(['middleware' => 'auth.admin.jwt'], function () {
 
         // Users
         Route::name('users.')->group(function(){
+<<<<<<< HEAD
             Route::resource('users', 'UserController');
+=======
+            Route::resource('usuarios', 'UserController');
+>>>>>>> bf75719bdb12e3cf933181cff9e4e46eedb97188
             Route::post('logout', 'AuthController@logout')->name('logout');
         });
 

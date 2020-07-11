@@ -102,7 +102,7 @@ class BookController extends Controller
             $data['cape'] = $this->imageUpload($request->file('cape'), 'books');
         }
 
-        $data['publication_date'] = date('Y-m-d');
+        $data['publication_date'] = date('Y-m-d', strtotime($data['publication_date']));
 
         $book->update($data);
 
@@ -144,7 +144,7 @@ class BookController extends Controller
 
         $books = $this->book->search($filter, $column);
 
-        if (empty($books)) {
+        if (count($books) == 0) {
             return $this->errorMessage("Nenhum livro foi encontrado.");
         }
 
