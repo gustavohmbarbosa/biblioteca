@@ -17,8 +17,14 @@ class ReaderAuthenticate
      */
     public function handle($request, Closure $next)
     {
-        if (!$request->user('reader')){
+        $reader = $request->user('reader');
+
+        if (!$reader){
             return response()->json(['status' => 'Não autorizado'], 401);
+        }
+
+        if ($reader->status == "INATIVO"){
+            return response()->json(['status' => 'Seu perfil está INATIVO. Consulte um bibliotecário.'], 401);
         }
         
         return $next($request);
