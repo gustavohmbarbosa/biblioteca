@@ -4,10 +4,13 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Traits\Messages;
 use App\Book;
 
 class BookController extends Controller
 {
+    use Messages;
+
     private $book;
 
     public function __construct(Book $book){
@@ -40,6 +43,11 @@ class BookController extends Controller
     public function show($slug)
     {
         $book = $this->book->where('slug', $slug)->first();
+
+        if (is_null($book)) {
+            return $this->errorMessage("Livro não encontrado.");
+        }
+
         $book->company;
         $book->authors;
 

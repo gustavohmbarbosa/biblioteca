@@ -172,7 +172,7 @@ class ReaderController extends Controller
 
         $readers = $this->reader->search($filter, $column);
 
-        if (empty($readers)) {
+        if (count($readers) == 0) {
             return $this->errorMessage("Nenhum leitor foi encontrado.");
         }
 
