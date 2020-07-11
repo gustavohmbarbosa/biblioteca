@@ -11,7 +11,7 @@ class Author extends Model
     use HasSlug;
 
     protected $fillable = [
-        'id','name'
+        'name', 'biography', 'image', 'slug'
     ];
 
     /**

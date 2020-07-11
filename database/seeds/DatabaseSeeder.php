@@ -17,6 +17,7 @@ class DatabaseSeeder extends Seeder
             ReaderTableSeeder::class,
             CompanyTableSeeder::class,
             BooksTableSeeder::class,
+            AuthorTableSeeder::class
         ]);
     }
 }
