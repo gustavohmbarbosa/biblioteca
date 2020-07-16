@@ -38,7 +38,7 @@ Entre no diretório do Backend da aplicação com `cd biblioteca`.
 Crie o banco de dados com o seguinte comando:
 
 ```mysql
-CREATE DATABASE trivia CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+CREATE DATABASE biblioteca CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 ```
 
 Agora instale as dependências do Laravel, execute as migrações e inicie o servidor:
@@ -48,7 +48,7 @@ composer install
 php artisan migrate
 php artisan serve
 ```
-Com isso você podera acessar a API pela rota/link [http://127.0.0.1:8000/api/](127.0.0.1:8000/api/).
+Com isso você podera acessar a API pela rota/link [http://127.0.0.1:8000/api/](http://127.0.0.1:8000/api/).
 
 ### Configurando Frontend
 
