@@ -61,6 +61,12 @@ DB_USERNAME=root
 DB_PASSWORD=
 ```
 
+Agora gere uma chave JWT para autenticação:
+
+```
+php artisan jwt:secret
+```
+
 Agora instale as dependências do Laravel, gere uma chave, execute as migrações e inicie o servidor:
 
 ```
