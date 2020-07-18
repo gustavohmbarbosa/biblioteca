@@ -1,60 +1,85 @@
+<!-- =========================================================================================
+	File Name: App.vue
+	Description: Main vue file - APP
+	----------------------------------------------------------------------------------------
+	Item Name: Vuexy - Vuejs, HTML & Laravel Admin Dashboard Template
+	Author: Pixinvent
+	Author URL: http://www.themeforest.net/user/pixinvent
+========================================================================================== -->
+
+
 <template>
-  <v-app>
-    <v-app-bar
-      app
-      color="primary"
-      dark
-    >
-      <div class="d-flex align-center">
-        <v-img
-          alt="Vuetify Logo"
-          class="shrink mr-2"
-          contain
-          src="https://cdn.vuetifyjs.com/images/logos/vuetify-logo-dark.png"
-          transition="scale-transition"
-          width="40"
-        />
-
-        <v-img
-          alt="Vuetify Name"
-          class="shrink mt-1 hidden-sm-and-down"
-          contain
-          min-width="100"
-          src="https://cdn.vuetifyjs.com/images/logos/vuetify-name-dark.png"
-          width="100"
-        />
-      </div>
-
-      <v-spacer></v-spacer>
-
-      <v-btn
-        href="https://github.com/vuetifyjs/vuetify/releases/latest"
-        target="_blank"
-        text
-      >
-        <span class="mr-2">Latest Release</span>
-        <v-icon>mdi-open-in-new</v-icon>
-      </v-btn>
-    </v-app-bar>
-
-    <v-content>
-      <HelloWorld/>
-    </v-content>
-  </v-app>
+	<div id="app" :class="vueAppClasses">
+		<router-view @setAppClasses="setAppClasses" />
+	</div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld';
+import themeConfig from '@/../themeConfig.js'
 
 export default {
-  name: 'App',
-
-  components: {
-    HelloWorld,
+  data() {
+    return {
+      vueAppClasses: [],
+    }
   },
+  watch: {
+    '$store.state.theme'(val) {
+      this.toggleClassInBody(val)
+    },
+    '$vs.rtl'(val) {
+      document.documentElement.setAttribute("dir", val ? "rtl" : "ltr")
+    }
+  },
+  methods: {
+    toggleClassInBody(className) {
+      if (className == 'dark') {
+        if (document.body.className.match('theme-semi-dark')) document.body.classList.remove('theme-semi-dark')
+        document.body.classList.add('theme-dark')
+      }
+      else if (className == 'semi-dark') {
+        if (document.body.className.match('theme-dark')) document.body.classList.remove('theme-dark')
+        document.body.classList.add('theme-semi-dark')
+      }
+      else {
+        if (document.body.className.match('theme-dark'))      document.body.classList.remove('theme-dark')
+        if (document.body.className.match('theme-semi-dark')) document.body.classList.remove('theme-semi-dark')
+      }
+    },
+    setAppClasses(classesStr) {
+      this.vueAppClasses.push(classesStr)
+    },
+    handleWindowResize() {
+      this.$store.commit('UPDATE_WINDOW_WIDTH', window.innerWidth)
 
-  data: () => ({
-    //
-  }),
-};
+      // Set --vh property
+      document.documentElement.style.setProperty('--vh', `${window.innerHeight * 0.01}px`);
+    },
+    handleScroll() {
+      this.$store.commit('UPDATE_WINDOW_SCROLL_Y', window.scrollY)
+    }
+  },
+  mounted() {
+    this.toggleClassInBody(themeConfig.theme)
+    this.$store.commit('UPDATE_WINDOW_WIDTH', window.innerWidth)
+
+    let vh = window.innerHeight * 0.01;
+    // Then we set the value in the --vh custom property to the root of the document
+    document.documentElement.style.setProperty('--vh', `${vh}px`);
+  },
+  async created() {
+
+    let dir = this.$vs.rtl ? "rtl" : "ltr"
+    document.documentElement.setAttribute("dir", dir)
+
+    window.addEventListener('resize', this.handleWindowResize)
+    window.addEventListener('scroll', this.handleScroll)
+
+  },
+  destroyed() {
+    window.removeEventListener('resize', this.handleWindowResize)
+    window.removeEventListener('scroll', this.handleScroll)
+  },
+}
+
 </script>
