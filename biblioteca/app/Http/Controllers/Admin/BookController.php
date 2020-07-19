@@ -160,30 +160,32 @@ class BookController extends Controller
    protected function validator($data)
    {
         $fields = [
-            'title'             =>  ['required', 'string', 'max:190'],
-            'subtitle'          =>  ['string', 'max:190'],
-            'origin'            =>  ['required', Rule::in(['Doado', 'Comprado'])],
-            'price'             =>  ['string'],
-            'isbn'              =>  ['required', 'string', 'max:13'],
-            'synopsis'          =>  ['string'],
-            'pages'             =>  ['required', 'string', 'max:5'],
-            'language'          =>  ['required', 'string', 'max:190'],
-            'observations'      =>  ['string'],
-            'edition'           =>  ['required', 'string', 'max:3'],
-            'publication_date'  =>  ['required', 'date_format:d/m/Y'],
-            'color'             =>  ['required', 'string'],
-            'cdd'               =>  ['required', 'string'],
-            'cape'              =>  ['image'],
-            'company_id'        =>  ['required', 'string', 'exists:companies,id'],
+            'title'            => ['required', 'string', 'max:190'],
+            'subtitle'         => ['string', 'max:190'],
+            'origin'           => ['required', Rule::in(['Doado', 'Comprado'])],
+            'price'            => ['string'],
+            'isbn'             => ['required', 'string', 'max:13'],
+            'synopsis'         => ['string'],
+            'pages'            => ['required', 'string', 'max:5'],
+            'language'         => ['required', 'string', 'max:190'],
+            'observations'     => ['string'],
+            'edition'          => ['required', 'string', 'max:3'],
+            'publication_date' => ['required', 'date_format:d/m/Y'],
+            'color'            => ['required', 'string'],
+            'cdd'              => ['required', 'string'],
+            'cape'             => ['image', 'mimes:jpeg,jpg,png'],
+            'company_id'       => ['required', 'string', 'exists:companies,id'],
         ];
 
         $messages = [
-            'required'      =>  'Este campo é obrigatório!',
-            'string'        =>  'Insira caracteres válidos!',
-            'max'           =>  'Campo deve ter no máximo :max caracteres.',
-            'in'            =>  'Selecione um dos valores pré-informados.',
-            'exists'        =>  'Essa editora não existe. Tente novamente.',
-            'date_format'   =>  'Essa não é uma data válida.',
+            'required'    => 'Este campo é obrigatório!',
+            'string'      => 'Insira caracteres válidos!',
+            'max'         => 'Campo deve ter no máximo :max caracteres.',
+            'in'          => 'Selecione um dos valores pré-informados.',
+            'exists'      => 'Essa editora não existe. Tente novamente.',
+            'date_format' => 'Essa não é uma data válida.',
+            'image'       => 'A capa deve ser uma imagem.',
+            'mimes'       => 'A imagem deve se do tipo: jpeg, jpg ou png.'
         ];
 
         return $data->validate($fields, $messages);

@@ -207,20 +207,23 @@ class ReaderController extends Controller
             'course_id'    => ['required', 'string', 'exists:courses,id'],
             'registration' => ['required', 'string'],
             'entry_year'   => ['required', 'size:4', 'date_format:Y'],
+            'image'        => ['image', 'mimes:jpeg,jpg,png']
         ];
 
         $messages = [
-            'required'       =>  'Este campo é obrigatório!',
-            'date_format'    =>  'Essa não é uma data válida.',
-            'size'           =>  'Campo deve ter exatamente :size números.',
-            'min'            =>  'Campo deve ter no mínimo :min caracteres.',
-            'max'            =>  'Campo deve ter no máximo :max caracteres.',
-            'email'          =>  'Insira um endereço de e-mail válido!',
-            'unique'         =>  'Este e-mail já esta em uso. Tente outro.',
-            'confirmed'      =>  'As senhas não coincidem. Tente novamente.',
-            'string'         =>  'Insira caracteres válidos!',
-            'in'             =>  'Selecione um dos valores pré-informados.',
-            'exists'         =>  'Esse curso não existe. Tente novamente.',
+            'required'    => 'Este campo é obrigatório!',
+            'date_format' => 'Essa não é uma data válida.',
+            'size'        => 'Campo deve ter exatamente :size números.',
+            'min'         => 'Campo deve ter no mínimo :min caracteres.',
+            'max'         => 'Campo deve ter no máximo :max caracteres.',
+            'email'       => 'Insira um endereço de e-mail válido!',
+            'unique'      => 'Este e-mail já esta em uso. Tente outro.',
+            'confirmed'   => 'As senhas não coincidem. Tente novamente.',
+            'string'      => 'Insira caracteres válidos!',
+            'in'          => 'Selecione um dos valores pré-informados.',
+            'exists'      => 'Esse curso não existe. Tente novamente.',
+            'image'       => 'Você deve inserir uma imagem.',
+            'mimes'       => 'A imagem deve se do tipo: jpeg, jpg ou png.'
         ];
 
         return $data->validate($fields, $messages);

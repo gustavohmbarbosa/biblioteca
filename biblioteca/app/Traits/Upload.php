@@ -3,11 +3,13 @@ namespace App\Traits;
 use Illuminate\Http\Request;
 
 trait Upload {
-    /**
-     * @param object $image
-     * @param string $table
-     */
 
+    /**
+     * Upload Image
+     * 
+     * @param object $image
+     * @param string $directory
+     */
     private function imageUpload($image, $directory)
     {
 

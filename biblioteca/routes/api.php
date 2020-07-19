@@ -35,7 +35,7 @@ Route::group(['middleware' => 'auth.reader.jwt'], function () {
         Route::post('logout', 'AuthController@logout')->name('logout');
         Route::get('{slug}', 'ReaderController@show')->name('show');
         Route::put('{slug}', 'ReaderController@update')->name('update');
-        Route::get('{slug}/books', 'ReaderController@showBooks')->name('books');
+        Route::get('{slug}/historic/', 'ReaderController@showBooks')->name('books');
     });
 });
 

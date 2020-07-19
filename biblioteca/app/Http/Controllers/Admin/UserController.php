@@ -13,6 +13,7 @@ use App\User;
 class UserController extends Controller
 {
     use Messages;
+    use Upload;
 
     private $user;
 
@@ -136,7 +137,7 @@ class UserController extends Controller
             'email'     => ['required', 'string', 'max:190' , 'email', Rule::unique('users')->ignore($id)],
             'password'  => [Rule::requiredIf(!$id), 'string', 'min:8', 'confirmed'],
             'type'      => ['required', Rule::in(['SIMPLES', 'MASTER'])],
-            'image'     => ['required', 'image']
+            'image'     => ['image', 'mimes:jpeg,jpg,png']
         ];
 
         $messages = [
@@ -148,7 +149,8 @@ class UserController extends Controller
             'string'    => 'Insira caracteres válidos!',
             'min'       => 'Campo deve ter no mínimo :min caracteres.',
             'in'        => 'Selecione um dos valores pré-informados.',
-            'image'     => 'Essa imagem está em um formato inválido.'
+            'image'     => 'Você deve inserir uma imagem.',
+            'mimes'     => 'A imagem deve se do tipo: jpeg, jpg ou png.'
         ];
 
         return $data->validate($fields, $messages);

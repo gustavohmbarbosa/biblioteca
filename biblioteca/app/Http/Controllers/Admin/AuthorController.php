@@ -129,12 +129,15 @@ class AuthorController extends Controller
         $fields = [
             'name'      => ['required', 'string', 'max:190'],
             'biography' => ['string'],
+            'image'     => ['image', 'mimes:jpeg,jpg,png']
         ];
 
         $messages = [
-            'required'  =>  'Este campo é obrigatório!',
-            'string'    =>  'Insira caracteres válidos!',
-            'max'       =>  'Campo deve ter no máximo :max caracteres.',
+            'required' => 'Este campo é obrigatório!',
+            'string'   => 'Insira caracteres válidos!',
+            'max'      => 'Campo deve ter no máximo :max caracteres.',
+            'image'    => 'Você deve inserir uma imagem.',
+            'mimes'    => 'A imagem deve se do tipo: jpeg, jpg ou png.'
         ];
 
         return $data->validate($fields, $messages);
