@@ -1,4 +1,4 @@
-<p align="center"><img src="https://res.cloudinary.com/dozt2izvj/image/upload/v1594875744/logo-lib-comp-orange_ttkmpy.png" width="400"></p>
+<p align="center"><img src="https://res.cloudinary.com/dozt2izvj/image/upload/v1595030984/logo-lib-comp-blue_lpahno.png" width="400"></p>
 
 <p align="center">
     <img alt="GitHub Language Count" src="https://img.shields.io/github/languages/count/Gustavo-HMB/biblioteca" />

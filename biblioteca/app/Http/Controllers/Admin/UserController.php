@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Hash;
+use App\Traits\Upload;
 use App\Traits\Messages;
 use App\User;
 
@@ -42,6 +43,10 @@ class UserController extends Controller
     {
         $data = $this->validator($request);
         $data['password'] = Hash::make($data['password']);
+
+        if($request->hasFile('image')) {
+            $data['image'] = $this->imageUpload($request->file('image'), 'users');
+        }
 
         $this->user->create($data);
 
@@ -86,6 +91,13 @@ class UserController extends Controller
             $data['password'] = Hash::make($data['password']);
         }
 
+        if($request->hasFile('image')) {
+            if(Storage::disk('public')->exists($user->image)) {
+                Storage::disk('public')->delete($user->image);
+            }
+            $data['image'] = $this->imageUpload($request->file('image'), 'users');
+        }
+
         $user->update($data);
 
         return $this->message("Usuário atualizado com sucesso!");
@@ -123,18 +135,20 @@ class UserController extends Controller
             'name'      => ['required', 'string', 'max:190'],
             'email'     => ['required', 'string', 'max:190' , 'email', Rule::unique('users')->ignore($id)],
             'password'  => [Rule::requiredIf(!$id), 'string', 'min:8', 'confirmed'],
-            'type'      => ['required', Rule::in(['SIMPLES', 'MASTER'])]
+            'type'      => ['required', Rule::in(['SIMPLES', 'MASTER'])],
+            'image'     => ['required', 'image']
         ];
 
         $messages = [
-            'required'  =>  'Este campo é obrigatório!',
-            'max'       =>  'Campo deve ter no mínimo :max caracteres.',
-            'email'     =>  'Insira um endereço de e-mail válido!',
-            'unique'    =>  'Este e-mail já esta em uso. Tente outro.',
-            'confirmed' =>  'As senhas não coincidem. Tente novamente.',
-            'string'    =>  'Insira caracteres válidos!',
-            'min'       =>  'Campo deve ter no mínimo :min caracteres.',
-            'in'        =>  'Selecione um dos valores pré-informados.',
+            'required'  => 'Esse campo é obrigatório!',
+            'max'       => 'Campo deve ter no mínimo :max caracteres.',
+            'email'     => 'Insira um endereço de e-mail válido!',
+            'unique'    => 'Esse e-mail já está em uso. Tente outro.',
+            'confirmed' => 'As senhas não coincidem. Tente novamente.',
+            'string'    => 'Insira caracteres válidos!',
+            'min'       => 'Campo deve ter no mínimo :min caracteres.',
+            'in'        => 'Selecione um dos valores pré-informados.',
+            'image'     => 'Essa imagem está em um formato inválido.'
         ];
 
         return $data->validate($fields, $messages);
