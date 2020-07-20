@@ -47,10 +47,10 @@ export default [
         i18n: "Livros",
         submenu: [
           {
-            url: '/livros/adicao',
-            name: "Adição",
-            slug: "livros-adicao",
-            i18n: "Adicionar",
+            url: '/livros/cadastro',
+            name: "Cadastro",
+            slug: "livros-cadastro",
+            i18n: "Cadastro",
           },
           {
             url: '/livros',
@@ -64,14 +64,14 @@ export default [
         url : 'emprestimos',
         name: 'Emprestimos',
         slug: 'emprestimos',
-        icon: 'PlusSquareIcon'
+        icon: 'RepeatIcon'
       },
-      {
-        url: "/page2",
-        name: "Page 2",
-        slug: "page2",
-        icon: "FileIcon",
-      },
+      // {
+      //   url: "/page2",
+      //   name: "Page 2",
+      //   slug: "page2",
+      //   icon: "FileIcon",
+      // },
     ]
   },
   {
@@ -122,7 +122,7 @@ export default [
       {
         url: null,
         name: "Cursos",
-        icon: "ClipboardIcon",
+        icon: "ListIcon",
         i18n: "Cursos",
         submenu: [
           {
