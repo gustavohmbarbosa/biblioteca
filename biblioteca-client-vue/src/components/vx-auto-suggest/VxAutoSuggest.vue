@@ -56,7 +56,7 @@
 
             <li class="auto-suggest__suggestion-group__suggestion py-3 px-4 no-results" v-if="!suggestion_list.length && searchQuery">
               <slot name="noResult" :group_name="grp_name">
-                  <p>No Results Found.</p>
+                  <p>Nenhum resultado encontrado.</p>
               </slot>
             </li>
           </ul>
@@ -71,7 +71,7 @@ export default{
   props: {
     placeholder: {
       type: String,
-      default: 'Search..'
+      default: 'Buscando...'
     },
     data: {
       type: Object,

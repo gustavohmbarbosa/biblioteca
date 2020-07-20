@@ -168,7 +168,7 @@ export default [
       },
       {
         url: "/configuracoes",
-        name: "Configurações",
+        name: "Sistema",
         slug: "configuracoes",
         icon: "SettingsIcon",
       }
