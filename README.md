@@ -69,12 +69,11 @@ php artisan jwt:secret
 
 Agora instale as dependências do Laravel, gere uma chave, execute as migrações e inicie o servidor:
 
-```
 composer install
 php artisan key:generate
 php artisan migrate --seed
 php artisan serve
-```
+
 Com isso você podera acessar a API pela rota/link: **[http://127.0.0.1:8000/api/](http://127.0.0.1:8000/api/)**
 
 ### Configurando Frontend

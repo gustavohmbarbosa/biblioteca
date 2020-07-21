@@ -41,7 +41,7 @@ const router = new Router({
                 name: 'page-2',
                 component: () => import('./views/Page2.vue')
               },
-            
+
 
         // =============================================================================
         // Outros
@@ -105,11 +105,11 @@ const router = new Router({
                 name: 'page-login',
                 component: () => import('@/views/pages/Login.vue')
               },
-              // {
-              //   path: '/pages/register',
-              //   name: 'page-register',
-              //   component: () => import('@/views/pages/Register.vue')
-              // },
+              {
+                path: '/pages/register',
+                name: 'page-register',
+                component: () => import('@/views/pages/Register.vue')
+              },
               {
                 path: '/pages/error-404',
                 name: 'page-error-404',
