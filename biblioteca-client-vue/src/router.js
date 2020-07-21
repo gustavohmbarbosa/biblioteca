@@ -41,6 +41,53 @@ const router = new Router({
                 name: 'page-2',
                 component: () => import('./views/Page2.vue')
               },
+            
+
+        // =============================================================================
+        // Outros
+        // =============================================================================
+              {
+                path: '/bibliotecarios',
+                name: 'admin-user-list',
+                component: () => import('@/views/admin/user/user-list/UserList.vue'),
+                meta: {
+                    breadcrumb: [
+                        { title: 'Home', url: '/' },
+                        { title: 'Bibliotecários' },
+                        { title: 'Lista', active: true },
+                    ],
+                    pageTitle: 'Bibliotecários',
+                    rule: 'editor'
+                },
+              },
+              {
+                path: '/apps/user/user-view/:userId',
+                name: 'app-user-view',
+                component: () => import('@/views/admin/user/UserView.vue'),
+                meta: {
+                    breadcrumb: [
+                        { title: 'Home', url: '/' },
+                        { title: 'User' },
+                        { title: 'View', active: true },
+                    ],
+                    pageTitle: 'User View',
+                    rule: 'editor'
+                },
+              },
+              {
+                path: '/apps/user/user-edit/:userId',
+                name: 'app-user-edit',
+                component: () => import('@/views/admin/user/user-edit/UserEdit.vue'),
+                meta: {
+                    breadcrumb: [
+                        { title: 'Home', url: '/' },
+                        { title: 'User' },
+                        { title: 'Edit', active: true },
+                    ],
+                    pageTitle: 'User Edit',
+                    rule: 'editor'
+                },
+              },
             ],
         },
     // =============================================================================
@@ -58,6 +105,11 @@ const router = new Router({
                 name: 'page-login',
                 component: () => import('@/views/pages/Login.vue')
               },
+              // {
+              //   path: '/pages/register',
+              //   name: 'page-register',
+              //   component: () => import('@/views/pages/Register.vue')
+              // },
               {
                 path: '/pages/error-404',
                 name: 'page-error-404',
