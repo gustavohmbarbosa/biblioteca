@@ -21,10 +21,10 @@
             <input type="file" class="hidden" ref="update_avatar_input" @change="update_avatar" accept="image/*">
 
             <!-- Toggle comment of below buttons as one for actual flow & currently shown is only for demo -->
-            <vs-button class="mr-4 mb-4">Change Avatar</vs-button>
+            <vs-button class="mr-4 mb-4">Alterar Foto</vs-button>
             <!-- <vs-button type="border" class="mr-4" @click="$refs.update_avatar_input.click()">Change Avatar</vs-button> -->
 
-            <vs-button type="border" color="danger">Remove Avatar</vs-button>
+            <vs-button type="border" color="danger">Remover Foto</vs-button>
           </div>
         </div>
       </div>
@@ -33,10 +33,7 @@
     <!-- Content Row -->
     <div class="vx-row">
       <div class="vx-col md:w-1/2 w-full">
-        <vs-input class="w-full mt-4" label="Username" v-model="data_local.username" v-validate="'required|alpha_num'" name="username" />
-        <span class="text-danger text-sm"  v-show="errors.has('username')">{{ errors.first('username') }}</span>
-
-        <vs-input class="w-full mt-4" label="Name" v-model="data_local.name" v-validate="'required|alpha_spaces'" name="name" />
+        <vs-input class="w-full mt-4" label="Nome" v-model="data_local.name" v-validate="'required|alpha_spaces'" name="name" />
         <span class="text-danger text-sm"  v-show="errors.has('name')">{{ errors.first('name') }}</span>
 
         <vs-input class="w-full mt-4" label="Email" v-model="data_local.email" type="email" v-validate="'required|email'" name="email" />
@@ -52,14 +49,10 @@
         </div>
 
         <div class="mt-4">
-          <label class="vs-input--label">Role</label>
+          <label class="vs-input--label">Função</label>
           <v-select v-model="role_local" :clearable="false" :options="roleOptions" v-validate="'required'" name="role" :dir="$vs.rtl ? 'rtl' : 'ltr'" />
           <span class="text-danger text-sm"  v-show="errors.has('role')">{{ errors.first('role') }}</span>
         </div>
-
-        <vs-input class="w-full mt-4" label="Company" v-model="data_local.company" v-validate="'alpha_spaces'" name="company" />
-        <span class="text-danger text-sm"  v-show="errors.has('company')">{{ errors.first('company') }}</span>
-
       </div>
     </div>
 
@@ -70,7 +63,7 @@
         <div class="vx-col w-full">
           <div class="flex items-end px-3">
             <feather-icon svgClasses="w-6 h-6" icon="LockIcon" class="mr-2" />
-            <span class="font-medium text-lg leading-none">Permissions</span>
+            <span class="font-medium text-lg leading-none">Permissões</span>
           </div>
           <vs-divider />
         </div>

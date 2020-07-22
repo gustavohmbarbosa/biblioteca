@@ -61,7 +61,15 @@ export default {
   },
   data() {
     return {
-      user_data: null,
+      user_data: 
+        {
+          "id": 1,
+          "avatar": require("@/assets/images/portrait/small/avatar-s-3.jpg"),
+          "name": "Angelo Sashington",
+          "email": "angelo@sashington.com",
+          "role": "admin",
+          "status": "active",
+        },
       user_not_found: false,
 
       /*

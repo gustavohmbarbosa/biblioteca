@@ -10,10 +10,10 @@
 <template>
   <div id="page-user-view">
 
-    <vs-alert color="danger" title="User Not Found" :active.sync="user_not_found">
-      <span>User record with id: {{ $route.params.userId }} not found. </span>
+    <vs-alert color="danger" title="Usuário Não Encontrado" :active.sync="user_not_found">
+      <span>Registro de usuário com id: {{ $route.params.userId }} não encontrado. </span>
       <span>
-        <span>Check </span><router-link :to="{name:'page-user-list'}" class="text-inherit underline">All Users</router-link>
+        <span>Verificar </span><router-link :to="{name:'page-user-list'}" class="text-inherit underline">Todos Os Usuários</router-link>
       </span>
     </vs-alert>
 
@@ -35,11 +35,7 @@
           <div class="vx-col flex-1" id="account-info-col-1">
             <table>
               <tr>
-                <td class="font-semibold">Username</td>
-                <td>{{ user_data.username }}</td>
-              </tr>
-              <tr>
-                <td class="font-semibold">Name</td>
+                <td class="font-semibold">Nome</td>
                 <td>{{ user_data.name }}</td>
               </tr>
               <tr>
@@ -58,88 +54,20 @@
                 <td>{{ user_data.status }}</td>
               </tr>
               <tr>
-                <td class="font-semibold">Role</td>
+                <td class="font-semibold">Função</td>
                 <td>{{ user_data.role }}</td>
-              </tr>
-              <tr>
-                <td class="font-semibold">Company</td>
-                <td>{{ user_data.company }}</td>
               </tr>
             </table>
           </div>
           <!-- /Information - Col 2 -->
           <div class="vx-col w-full flex" id="account-manage-buttons">
-            <vs-button icon-pack="feather" icon="icon-edit" class="mr-4" :to="{name: 'app-user-edit', params: { userId: $route.params.userId }}">Edit</vs-button>
-            <vs-button type="border" color="danger" icon-pack="feather" icon="icon-trash" @click="confirmDeleteRecord">Delete</vs-button>
+            <vs-button icon-pack="feather" icon="icon-edit" class="mr-4" :to="{name: 'admin-user-edit', params: { userId: $route.params.userId }}">Editar</vs-button>
+            <vs-button type="border" color="danger" icon-pack="feather" icon="icon-trash" @click="confirmDeleteRecord">Excluir</vs-button>
           </div>
 
         </div>
 
       </vx-card>
-
-      <div class="vx-row">
-        <div class="vx-col lg:w-1/2 w-full">
-          <vx-card title="Information" class="mb-base">
-            <table>
-              <tr>
-                <td class="font-semibold">Birth Date</td>
-                <td>{{ user_data.dob }}</td>
-              </tr>
-              <tr>
-                <td class="font-semibold">Mobile</td>
-                <td>{{ user_data.mobile }}</td>
-              </tr>
-              <tr>
-                <td class="font-semibold">Website</td>
-                <td>{{ user_data.website }}</td>
-              </tr>
-              <tr>
-                <td class="font-semibold">Languages</td>
-                <td>{{ user_data.languages_known.join(", ") }}</td>
-              </tr>
-              <tr>
-                <td class="font-semibold">Gender</td>
-                <td>{{ user_data.gender }}</td>
-              </tr>
-              <tr>
-                <td class="font-semibold">Contact</td>
-                <td>{{ user_data.contact_options.join(", ") }}</td>
-              </tr>
-            </table>
-          </vx-card>
-        </div>
-
-        <div class="vx-col lg:w-1/2 w-full">
-          <vx-card title="Social Links" class="mb-base">
-            <table>
-              <tr>
-                <td class="font-semibold">Twitter</td>
-                <td>{{ user_data.social_links.twitter }}</td>
-              </tr>
-              <tr>
-                <td class="font-semibold">Facebook</td>
-                <td>{{ user_data.social_links.facebook }}</td>
-              </tr>
-              <tr>
-                <td class="font-semibold">Instagram</td>
-                <td>{{ user_data.social_links.instagram }}</td>
-              </tr>
-              <tr>
-                <td class="font-semibold">Github</td>
-                <td>{{ user_data.social_links.github }}</td>
-              </tr>
-              <tr>
-                <td class="font-semibold">CodePen</td>
-                <td>{{ user_data.social_links.codepen }}</td>
-              </tr>
-              <tr>
-                <td class="font-semibold">Slack</td>
-                <td>{{ user_data.social_links.slack }}</td>
-              </tr>
-            </table>
-          </vx-card>
-        </div>
-      </div>
 
       <!-- Permissions -->
       <vx-card>
@@ -148,7 +76,7 @@
           <div class="vx-col w-full">
             <div class="flex items-end px-3">
               <feather-icon svgClasses="w-6 h-6" icon="LockIcon" class="mr-2" />
-              <span class="font-medium text-lg leading-none">Permissions</span>
+              <span class="font-medium text-lg leading-none">Permissões</span>
             </div>
             <vs-divider />
           </div>
@@ -185,7 +113,14 @@ import moduleUserManagement from '@/store/admin/user/moduleUserManagement.js'
 export default {
   data() {
     return {
-      user_data: null,
+      user_data: {
+          "id": 1,
+          "avatar": require("@/assets/images/portrait/small/avatar-s-3.jpg"),
+          "name": "Angelo Sashington",
+          "email": "angelo@sashington.com",
+          "role": "admin",
+          "status": "active",
+      },
       user_not_found: false,
     }
   },
@@ -203,10 +138,11 @@ export default {
       this.$vs.dialog({
         type: 'confirm',
         color: 'danger',
-        title: `Confirm Delete`,
-        text: `You are about to delete "${this.user_data.username}"`,
+        title: `Confirmar Exclusão`,
+        text: `Você está prestes a excluir "${this.user_data.name}"`,
         accept: this.deleteRecord,
-        acceptText: "Delete"
+        acceptText: "Excluir",
+        cancelText: "Cancelar",
       })
     },
     deleteRecord() {
@@ -222,8 +158,8 @@ export default {
     showDeleteSuccess() {
       this.$vs.notify({
         color: 'success',
-        title: 'User Deleted',
-        text: 'The selected user was successfully deleted'
+        title: 'Usuário Excluído',
+        text: 'O usuário selecionado foi excluído com sucesso'
       })
     }
   },

@@ -55,7 +55,7 @@
         </div>
 
         <!-- TABLE ACTION COL-2: SEARCH & EXPORT AS CSV -->
-          <vs-input class="sm:mr-4 mr-0 sm:w-auto w-full sm:order-normal order-3 sm:mt-0 mt-4" v-model="searchQuery" @input="updateSearchQuery" placeholder="Search..." />
+          <vs-input class="sm:mr-4 mr-0 sm:w-auto w-full sm:order-normal order-3 sm:mt-0 mt-4" v-model="searchQuery" @input="updateSearchQuery" placeholder="Buscar..." />
           <!-- <vs-button class="mb-4 md:mb-0" @click="gridApi.exportDataAsCsv()">Export as CSV</vs-button> -->
 
           <!-- ACTION - DROPDOWN -->
@@ -197,8 +197,8 @@ export default {
           headerCheckboxSelection: true,
         },
         {
-          headerName: 'Username',
-          field: 'username',
+          headerName: 'Nome',
+          field: 'name',
           filter: true,
           width: 210,
           cellRendererFramework: 'CellRendererLink'
@@ -210,19 +210,7 @@ export default {
           width: 225,
         },
         {
-          headerName: 'Name',
-          field: 'name',
-          filter: true,
-          width: 200,
-        },
-        {
-          headerName: 'Country',
-          field: 'country',
-          filter: true,
-          width: 150,
-        },
-        {
-          headerName: 'Role',
+          headerName: 'Função',
           field: 'role',
           filter: true,
           width: 150,
@@ -235,21 +223,7 @@ export default {
           cellRendererFramework: 'CellRendererStatus'
         },
         {
-          headerName: 'Verified',
-          field: 'is_verified',
-          filter: true,
-          width: 125,
-          cellRendererFramework: 'CellRendererVerified',
-          cellClass: "text-center"
-        },
-        {
-          headerName: 'Department',
-          field: 'department',
-          filter: true,
-          width: 150,
-        },
-        {
-          headerName: 'Actions',
+          headerName: 'Ações',
           field: 'transactions',
           width: 150,
           cellRendererFramework: 'CellRendererActions',

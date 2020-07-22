@@ -23,8 +23,8 @@ export default {
       {title: 'Listar Cursos',            url: '/cursos',                     icon: 'ListIcon',           is_bookmarked: false},
       
       //OUTROS
-      {title: 'Cadastrar Bibliotecário',  url: '/bibliotecarios/cadastro',    icon: 'UserPlusIcon',       is_bookmarked: false},
-      {title: 'Listar Bibliotecários',    url: '/bibliotecarios',             icon: 'ListIcon',           is_bookmarked: false},
+      {title: 'Cadastrar Usuário',  url: '/usuario/cadastro',    icon: 'UserPlusIcon',       is_bookmarked: false},
+      {title: 'Listar Usuários',    url: '/usuario',             icon: 'ListIcon',           is_bookmarked: false},
       {title: 'Configurações',            url: '/configuracoes',              icon: 'SettingsIcon',       is_bookmarked: false},
     ]
   }

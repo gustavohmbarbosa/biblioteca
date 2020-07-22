@@ -148,20 +148,20 @@ export default [
     items: [
       {
         url: null,
-        name: "Bibliotecários",
+        name: "Usuários",
         icon: "UsersIcon",
-        i18n: "Bibliotecários",
+        i18n: "Usuários",
         submenu: [
           {
-            url: '/bibliotecarios/cadastro',
+            url: '/usuarios/cadastro',
             name: "Cadastro",
-            slug: "bibliotecarios-cadastro",
+            slug: "usuarios-cadastro",
             i18n: "Cadastro",
           },
           {
-            url: '/bibliotecarios',
+            url: '/usuarios',
             name: "Lista",
-            slug: "bibliotecarios",
+            slug: "usuarios",
             i18n: "Lista",
           },
         ]
