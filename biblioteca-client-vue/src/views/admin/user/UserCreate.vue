@@ -42,7 +42,7 @@
 
             <div class="upload-img mt-5" v-if="!user.image">
               <input type="file" class="hidden" ref="uploadImgInput" @change="updateCurrImg" accept="image/*">
-              <vs-button @click="$refs.uploadImgInput.click()">Upload Image</vs-button>
+              <vs-button @click="$refs.uploadImgInput.click()">Selecionar Imagem</vs-button>
             </div>
 
             <template v-if="user.image">

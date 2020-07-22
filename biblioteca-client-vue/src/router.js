@@ -61,16 +61,16 @@ const router = new Router({
                 },
               },
               {
-                path: '/usuarios/visualizar/:userId',
+                path: '/usuarios/visualizacao/:userId',
                 name: 'admin-user-view',
                 component: () => import('@/views/admin/user/UserView.vue'),
                 meta: {
                     breadcrumb: [
                         { title: 'Home', url: '/' },
                         { title: 'Usuários ' },
-                        { title: 'Visualizar', active: true },
+                        { title: 'Visualização', active: true },
                     ],
-                    pageTitle: 'Visualizar Usuário',
+                    pageTitle: 'Visualização de Usuário',
                     rule: 'editor'
                 },
               },
@@ -89,16 +89,16 @@ const router = new Router({
               },
               },
               {
-                path: '/usuarios/editar/:userId',
+                path: '/usuarios/edicao/:userId',
                 name: 'admin-user-edit',
                 component: () => import('@/views/admin/user/user-edit/UserEdit.vue'),
                 meta: {
                     breadcrumb: [
                         { title: 'Home', url: '/' },
-                        { title: 'User' },
-                        { title: 'Edit', active: true },
+                        { title: 'Usuários' },
+                        { title: 'Edição', active: true },
                     ],
-                    pageTitle: 'User Edit',
+                    pageTitle: 'Edição de Usuário',
                     rule: 'editor'
                 },
               },

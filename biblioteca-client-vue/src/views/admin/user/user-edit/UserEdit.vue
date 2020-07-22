@@ -10,10 +10,11 @@
 <template>
   <div id="page-user-edit">
 
-    <vs-alert color="danger" title="User Not Found" :active.sync="user_not_found">
-      <span>User record with id: {{ $route.params.userId }} not found. </span>
+    <vs-alert color="danger" title="Usuário Não Encontrado" :active.sync="user_not_found">
+      <span>Registro de usuário com id: {{ $route.params.userId }} não encontrado. </span>
       <span>
-        <span>Check </span><router-link :to="{name:'page-user-list'}" class="text-inherit underline">All Users</router-link>
+        <span>Verificar </span>
+        <router-link :to="{name:'page-user-list'}" class="text-inherit underline">Todos Os Usuários</router-link>
       </span>
     </vs-alert>
 
@@ -22,19 +23,14 @@
       <div slot="no-body" class="tabs-container px-6 pt-6">
 
         <vs-tabs v-model="activeTab" class="tab-action-btn-fill-conatiner">
-          <vs-tab label="Account" icon-pack="feather" icon="icon-user">
+          <vs-tab label="Conta" icon-pack="feather" icon="icon-user">
             <div class="tab-text">
               <user-edit-tab-account class="mt-4" :data="user_data" />
             </div>
           </vs-tab>
-          <vs-tab label="Information" icon-pack="feather" icon="icon-info">
+          <vs-tab label="Senha" icon-pack="feather" icon="icon-lock">
             <div class="tab-text">
-              <user-edit-tab-information class="mt-4" :data="user_data" />
-            </div>
-          </vs-tab>
-          <vs-tab label="Social" icon-pack="feather" icon="icon-share-2">
-            <div class="tab-text">
-              <user-edit-tab-social class="mt-4" :data="user_data" />
+              <user-edit-tab-password class="mt-4" :data="user_data" />
             </div>
           </vs-tab>
         </vs-tabs>
@@ -47,8 +43,7 @@
 
 <script>
 import UserEditTabAccount     from "./UserEditTabAccount.vue"
-import UserEditTabInformation from "./UserEditTabInformation.vue"
-import UserEditTabSocial      from "./UserEditTabSocial.vue"
+import UserEditTabPassword from "./UserEditTabPassword.vue"
 
 // Store Module
 import moduleUserManagement from '@/store/admin/user/moduleUserManagement.js'
@@ -56,15 +51,14 @@ import moduleUserManagement from '@/store/admin/user/moduleUserManagement.js'
 export default {
   components: {
     UserEditTabAccount,
-    UserEditTabInformation,
-    UserEditTabSocial,
+    UserEditTabPassword,
   },
   data() {
     return {
       user_data: 
         {
           "id": 1,
-          "avatar": require("@/assets/images/portrait/small/avatar-s-3.jpg"),
+          "image": require("@/assets/images/portrait/small/avatar-s-3.jpg"),
           "name": "Angelo Sashington",
           "email": "angelo@sashington.com",
           "role": "admin",

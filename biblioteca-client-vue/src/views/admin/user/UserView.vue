@@ -19,15 +19,15 @@
 
     <div id="user-data" v-if="user_data">
 
-      <vx-card title="Account" class="mb-base">
+      <vx-card title="Conta" class="mb-base">
 
-        <!-- Avatar -->
+        <!-- image -->
         <div class="vx-row">
 
-          <!-- Avatar Col -->
-          <div class="vx-col" id="avatar-col">
+          <!-- image Col -->
+          <div class="vx-col" id="image-col">
             <div class="img-container mb-4">
-              <img :src="user_data.avatar" class="rounded w-full" />
+              <img :src="user_data.image" class="rounded w-full" />
             </div>
           </div>
 
@@ -115,7 +115,7 @@ export default {
     return {
       user_data: {
           "id": 1,
-          "avatar": require("@/assets/images/portrait/small/avatar-s-3.jpg"),
+          "image": require("@/assets/images/portrait/small/avatar-s-3.jpg"),
           "name": "Angelo Sashington",
           "email": "angelo@sashington.com",
           "role": "admin",
@@ -185,7 +185,7 @@ export default {
 </script>
 
 <style lang="scss">
-#avatar-col {
+#image-col {
   width: 10rem;
 }
 
