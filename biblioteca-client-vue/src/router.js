@@ -75,6 +75,11 @@ const router = new Router({
                 },
               },
               {
+                path: '/bibliotecarios/cadastro',
+                name: 'app-user-create',
+                component: () => import('@/views/admin/user/UserCreate.vue')
+              },
+              {
                 path: '/apps/user/user-edit/:userId',
                 name: 'app-user-edit',
                 component: () => import('@/views/admin/user/user-edit/UserEdit.vue'),
