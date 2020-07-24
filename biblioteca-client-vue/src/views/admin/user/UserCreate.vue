@@ -37,18 +37,13 @@
           </div>
         </div>
 
-<<<<<<< HEAD
-          <div class="vx-col m-auto" vs-w="6" vs-justify="center" vs-align="center">
-            <div class="centerx">
-              <vs-upload action="https://jsonplaceholder.typicode.com/posts/" @on-success="successUpload"/>
-=======
+
         <div class="vx-col m-auto centerx" vs-w="6" vs-justify="center" vs-align="center">
           <div class="centerx">
 
             <div class="upload-img mt-5" v-if="!data.image">
               <input type="file" class="hidden" ref="uploadImgInput" @change="updateCurrImg" accept="image/*">
               <vs-button color="success" @click="$refs.uploadImgInput.click()">Selecionar Imagem</vs-button>
->>>>>>> e75ab67b8b886e1e67a10709d4881333ded823a0
             </div>
 
             <template v-if="data.image">
@@ -65,7 +60,7 @@
                 <vs-button color="danger" type="border" @click="data.image = null">Remover Imagem</vs-button>
               </div>
             </template>
-            
+
           </div>
         </div>
       </div>
@@ -99,12 +94,7 @@ export default {
     'v-select': vSelect
   },
   methods: {
-<<<<<<< HEAD
-    successUpload: () => {
 
-    }
-  },
-=======
     updateCurrImg(input) {
       if (input.target.files && input.target.files[0]) {
         var reader = new FileReader()
@@ -118,12 +108,11 @@ export default {
        Object.assign(this.$data, this.$options.data())
     }
   }
->>>>>>> e75ab67b8b886e1e67a10709d4881333ded823a0
 }
 </script>
 
 <style scoped>
- 
+
   .con-img-upload {
     padding: 0;
   }
