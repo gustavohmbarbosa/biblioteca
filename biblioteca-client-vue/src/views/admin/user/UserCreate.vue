@@ -30,7 +30,7 @@
 
           <div class="vx-col m-auto" vs-w="6" vs-justify="center" vs-align="center">
             <div class="centerx">
-              <vs-upload action=""/>
+              <vs-upload action="https://jsonplaceholder.typicode.com/posts/" @on-success="successUpload"/>
             </div>
           </div>
         </div>
@@ -62,6 +62,11 @@ export default {
   },
   components: {
     'v-select': vSelect
-  }
+  },
+  methods: {
+    successUpload: () => {
+
+    }
+  },
 }
 </script>

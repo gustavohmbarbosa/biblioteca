@@ -43,9 +43,9 @@ const router = new Router({
               },
 
 
-        // =============================================================================
-        // Outros
-        // =============================================================================
+              /* Administrative */
+
+              // Users
               {
                 path: '/bibliotecarios',
                 name: 'admin-user-list',
@@ -93,18 +93,62 @@ const router = new Router({
                     rule: 'editor'
                 },
               },
+
+              // Readers
+              {
+                path: '/leitores',
+                name: 'admin-reader-list',
+                component: () => import('@/views/admin/reader/reader-list/ReaderList.vue'),
+                meta: {
+                    breadcrumb: [
+                        { title: 'Home', url: '/' },
+                        { title: 'Leitores' },
+                        { title: 'Lista', active: true },
+                    ],
+                    pageTitle: 'Leitores',
+                    rule: 'editor'
+                },
+              },
+              {
+                path: '/apps/reader/reader-view/:readerId',
+                name: 'admin-reader-view',
+                component: () => import('@/views/admin/reader/ReaderView.vue'),
+                meta: {
+                    breadcrumb: [
+                        { title: 'Home', url: '/' },
+                        { title: 'Leitores' },
+                        { title: 'View', active: true },
+                    ],
+                    pageTitle: 'Visualizar Leitor',
+                    rule: 'editor'
+                },
+              },
+              {
+                path: '/leitores/cadastro',
+                name: 'admin-reader-create',
+                component: () => import('@/views/admin/reader/ReaderCreate.vue')
+              },
+              {
+                path: '/apps/reader/reader-edit/:readerId',
+                name: 'admin-reader-edit',
+                component: () => import('@/views/admin/reader/reader-edit/ReaderEdit.vue'),
+                meta: {
+                    breadcrumb: [
+                        { title: 'Home', url: '/' },
+                        { title: 'Leitores' },
+                        { title: 'Edit', active: true },
+                    ],
+                    pageTitle: 'Editar Leitor',
+                    rule: 'editor'
+                },
+              },
             ],
         },
-    // =============================================================================
-    // FULL PAGE LAYOUTS
-    // =============================================================================
+        /* Authentication and Miscellaneous */
         {
             path: '',
             component: () => import('@/layouts/full-page/FullPage.vue'),
             children: [
-        // =============================================================================
-        // PAGES
-        // =============================================================================
               {
                 path: '/pages/login',
                 name: 'page-login',
