@@ -8,5 +8,13 @@
 ==========================================================================================*/
 
 export default {
-  readers: [],
+  readers: [
+    {
+      id: 1,
+      name: 'Caio',
+      email: 'caio@gmail.com',
+      phone: '(00) 00000-0000)',
+      status: 'Ativo'
+    }
+  ],
 }

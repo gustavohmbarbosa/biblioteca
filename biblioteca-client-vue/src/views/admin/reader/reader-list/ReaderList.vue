@@ -55,7 +55,7 @@
         </div>
 
         <!-- TABLE ACTION COL-2: SEARCH & EXPORT AS CSV -->
-          <vs-input class="sm:mr-4 mr-0 sm:w-auto w-full sm:order-normal order-3 sm:mt-0 mt-4" v-model="searchQuery" @input="updateSearchQuery" placeholder="Procurar..." />
+          <vs-input class="sm:mr-4 mr-0 sm:w-auto w-full sm:order-normal order-3 sm:mt-0 mt-4" v-model="searchQuery" @input="updateSearchQuery" placeholder="Buscar..." />
           <!-- <vs-button class="mb-4 md:mb-0" @click="gridApi.exportDataAsCsv()">Export as CSV</vs-button> -->
 
           <!-- ACTION - DROPDOWN -->
@@ -129,12 +129,10 @@ import '@/assets/scss/vuexy/extraComponents/agGridStyleOverride.scss'
 import vSelect from 'vue-select'
 
 // Store Module
-import moduleUserManagement from '@/store/admin/reader/moduleUserManagement.js'
+import moduleReaderManagement from '@/store/admin/reader/moduleReaderManagement.js'
 
 // Cell Renderer
-import CellRendererLink from "./cell-renderer/CellRendererLink.vue"
 import CellRendererStatus from "./cell-renderer/CellRendererStatus.vue"
-import CellRendererVerified from "./cell-renderer/CellRendererVerified.vue"
 import CellRendererActions from "./cell-renderer/CellRendererActions.vue"
 
 
@@ -144,9 +142,7 @@ export default {
     vSelect,
 
     // Cell Renderer
-    CellRendererLink,
     CellRendererStatus,
-    CellRendererVerified,
     CellRendererActions,
   },
   data() {
@@ -182,7 +178,7 @@ export default {
         {
           headerName: 'ID',
           field: 'id',
-          width: 125,
+          width: 100,
           filter: true,
           checkboxSelection: true,
           headerCheckboxSelectionFilteredOnly: true,
@@ -192,14 +188,13 @@ export default {
           headerName: 'Nome',
           field: 'name',
           filter: true,
-          width: 350,
-          cellRendererFramework: 'CellRendererLink'
+          width: 250
         },
         {
           headerName: 'Email',
           field: 'email',
           filter: true,
-          width: 270,
+          width: 275,
         },
         {
           headerName: 'Telefone',
@@ -207,13 +202,18 @@ export default {
           filter: true,
           width: 200,
         },
+        {
+          headerName: 'Status',
+          field: 'status',
+          filter: true,
+          width: 175,
+          cellRendererFramework: 'CellRendererStatus'
+        }
       ],
 
       // Cell Renderer Components
       components: {
-        CellRendererLink,
         CellRendererStatus,
-        CellRendererVerified,
         CellRendererActions,
       }
     }
@@ -235,7 +235,7 @@ export default {
   },
   computed: {
     readersData() {
-      return this.$store.state.userManagement.readers
+      return this.$store.state.readerManagement.readers
     },
     paginationPageSize() {
       if(this.gridApi) return this.gridApi.paginationGetPageSize()
@@ -273,7 +273,7 @@ export default {
       this.gridApi.onFilterChanged()
 
       // Reset Filter Options
-      this.roleFilter = this.statusFilter = this.isVerifiedFilter = this.departmentFilter = { label: 'All', value: 'all' }
+      this.roleFilter = this.statusFilter = this.isVerifiedFilter = this.departmentFilter = { label: 'Todos', value: 'all' }
 
       this.$refs.filterCard.removeRefreshAnimation()
     },
@@ -295,11 +295,11 @@ export default {
     }
   },
   created() {
-    if(!moduleUserManagement.isRegistered) {
-      this.$store.registerModule('userManagement', moduleUserManagement)
-      moduleUserManagement.isRegistered = true
+    if(!moduleReaderManagement.isRegistered) {
+      this.$store.registerModule('readerManagement', moduleReaderManagement)
+      moduleReaderManagement.isRegistered = true
     }
-    this.$store.dispatch("userManagement/fetchReaders").catch(err => { console.error(err) })
+    this.$store.dispatch("readerManagement/fetchReaders").catch(err => { console.error(err) })
   }
 }
 

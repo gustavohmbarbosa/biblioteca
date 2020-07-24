@@ -51,7 +51,7 @@ import UserEditTabInformation from "./UserEditTabInformation.vue"
 import UserEditTabSocial      from "./UserEditTabSocial.vue"
 
 // Store Module
-import moduleUserManagement from '@/store/admin/reader/moduleUserManagement.js'
+import moduleUserManagement from '@/store/admin/reader/moduleReaderManagement.js'
 
 export default {
   components: {

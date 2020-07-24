@@ -33,7 +33,7 @@
             </div>´
 
             <div class="vx-row">
-              <div class="vx-col sm:w-1/3 w-full mb-3">
+              <div class="vx-col sm:w-1/6 w-full mb-3">
                 <label>Ano</label>
                 <ul class="mt-3">
                   <li>
@@ -48,7 +48,7 @@
                 </ul>
               </div>
 
-              <div class="vx-col sm:w-1/3 w-full mb-3">
+              <div class="vx-col sm:w-1/6 w-full mb-3">
                 <label>Classe</label>
                 <ul class="mt-3">
                   <li>
@@ -60,7 +60,7 @@
                 </ul>
               </div>
 
-              <div class="vx-col sm:w-1/3 w-full mb-3">
+              <div class="vx-col sm:w-1/6 w-full mb-3">
                 <label>Curso</label>
                 <ul class="mt-3">
                   <li>
@@ -71,24 +71,26 @@
                   </li>
                 </ul>
               </div>
-            </div>
-
-            <div class="vx-row">
-              <div class="vx-col sm:w-1/2 w-full mb-3">
-                <label>Matrícula</label>
-                <vs-input class="w-full" icon="content_paste" placeholder="Matrícula" v-model="reader.registration" />
-              </div>
 
               <div class="vx-col sm:w-1/2 w-full mb-3">
-                <label>Ano de Matrícula</label>
-                <vs-input class="w-full" icon="date_range" placeholder="Ano de Matrícula" v-model="reader.entry_year" />
-              </div>
-            </div>
+                <div class="vx-row">
+                  <div class="vx-col sm:w-1/2 w-full mb-3">
+                    <label>Matrícula</label>
+                    <vs-input class="w-full" icon="content_paste" placeholder="Matrícula" v-model="reader.registration" />
+                  </div>
 
-            <div class="vx-row">
-              <div class="vx-col w-full mb-3">
-                <label>Status</label>
-                <v-select class="w-full" :options="['Ativado', 'Desativado', 'Bloqueado']" :dir="$vs.rtl ? 'rtl' : 'ltr'" v-model="reader.status"/>
+                  <div class="vx-col sm:w-1/2 w-full mb-3">
+                    <label>Ano de Matrícula</label>
+                    <vs-input class="w-full" icon="date_range" placeholder="Ano de Matrícula" v-model="reader.entry_year" />
+                  </div>
+                </div>
+
+                <div class="vx-row">
+                  <div class="vx-col w-full mb-3">
+                    <label>Status</label>
+                    <v-select class="w-full" :options="['Ativado', 'Desativado', 'Bloqueado']" :dir="$vs.rtl ? 'rtl' : 'ltr'" v-model="reader.status"/>
+                  </div>
+                </div>
               </div>
             </div>
 

@@ -8,10 +8,10 @@
 ==========================================================================================*/
 
 
-import state from './moduleUserManagementState.js'
-import mutations from './moduleUserManagementMutations.js'
-import actions from './moduleUserManagementActions.js'
-import getters from './moduleUserManagementGetters.js'
+import state from './moduleReaderManagementState.js'
+import mutations from './moduleReaderManagementMutations.js'
+import actions from './moduleReaderManagementActions.js'
+import getters from './moduleReaderManagementGetters.js'
 
 export default {
   isRegistered: false,
