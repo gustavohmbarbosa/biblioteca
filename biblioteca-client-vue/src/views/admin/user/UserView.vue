@@ -147,7 +147,7 @@ export default {
     },
     deleteRecord() {
       /* Below two lines are just for demo purpose */
-      this.$router.push({name:'app-user-list'});
+      this.$router.push({name:'admin-user-list'});
       this.showDeleteSuccess()
 
       /* UnComment below lines for enabling true flow if deleting user */

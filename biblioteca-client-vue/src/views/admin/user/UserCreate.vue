@@ -8,31 +8,31 @@
           <div class="vx-row mb-2">
             <div class="vx-col w-full">
               <vs-input class="w-full" icon-pack="feather" icon="icon-user" icon-no-border label-placeholder="Nome"
-                v-model="user.name" />
+                v-model="data.name" />
             </div>
           </div>
 
           <div class="vx-row mb-2">
             <div class="vx-col w-full">
               <vs-input type="email" class="w-full" icon-pack="feather" icon="icon-mail" icon-no-border
-                label-placeholder="Email" v-model="user.email" />
+                label-placeholder="Email" v-model="data.email" />
             </div>
           </div>
 
           <div class="vx-row">
             <div class="vx-col sm:w-1/2 w-full mb-3">
               <vs-input type="password" class="w-full" icon-pack="feather" icon="icon-lock" icon-no-border
-                label-placeholder="Senha" v-model="user.password" />
+                label-placeholder="Senha" v-model="data.password" />
             </div>
             <div class="vx-col sm:w-1/2 w-full mb-3">
               <vs-input type="password" class="w-full" icon-pack="feather" icon="icon-lock" icon-no-border
-                label-placeholder="Confirmar Senha" v-model="user.passwordConfirm" />
+                label-placeholder="Confirmar Senha" v-model="data.passwordConfirm" />
             </div>
           </div>
           <div class="vx-row">
             <div class="vx-col w-full mb-3">
-              <h6 class="mb-3">Nível de Acesso</h6>
-              <v-select :options="['Master','Comum']" :dir="$vs.rtl ? 'rtl' : 'ltr'" v-model="user.role" />
+              <h6 class="mb-3 text-center">Nível de Acesso</h6>
+              <v-select :options="['Master','Comum']" :dir="$vs.rtl ? 'rtl' : 'ltr'" v-model="data.role" />
             </div>
           </div>
         </div>
@@ -40,23 +40,23 @@
         <div class="vx-col m-auto centerx" vs-w="6" vs-justify="center" vs-align="center">
           <div class="centerx">
 
-            <div class="upload-img mt-5" v-if="!user.image">
+            <div class="upload-img mt-5" v-if="!data.image">
               <input type="file" class="hidden" ref="uploadImgInput" @change="updateCurrImg" accept="image/*">
-              <vs-button @click="$refs.uploadImgInput.click()">Selecionar Imagem</vs-button>
+              <vs-button color="success" @click="$refs.uploadImgInput.click()">Selecionar Imagem</vs-button>
             </div>
 
-            <template v-if="user.image">
+            <template v-if="data.image">
 
               <!-- Image Container -->
               <div class="img-container w-64 mx-auto flex items-center justify-center">
-                <img :src="user.image" alt="img" class="responsive">
+                <img :src="data.image" alt="img"  class="rounded responsive">
               </div>
 
               <!-- Image upload Buttons -->
               <div class="modify-img flex justify-between mt-5">
                 <input type="file" class="hidden" ref="updateImgInput" @change="updateCurrImg" accept="image/*">
-                <vs-button class="mr-4" type="flat" @click="$refs.updateImgInput.click()">Update Image</vs-button>
-                <vs-button type="flat" color="#999" @click="user.image = null">Remove Image</vs-button>
+                <vs-button color="success" class="mr-4" @click="$refs.updateImgInput.click()">Atualizar Imagem</vs-button>
+                <vs-button color="danger" type="border" @click="data.image = null">Remover Imagem</vs-button>
               </div>
             </template>
             
@@ -66,8 +66,8 @@
 
       <div class="vx-row">
         <div class="vx-col w-full">
-          <vs-button class="mr-3 mb-2">Cadastrar</vs-button>
-          <vs-button color="danger" type="border" class="mb-2">Cancelar</vs-button>
+          <vs-button class="ml-auto mt-2">Cadastrar</vs-button>
+          <vs-button class="ml-4 mt-2" type="border" color="warning" @click="reset_data">Redefinir</vs-button>
         </div>
       </div>
     </vx-card>
@@ -80,7 +80,7 @@ import vSelect from 'vue-select'
 export default {
   data() {
     return {
-      user: {
+      data: {
         name: '',
         email: '',
         password: '',
@@ -97,19 +97,20 @@ export default {
       if (input.target.files && input.target.files[0]) {
         var reader = new FileReader()
         reader.onload = e => {
-          this.user.image = e.target.result
+          this.data.image = e.target.result
         }
         reader.readAsDataURL(input.target.files[0])
       }
     },
+    reset_data() {
+       Object.assign(this.$data, this.$options.data())
+    }
   }
 }
 </script>
 
 <style scoped>
-  .img-upload {
-    margin-top: 2rem;
-  }
+ 
   .con-img-upload {
     padding: 0;
   }

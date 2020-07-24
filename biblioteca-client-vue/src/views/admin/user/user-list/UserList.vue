@@ -139,9 +139,7 @@ import vSelect from 'vue-select'
 import moduleUserManagement from '@/store/admin/user/moduleUserManagement.js'
 
 // Cell Renderer
-import CellRendererLink from "./cell-renderer/CellRendererLink.vue"
 import CellRendererStatus from "./cell-renderer/CellRendererStatus.vue"
-import CellRendererVerified from "./cell-renderer/CellRendererVerified.vue"
 import CellRendererActions from "./cell-renderer/CellRendererActions.vue"
 
 
@@ -151,29 +149,26 @@ export default {
     vSelect,
 
     // Cell Renderer
-    CellRendererLink,
     CellRendererStatus,
-    CellRendererVerified,
     CellRendererActions,
   },
   data() {
     return {
 
       // Filter Options
-      roleFilter: { label: 'All', value: 'all' },
+      roleFilter: { label: 'Todas', value: '' },
       roleOptions: [
-        { label: 'All', value: 'all' },
-        { label: 'Admin', value: 'admin' },
-        { label: 'User', value: 'user' },
-        { label: 'Staff', value: 'staff' },
+        { label: 'Todas', value: '' },
+        { label: 'Master', value: 'MASTER' },
+        { label: 'Simples', value: 'SIMPLES' },
       ],
 
-      statusFilter: { label: 'All', value: 'all' },
+      statusFilter: { label: 'Todos', value: '' },
       statusOptions: [
-        { label: 'All', value: 'all' },
-        { label: 'Active', value: 'active' },
-        { label: 'Deactivated', value: 'deactivated' },
-        { label: 'Blocked', value: 'blocked' },
+        { label: 'Todos', value: '' },
+        { label: 'Ativo', value: 'Ativo' },
+        { label: 'Inativo', value: 'Inativo' },
+        { label: 'Bloqueado', value: 'Bloqueado' },
       ],
 
       searchQuery: "",
@@ -201,7 +196,6 @@ export default {
           field: 'name',
           filter: true,
           width: 210,
-          cellRendererFramework: 'CellRendererLink'
         },
         {
           headerName: 'Email',
@@ -232,9 +226,7 @@ export default {
 
       // Cell Renderer Components
       components: {
-        CellRendererLink,
         CellRendererStatus,
-        CellRendererVerified,
         CellRendererActions,
       }
     }
