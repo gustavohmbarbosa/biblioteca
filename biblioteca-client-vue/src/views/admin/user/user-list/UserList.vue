@@ -55,7 +55,7 @@
         </div>
 
         <!-- TABLE ACTION COL-2: SEARCH & EXPORT AS CSV -->
-          <vs-input class="sm:mr-4 mr-0 sm:w-auto w-full sm:order-normal order-3 sm:mt-0 mt-4" v-model="searchQuery" @input="updateSearchQuery" placeholder="Search..." />
+          <vs-input class="sm:mr-4 mr-0 sm:w-auto w-full sm:order-normal order-3 sm:mt-0 mt-4" v-model="searchQuery" @input="updateSearchQuery" placeholder="Buscar..." />
           <!-- <vs-button class="mb-4 md:mb-0" @click="gridApi.exportDataAsCsv()">Export as CSV</vs-button> -->
 
           <!-- ACTION - DROPDOWN -->
@@ -139,9 +139,7 @@ import vSelect from 'vue-select'
 import moduleUserManagement from '@/store/admin/user/moduleUserManagement.js'
 
 // Cell Renderer
-import CellRendererLink from "./cell-renderer/CellRendererLink.vue"
 import CellRendererStatus from "./cell-renderer/CellRendererStatus.vue"
-import CellRendererVerified from "./cell-renderer/CellRendererVerified.vue"
 import CellRendererActions from "./cell-renderer/CellRendererActions.vue"
 
 
@@ -151,29 +149,26 @@ export default {
     vSelect,
 
     // Cell Renderer
-    CellRendererLink,
     CellRendererStatus,
-    CellRendererVerified,
     CellRendererActions,
   },
   data() {
     return {
 
       // Filter Options
-      roleFilter: { label: 'All', value: 'all' },
+      roleFilter: { label: 'Todas', value: '' },
       roleOptions: [
-        { label: 'All', value: 'all' },
-        { label: 'Admin', value: 'admin' },
-        { label: 'User', value: 'user' },
-        { label: 'Staff', value: 'staff' },
+        { label: 'Todas', value: '' },
+        { label: 'Master', value: 'MASTER' },
+        { label: 'Simples', value: 'SIMPLES' },
       ],
 
-      statusFilter: { label: 'All', value: 'all' },
+      statusFilter: { label: 'Todos', value: '' },
       statusOptions: [
-        { label: 'All', value: 'all' },
-        { label: 'Active', value: 'active' },
-        { label: 'Deactivated', value: 'deactivated' },
-        { label: 'Blocked', value: 'blocked' },
+        { label: 'Todos', value: '' },
+        { label: 'Ativo', value: 'Ativo' },
+        { label: 'Inativo', value: 'Inativo' },
+        { label: 'Bloqueado', value: 'Bloqueado' },
       ],
 
       searchQuery: "",
@@ -197,11 +192,10 @@ export default {
           headerCheckboxSelection: true,
         },
         {
-          headerName: 'Username',
-          field: 'username',
+          headerName: 'Nome',
+          field: 'name',
           filter: true,
           width: 210,
-          cellRendererFramework: 'CellRendererLink'
         },
         {
           headerName: 'Email',
@@ -210,19 +204,7 @@ export default {
           width: 225,
         },
         {
-          headerName: 'Name',
-          field: 'name',
-          filter: true,
-          width: 200,
-        },
-        {
-          headerName: 'Country',
-          field: 'country',
-          filter: true,
-          width: 150,
-        },
-        {
-          headerName: 'Role',
+          headerName: 'Função',
           field: 'role',
           filter: true,
           width: 150,
@@ -235,21 +217,7 @@ export default {
           cellRendererFramework: 'CellRendererStatus'
         },
         {
-          headerName: 'Verified',
-          field: 'is_verified',
-          filter: true,
-          width: 125,
-          cellRendererFramework: 'CellRendererVerified',
-          cellClass: "text-center"
-        },
-        {
-          headerName: 'Department',
-          field: 'department',
-          filter: true,
-          width: 150,
-        },
-        {
-          headerName: 'Actions',
+          headerName: 'Ações',
           field: 'transactions',
           width: 150,
           cellRendererFramework: 'CellRendererActions',
@@ -258,9 +226,7 @@ export default {
 
       // Cell Renderer Components
       components: {
-        CellRendererLink,
         CellRendererStatus,
-        CellRendererVerified,
         CellRendererActions,
       }
     }

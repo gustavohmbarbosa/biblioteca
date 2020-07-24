@@ -10,9 +10,9 @@
         computed: {
           chipColor() {
             return (value) => {
-              if(value === "active") return "success"
-              else if(value === "blocked") return "danger"
-              else if(value === "deactivated") return "warning"
+              if(value === "Ativo") return "success"
+              else if(value === "Inativo") return "danger"
+              else if(value === "Bloqueado") return "warning"
               else "primary"
             }
           }
@@ -20,7 +20,7 @@
     }
 </script>
 
-<style lang="scss" scpoped>
+<style lang="scss" scoped>
 .ag-grid-cell-chip {
   &.vs-chip-success {
     background: rgba(var(--vs-success),.15);

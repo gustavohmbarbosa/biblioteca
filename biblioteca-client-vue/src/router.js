@@ -47,49 +47,58 @@ const router = new Router({
 
               // Users
               {
-                path: '/bibliotecarios',
+                path: '/usuarios',
                 name: 'admin-user-list',
                 component: () => import('@/views/admin/user/user-list/UserList.vue'),
                 meta: {
                     breadcrumb: [
                         { title: 'Home', url: '/' },
-                        { title: 'Bibliotecários' },
+                        { title: 'Usuários' },
                         { title: 'Lista', active: true },
                     ],
-                    pageTitle: 'Bibliotecários',
+                    pageTitle: 'Lista de Usuários',
                     rule: 'editor'
                 },
               },
               {
-                path: '/apps/user/user-view/:userId',
-                name: 'app-user-view',
+                path: '/usuarios/visualizacao/:userId',
+                name: 'admin-user-view',
                 component: () => import('@/views/admin/user/UserView.vue'),
                 meta: {
                     breadcrumb: [
                         { title: 'Home', url: '/' },
-                        { title: 'User' },
-                        { title: 'View', active: true },
+                        { title: 'Usuários ' },
+                        { title: 'Visualização', active: true },
                     ],
-                    pageTitle: 'User View',
+                    pageTitle: 'Visualização de Usuário',
                     rule: 'editor'
                 },
               },
               {
-                path: '/bibliotecarios/cadastro',
-                name: 'app-user-create',
-                component: () => import('@/views/admin/user/UserCreate.vue')
+                path: '/usuarios/cadastro',
+                name: 'admin-user-create',
+                component: () => import('@/views/admin/user/UserCreate.vue'),
+                meta: {
+                  breadcrumb: [
+                      { title: 'Home', url: '/' },
+                      { title: 'Usuários' },
+                      { title: 'Cadastro', active: true },
+                  ],
+                  pageTitle: 'Cadastro de Usuário',
+                  rule: 'editor'
+              },
               },
               {
-                path: '/apps/user/user-edit/:userId',
-                name: 'app-user-edit',
+                path: '/usuarios/edicao/:userId',
+                name: 'admin-user-edit',
                 component: () => import('@/views/admin/user/user-edit/UserEdit.vue'),
                 meta: {
                     breadcrumb: [
                         { title: 'Home', url: '/' },
-                        { title: 'User' },
-                        { title: 'Edit', active: true },
+                        { title: 'Usuários' },
+                        { title: 'Edição', active: true },
                     ],
-                    pageTitle: 'User Edit',
+                    pageTitle: 'Edição de Usuário',
                     rule: 'editor'
                 },
               },
