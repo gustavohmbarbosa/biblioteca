@@ -50,13 +50,14 @@
 
               <!-- Image Container -->
               <div class="img-container w-64 mx-auto flex items-center justify-center">
-                <img :src="data.image" alt="img"  class="rounded responsive">
+                <img :src="data.image" alt="img" class="rounded responsive">
               </div>
 
               <!-- Image upload Buttons -->
               <div class="modify-img flex justify-between mt-5">
                 <input type="file" class="hidden" ref="updateImgInput" @change="updateCurrImg" accept="image/*">
-                <vs-button color="success" class="mr-4" @click="$refs.updateImgInput.click()">Atualizar Imagem</vs-button>
+                <vs-button color="success" class="mr-4" @click="$refs.updateImgInput.click()">Atualizar Imagem
+                </vs-button>
                 <vs-button color="danger" type="border" @click="data.image = null">Remover Imagem</vs-button>
               </div>
             </template>
@@ -94,7 +95,6 @@ export default {
     'v-select': vSelect
   },
   methods: {
-
     updateCurrImg(input) {
       if (input.target.files && input.target.files[0]) {
         var reader = new FileReader()
@@ -112,7 +112,6 @@ export default {
 </script>
 
 <style scoped>
-
   .con-img-upload {
     padding: 0;
   }

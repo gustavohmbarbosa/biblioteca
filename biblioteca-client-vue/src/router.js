@@ -29,23 +29,149 @@ const router = new Router({
             component: () => import('./layouts/main/Main.vue'),
             children: [
         // =============================================================================
-        // Theme Routes
+        // DASHBOARD
         // =============================================================================
               {
                 path: '/',
                 name: 'home',
                 component: () => import('./views/Home.vue')
               },
+        // =============================================================================
+        // MAIN
+        // =============================================================================
+              // READERS
               {
-                path: '/page2',
-                name: 'page-2',
-                component: () => import('./views/Page2.vue')
+                path: '/leitores/cadastro',
+                name: 'admin-reader-create',
+                component: () => import('@/views/admin/reader/ReaderCreate.vue'),
+                meta: {
+                  breadcrumb: [
+                      { title: 'Home', url: '/' },
+                      { title: 'Leitores' },
+                      { title: 'Cadastro', active: true },
+                  ],
+                  pageTitle: 'Cadastro de Leitor',
+                  rule: 'editor'
               },
-
-
-              /* Administrative */
-
-              // Users
+              },
+              {
+                path: '/leitores',
+                name: 'admin-reader-list',
+                component: () => import('@/views/admin/reader/reader-list/ReaderList.vue'),
+                meta: {
+                    breadcrumb: [
+                        { title: 'Home', url: '/' },
+                        { title: 'Leitores' },
+                        { title: 'Lista', active: true },
+                    ],
+                    pageTitle: 'Leitores',
+                    rule: 'editor'
+                },
+              },
+              {    
+                path: '/leitores/visualizacao/:readerId',
+                name: 'admin-reader-view',
+                component: () => import('@/views/admin/reader/ReaderView.vue'),
+                meta: {
+                    breadcrumb: [
+                        { title: 'Home', url: '/' },
+                        { title: 'Leitores ' },
+                        { title: 'Visualização', active: true },
+                    ],
+                    pageTitle: 'Visualização de Leitor',
+                    rule: 'editor'
+                },
+              },
+              {
+                path: '/leitores/edicao/:readerId',
+                name: 'admin-reader-edit',
+                component: () => import('@/views/admin/reader/reader-edit/ReaderEdit.vue'),
+                meta: {
+                    breadcrumb: [
+                        { title: 'Home', url: '/' },
+                        { title: 'Leitores' },
+                        { title: 'Edição', active: true },
+                    ],
+                    pageTitle: 'Edição de Leitor',
+                    rule: 'editor'
+                },
+              },
+              
+              // BOOKS
+              {
+                path: '/livros/cadastro',
+                name: 'admin-book-create',
+                component: () => import('@/views/admin/book/BookCreate.vue'),
+                meta: {
+                  breadcrumb: [
+                      { title: 'Home', url: '/' },
+                      { title: 'Livros' },
+                      { title: 'Cadastro', active: true },
+                  ],
+                  pageTitle: 'Cadastro de Livro',
+                  rule: 'editor'
+                },
+              },
+              {
+                path: '/livros',
+                name: 'admin-book-list',
+                component: () => import('@/views/admin/book/book-list/BookList.vue'),
+                meta: {
+                    breadcrumb: [
+                        { title: 'Home', url: '/' },
+                        { title: 'Livros' },
+                        { title: 'Lista', active: true },
+                    ],
+                    pageTitle: 'Lista de Livros',
+                    rule: 'editor'
+                },
+              },
+              {
+                path: '/livros/visualizacao/:bookId',
+                name: 'admin-book-view',
+                component: () => import('@/views/admin/book/BookView.vue'),
+                meta: {
+                    breadcrumb: [
+                        { title: 'Home', url: '/' },
+                        { title: 'Livros ' },
+                        { title: 'Visualização', active: true },
+                    ],
+                    pageTitle: 'Visualização de Livro',
+                    rule: 'editor'
+                },
+              },
+              {
+                path: '/livros/edicao/:bookId',
+                name: 'admin-book-edit',
+                component: () => import('@/views/admin/book/book-edit/BookEdit.vue'),
+                meta: {
+                    breadcrumb: [
+                        { title: 'Home', url: '/' },
+                        { title: 'Livros' },
+                        { title: 'Edição', active: true },
+                    ],
+                    pageTitle: 'Edição de Livro',
+                    rule: 'editor'
+                },
+              },
+        // =============================================================================
+        // OTHERS
+        // =============================================================================
+              // USERS
+              {
+                path: '/usuarios/cadastro',
+                name: 'admin-user-create',
+                component: () => import('@/views/admin/user/UserCreate.vue'),
+                meta: {
+                  breadcrumb: [
+                      { title: 'Home', url: '/' },
+                      { title: 'Usuários' },
+                      { title: 'Cadastro', active: true },
+                  ],
+                  pageTitle: 'Cadastro de Usuário',
+                  rule: 'editor'
+                },
+              },
               {
                 path: '/usuarios',
                 name: 'admin-user-list',
@@ -75,20 +201,6 @@ const router = new Router({
                 },
               },
               {
-                path: '/usuarios/cadastro',
-                name: 'admin-user-create',
-                component: () => import('@/views/admin/user/UserCreate.vue'),
-                meta: {
-                  breadcrumb: [
-                      { title: 'Home', url: '/' },
-                      { title: 'Usuários' },
-                      { title: 'Cadastro', active: true },
-                  ],
-                  pageTitle: 'Cadastro de Usuário',
-                  rule: 'editor'
-              },
-              },
-              {
                 path: '/usuarios/edicao/:userId',
                 name: 'admin-user-edit',
                 component: () => import('@/views/admin/user/user-edit/UserEdit.vue'),
@@ -102,57 +214,11 @@ const router = new Router({
                     rule: 'editor'
                 },
               },
-
-              // Readers
-              {
-                path: '/leitores',
-                name: 'admin-reader-list',
-                component: () => import('@/views/admin/reader/reader-list/ReaderList.vue'),
-                meta: {
-                    breadcrumb: [
-                        { title: 'Home', url: '/' },
-                        { title: 'Leitores' },
-                        { title: 'Lista', active: true },
-                    ],
-                    pageTitle: 'Leitores',
-                    rule: 'editor'
-                },
-              },
-              {
-                path: '/apps/reader/reader-view/:readerId',
-                name: 'admin-reader-view',
-                component: () => import('@/views/admin/reader/ReaderView.vue'),
-                meta: {
-                    breadcrumb: [
-                        { title: 'Home', url: '/' },
-                        { title: 'Leitores' },
-                        { title: 'View', active: true },
-                    ],
-                    pageTitle: 'Visualizar Leitor',
-                    rule: 'editor'
-                },
-              },
-              {
-                path: '/leitores/cadastro',
-                name: 'admin-reader-create',
-                component: () => import('@/views/admin/reader/ReaderCreate.vue')
-              },
-              {
-                path: '/apps/reader/reader-edit/:readerId',
-                name: 'admin-reader-edit',
-                component: () => import('@/views/admin/reader/reader-edit/ReaderEdit.vue'),
-                meta: {
-                    breadcrumb: [
-                        { title: 'Home', url: '/' },
-                        { title: 'Leitores' },
-                        { title: 'Edit', active: true },
-                    ],
-                    pageTitle: 'Editar Leitor',
-                    rule: 'editor'
-                },
-              },
             ],
         },
+    // =============================================================================
+    // FULL PAGE
+    // =============================================================================
         /* Authentication and Miscellaneous */
         {
             path: '',
@@ -160,12 +226,12 @@ const router = new Router({
             children: [
               {
                 path: '/pages/login',
-                name: 'page-login',
+                name: 'admin-login',
                 component: () => import('@/views/pages/Login.vue')
               },
               {
                 path: '/pages/register',
-                name: 'page-register',
+                name: 'admin-register',
                 component: () => import('@/views/pages/Register.vue')
               },
               {
