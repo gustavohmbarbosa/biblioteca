@@ -68,7 +68,7 @@ const router = new Router({
                     rule: 'editor'
                 },
               },
-              {    
+              {
                 path: '/leitores/visualizacao/:readerId',
                 name: 'admin-reader-view',
                 component: () => import('@/views/admin/reader/ReaderView.vue'),
@@ -96,7 +96,7 @@ const router = new Router({
                     rule: 'editor'
                 },
               },
-              
+
               // BOOKS
               {
                 path: '/livros/cadastro',
@@ -147,13 +147,8 @@ const router = new Router({
                 meta: {
                     breadcrumb: [
                         { title: 'Home', url: '/' },
-<<<<<<< HEAD
-                        { title: 'Leitores' },
-                        { title: 'Listar', active: true },
-=======
                         { title: 'Livros' },
                         { title: 'Edição', active: true },
->>>>>>> 71ff38dc31231c399c234d9356b43658829f2677
                     ],
                     pageTitle: 'Edição de Livro',
                     rule: 'editor'
@@ -164,11 +159,6 @@ const router = new Router({
         // =============================================================================
               // USERS
               {
-<<<<<<< HEAD
-                path: '/leitores/visualizacao/:readerId',
-                name: 'admin-reader-view',
-                component: () => import('@/views/admin/reader/ReaderView.vue'),
-=======
                 path: '/usuarios/cadastro',
                 name: 'admin-user-create',
                 component: () => import('@/views/admin/user/UserCreate.vue'),
@@ -186,7 +176,6 @@ const router = new Router({
                 path: '/usuarios',
                 name: 'admin-user-list',
                 component: () => import('@/views/admin/user/user-list/UserList.vue'),
->>>>>>> 71ff38dc31231c399c234d9356b43658829f2677
                 meta: {
                     breadcrumb: [
                         { title: 'Home', url: '/' },
@@ -212,15 +201,6 @@ const router = new Router({
                 },
               },
               {
-<<<<<<< HEAD
-                path: '/leitores/edicao/:readerId',
-                name: 'admin-reader-edit',
-                component: () => import('@/views/admin/reader/ReaderEdit.vue'),
-                meta: {
-                    breadcrumb: [
-                        { title: 'Home', url: '/' },
-                        { title: 'Leitores' },
-=======
                 path: '/usuarios/edicao/:userId',
                 name: 'admin-user-edit',
                 component: () => import('@/views/admin/user/user-edit/UserEdit.vue'),
@@ -228,7 +208,6 @@ const router = new Router({
                     breadcrumb: [
                         { title: 'Home', url: '/' },
                         { title: 'Usuários' },
->>>>>>> 71ff38dc31231c399c234d9356b43658829f2677
                         { title: 'Edição', active: true },
                     ],
                     pageTitle: 'Edição de Usuário',
