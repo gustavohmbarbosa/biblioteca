@@ -1,33 +1,24 @@
-<!-- =========================================================================================
-  File Name: UserView.vue
-  Description: User View page
-  ----------------------------------------------------------------------------------------
-  Item Name: Vuexy - Vuejs, HTML & Laravel Admin Dashboard Template
-  Author: Pixinvent
-  Author URL: http://www.themeforest.net/user/pixinvent
-========================================================================================== -->
-
 <template>
   <div id="page-user-view">
 
-    <vs-alert color="danger" title="User Not Found" :active.sync="user_not_found">
-      <span>User record with id: {{ $route.params.userId }} not found. </span>
+    <vs-alert color="danger" title="Leitor Não Encontrado" :active.sync="reader_not_found">
+      <span>O leitor com id {{ $route.params.readerId }} não foi encontrado. </span>
       <span>
-        <span>Check </span><router-link :to="{name:'page-user-list'}" class="text-inherit underline">All Users</router-link>
+        <span>Verificar </span><router-link :to="{name:'admin-reader-list'}" class="text-inherit underline">Todos Os Usuários</router-link>
       </span>
     </vs-alert>
 
-    <div id="user-data" v-if="user_data">
+    <div id="user-data" v-if="reader">
 
-      <vx-card title="Account" class="mb-base">
+      <vx-card title="Registro" class="mb-base">
 
-        <!-- Avatar -->
+        <!-- image -->
         <div class="vx-row">
 
-          <!-- Avatar Col -->
-          <div class="vx-col" id="avatar-col">
+          <!-- image Col -->
+          <div class="vx-col" id="image-col">
             <div class="img-container mb-4">
-              <img :src="user_data.avatar" class="rounded w-full" />
+              <img :src="reader.image" class="rounded w-full" />
             </div>
           </div>
 
@@ -35,16 +26,24 @@
           <div class="vx-col flex-1" id="account-info-col-1">
             <table>
               <tr>
-                <td class="font-semibold">Username</td>
-                <td>{{ user_data.username }}</td>
-              </tr>
-              <tr>
-                <td class="font-semibold">Name</td>
-                <td>{{ user_data.name }}</td>
+                <td class="font-semibold">Nome</td>
+                <td>{{ reader.name }}</td>
               </tr>
               <tr>
                 <td class="font-semibold">Email</td>
-                <td>{{ user_data.email }}</td>
+                <td>{{ reader.email }}</td>
+              </tr>
+              <tr>
+                <td class="font-semibold">Senha</td>
+                <td>{{ reader.password }}</td>
+              </tr>
+              <tr>
+                <td class="font-semibold">Telefone</td>
+                <td>{{ reader.phone }}</td>
+              </tr>
+              <tr>
+                <td class="font-semibold">Status</td>
+                <td>{{ reader.status }}</td>
               </tr>
             </table>
           </div>
@@ -54,124 +53,33 @@
           <div class="vx-col flex-1" id="account-info-col-2">
             <table>
               <tr>
-                <td class="font-semibold">Status</td>
-                <td>{{ user_data.status }}</td>
+                <td class="font-semibold">Gênero</td>
+                <td>{{ reader.gender }}</td>
               </tr>
               <tr>
-                <td class="font-semibold">Role</td>
-                <td>{{ user_data.role }}</td>
+                <td class="font-semibold">Curso</td>
+                <td>{{ reader.course_name }}</td>
               </tr>
               <tr>
-                <td class="font-semibold">Company</td>
-                <td>{{ user_data.company }}</td>
+                <td class="font-semibold">Sala</td>
+                <td>{{ reader.grade + ' ' + reader.class }}</td>
+              </tr>
+              <tr>
+                <td class="font-semibold">Matrícula</td>
+                <td>{{ reader.registration }}</td>
+              </tr>
+              <tr>
+                <td class="font-semibold">Ano de Matrícula</td>
+                <td>{{ reader.entry_year }}</td>
               </tr>
             </table>
           </div>
           <!-- /Information - Col 2 -->
           <div class="vx-col w-full flex" id="account-manage-buttons">
-            <vs-button icon-pack="feather" icon="icon-edit" class="mr-4" :to="{name: 'app-user-edit', params: { userId: $route.params.userId }}">Edit</vs-button>
-            <vs-button type="border" color="danger" icon-pack="feather" icon="icon-trash" @click="confirmDeleteRecord">Delete</vs-button>
+            <vs-button icon-pack="feather" icon="icon-edit" class="mr-4" :to="{name: 'admin-reader-edit', params: { readerId: $route.params.readerId }}">Editar</vs-button>
+            <vs-button type="border" color="danger" icon-pack="feather" icon="icon-trash" @click="confirmDeleteRecord">Excluir</vs-button>
           </div>
 
-        </div>
-
-      </vx-card>
-
-      <div class="vx-row">
-        <div class="vx-col lg:w-1/2 w-full">
-          <vx-card title="Information" class="mb-base">
-            <table>
-              <tr>
-                <td class="font-semibold">Birth Date</td>
-                <td>{{ user_data.dob }}</td>
-              </tr>
-              <tr>
-                <td class="font-semibold">Mobile</td>
-                <td>{{ user_data.mobile }}</td>
-              </tr>
-              <tr>
-                <td class="font-semibold">Website</td>
-                <td>{{ user_data.website }}</td>
-              </tr>
-              <tr>
-                <td class="font-semibold">Languages</td>
-                <td>{{ user_data.languages_known.join(", ") }}</td>
-              </tr>
-              <tr>
-                <td class="font-semibold">Gender</td>
-                <td>{{ user_data.gender }}</td>
-              </tr>
-              <tr>
-                <td class="font-semibold">Contact</td>
-                <td>{{ user_data.contact_options.join(", ") }}</td>
-              </tr>
-            </table>
-          </vx-card>
-        </div>
-
-        <div class="vx-col lg:w-1/2 w-full">
-          <vx-card title="Social Links" class="mb-base">
-            <table>
-              <tr>
-                <td class="font-semibold">Twitter</td>
-                <td>{{ user_data.social_links.twitter }}</td>
-              </tr>
-              <tr>
-                <td class="font-semibold">Facebook</td>
-                <td>{{ user_data.social_links.facebook }}</td>
-              </tr>
-              <tr>
-                <td class="font-semibold">Instagram</td>
-                <td>{{ user_data.social_links.instagram }}</td>
-              </tr>
-              <tr>
-                <td class="font-semibold">Github</td>
-                <td>{{ user_data.social_links.github }}</td>
-              </tr>
-              <tr>
-                <td class="font-semibold">CodePen</td>
-                <td>{{ user_data.social_links.codepen }}</td>
-              </tr>
-              <tr>
-                <td class="font-semibold">Slack</td>
-                <td>{{ user_data.social_links.slack }}</td>
-              </tr>
-            </table>
-          </vx-card>
-        </div>
-      </div>
-
-      <!-- Permissions -->
-      <vx-card>
-
-        <div class="vx-row">
-          <div class="vx-col w-full">
-            <div class="flex items-end px-3">
-              <feather-icon svgClasses="w-6 h-6" icon="LockIcon" class="mr-2" />
-              <span class="font-medium text-lg leading-none">Permissions</span>
-            </div>
-            <vs-divider />
-          </div>
-        </div>
-
-        <div class="block overflow-x-auto">
-          <table class="w-full permissions-table">
-            <tr>
-              <!--
-                You can also use `Object.keys(Object.values(data_local.permissions)[0])` this logic if you consider,
-                our data structure. You just have to loop over above variable to get table headers.
-                Below we made it simple. So, everyone can understand.
-               -->
-              <th class="font-semibold text-base text-left px-3 py-2" v-for="heading in ['Module', 'Read', 'Write', 'Create', 'Delete']" :key="heading">{{ heading }}</th>
-            </tr>
-
-            <tr v-for="(val, name) in user_data.permissions" :key="name">
-              <td class="px-3 py-2">{{ name }}</td>
-              <td v-for="(permission, name) in val" class="px-3 py-2" :key="name+permission">
-                <vs-checkbox v-model="val[name]" class="pointer-events-none" />
-              </td>
-            </tr>
-          </table>
         </div>
 
       </vx-card>
@@ -180,22 +88,27 @@
 </template>
 
 <script>
-import moduleUserManagement from '@/store/admin/user/moduleUserManagement.js'
+import moduleReaderManagement from '@/store/admin/reader/moduleReaderManagement.js'
 
 export default {
   data() {
     return {
-      user_data: null,
-      user_not_found: false,
-    }
-  },
-  computed: {
-    userAddress() {
-      let str = ""
-      for(var field in this.user_data.location) {
-        str += field + " "
-      }
-      return str
+      reader: {
+          "id": 1,
+          "image": require("@/assets/images/portrait/small/avatar-s-3.jpg"),
+          "name": "Angelo Sashington",
+          "email": "angelo@sashington.com",
+          "status": "Ativo",
+          "grade": "1º",
+          "class": "B",
+          "course_name": 'Des. de Sistemas',
+          "gender": "Masculino",
+          "password": "12345678",
+          "phone": "(00) 00000-0000",
+          "registration": "1234657",
+          "entry_year": "2019"
+      },
+      reader_not_found: false,
     }
   },
   methods: {
@@ -203,43 +116,44 @@ export default {
       this.$vs.dialog({
         type: 'confirm',
         color: 'danger',
-        title: `Confirm Delete`,
-        text: `You are about to delete "${this.user_data.username}"`,
+        title: `Confirmar Exclusão`,
+        text: `Você está prestes a excluir "${this.reader.name}"`,
         accept: this.deleteRecord,
-        acceptText: "Delete"
+        acceptText: "Excluir",
+        cancelText: "Cancelar",
       })
     },
     deleteRecord() {
       /* Below two lines are just for demo purpose */
-      this.$router.push({name:'app-user-list'});
+      this.$router.push({name:'admin-reader-list'});
       this.showDeleteSuccess()
 
-      /* UnComment below lines for enabling true flow if deleting user */
-      // this.$store.dispatch("userManagement/removeRecord", this.user_data.id)
-      //   .then(()   => { this.$router.push({name:'app-user-list'}); this.showDeleteSuccess() })
+      /* UnComment below lines for enabling true flow if deleting reader */
+      // this.$store.dispatch("readerManagement/removeRecord", this.reader.id)
+      //   .then(()   => { this.$router.push({name:'app-reader-list'}); this.showDeleteSuccess() })
       //   .catch(err => { console.error(err)       })
     },
     showDeleteSuccess() {
       this.$vs.notify({
         color: 'success',
-        title: 'User Deleted',
-        text: 'The selected user was successfully deleted'
+        title: 'Leitor Excluído',
+        text: 'O leitor selecionado foi excluído com sucesso!'
       })
     }
   },
   created() {
-    // Register Module UserManagement Module
-    if(!moduleUserManagement.isRegistered) {
-      this.$store.registerModule('userManagement', moduleUserManagement)
-      moduleUserManagement.isRegistered = true
+    // Register Module ReaderManagement Module
+    if(!moduleReaderManagement.isRegistered) {
+      this.$store.registerModule('readerManagement', moduleReaderManagement)
+      moduleReaderManagement.isRegistered = true
     }
 
-    const userId = this.$route.params.userId
-    this.$store.dispatch("userManagement/fetchUser", userId)
-      .then(res => { this.user_data = res.data })
+    const readerId = this.$route.params.readerId
+    this.$store.dispatch("readerManagement/fetchReader", readerId)
+      .then(res => { this.reader = res.data })
       .catch(err => {
         if(err.response.status === 404) {
-          this.user_not_found = true
+          this.reader_not_found = true
           return
         }
         console.error(err) })
@@ -249,7 +163,7 @@ export default {
 </script>
 
 <style lang="scss">
-#avatar-col {
+#image-col {
   width: 10rem;
 }
 

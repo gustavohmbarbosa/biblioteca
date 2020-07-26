@@ -13,11 +13,7 @@
 
     <vx-card ref="filterCard" title="Filtros" class="reader-list-filters mb-8" actionButtons @refresh="resetColFilters" @remove="resetColFilters">
       <div class="vx-row">
-        <div class="vx-col md:w-1/2 sm:w-1/2 w-full">
-          <label class="text-sm opacity-75">Função</label>
-          <v-select :options="roleOptions" :clearable="false" :dir="$vs.rtl ? 'rtl' : 'ltr'" v-model="roleFilter" class="mb-4 md:mb-0" />
-        </div>
-        <div class="vx-col md:w-1/2 sm:w-1/2 w-full">
+        <div class="vx-col w-full">
           <label class="text-sm opacity-75">Status</label>
           <v-select :options="statusOptions" :clearable="false" :dir="$vs.rtl ? 'rtl' : 'ltr'" v-model="statusFilter" class="mb-4 md:mb-0" />
         </div>
@@ -159,9 +155,9 @@ export default {
       statusFilter: { label: 'Todos', value: 'all' },
       statusOptions: [
         { label: 'Todos', value: 'all' },
-        { label: 'Ativado', value: 'active' },
-        { label: 'Desativado', value: 'deactivated' },
-        { label: 'Bloqueado', value: 'blocked' },
+        { label: 'Ativado', value: 'Ativo' },
+        { label: 'Desativado', value: 'Desativo' },
+        { label: 'Bloqueado', value: 'Bloqueado' },
       ],
 
       searchQuery: "",
@@ -188,7 +184,7 @@ export default {
           headerName: 'Nome',
           field: 'name',
           filter: true,
-          width: 250
+          width: 310
         },
         {
           headerName: 'Email',
@@ -197,18 +193,18 @@ export default {
           width: 275,
         },
         {
-          headerName: 'Telefone',
-          field: 'phone',
-          filter: true,
-          width: 200,
-        },
-        {
           headerName: 'Status',
           field: 'status',
           filter: true,
-          width: 175,
+          width: 150,
           cellRendererFramework: 'CellRendererStatus'
-        }
+        },
+        {
+          headerName: 'Ações',
+          field: 'transactions',
+          width: 150,
+          cellRendererFramework: 'CellRendererActions',
+        },
       ],
 
       // Cell Renderer Components
@@ -219,9 +215,6 @@ export default {
     }
   },
   watch: {
-    roleFilter(obj) {
-      this.setColumnFilter("role", obj.value)
-    },
     statusFilter(obj) {
       this.setColumnFilter("status", obj.value)
     },

@@ -9,11 +9,11 @@
 
 
 export default {
-  SET_USERS(state, readers) {
+  SET_READERS(state, readers) {
     state.readers = readers
   },
   REMOVE_RECORD(state, itemId) {
-      const userIndex = state.readers.findIndex((u) => u.id == itemId)
-      state.readers.splice(userIndex, 1)
+      const readerIndex = state.readers.findIndex((reader) => reader.id == itemId)
+      state.readers.splice(readerIndex, 1)
   },
 }
