@@ -5,25 +5,25 @@
             <div class="vx-row">
               <div class="vx-col w-full mb-3">
                 <label>Nome</label>
-                <vs-input class="w-full" icon="person" placeholder="Nome" v-model="reader.name" />
+                <vs-input class="w-full" icon-pack="feather" icon="icon-user" icon-no-border placeholder="Nome" v-model="reader.name" />
               </div>
             </div>
 
             <div class="vx-row">
               <div class="vx-col sm:w-1/2 w-full mb-2">
                 <label>Email</label>
-                <vs-input class="w-full" icon="email" placeholder="Email" v-model="reader.email" />
+                <vs-input class="w-full" icon-pack="feather" icon="icon-mail" icon-no-border placeholder="Email" v-model="reader.email" />
               </div>
               <div class="vx-col sm:w-1/2 w-full mb-2">
                 <label>Senha</label>
-                <vs-input type="password" class="w-full" icon="lock" placeholder="Senha" v-model="reader.password" />
+                <vs-input type="password" class="w-full" icon-pack="feather" icon="icon-lock" icon-no-border placeholder="Senha" v-model="reader.password" />
               </div>
             </div>
 
             <div class="vx-row">
               <div class="vx-col sm:w-1/2 w-full mb-3">
                 <label>Telefone</label>
-                <vs-input class="w-full" icon="phone" placeholder="Telefone" v-model="reader.phone" />
+                <vs-input class="w-full" icon-pack="feather" icon="icon-phone" icon-no-border placeholder="Telefone" v-model="reader.phone" />
               </div>
 
               <div class="vx-col sm:w-1/2 w-full mb-2">
@@ -76,12 +76,12 @@
                 <div class="vx-row">
                   <div class="vx-col sm:w-1/2 w-full mb-3">
                     <label>Matrícula</label>
-                    <vs-input class="w-full" icon="content_paste" placeholder="Matrícula" v-model="reader.registration" />
+                    <vs-input class="w-full" icon-pack="feather" icon="icon-archive" icon-no-border placeholder="Matrícula" v-model="reader.registration" />
                   </div>
 
                   <div class="vx-col sm:w-1/2 w-full mb-3">
                     <label>Ano de Matrícula</label>
-                    <vs-input class="w-full" icon="date_range" placeholder="Ano de Matrícula" v-model="reader.entry_year" />
+                    <vs-input class="w-full" icon-pack="feather" icon="icon-calendar" icon-no-border placeholder="Ano de Matrícula" v-model="reader.entry_year" />
                   </div>
                 </div>
 
@@ -103,7 +103,7 @@
 				<div class="vx-row">
 					<div class="vx-col w-full">
 						<vs-button class="mr-3 mb-2">Criar</vs-button>
-						<vs-button color="danger" type="border" class="mb-2">Voltar</vs-button>
+						<vs-button color="danger" type="border" class="mb-2" :to="{name:'admin-reader-list'}">Voltar</vs-button>
 					</div>
 				</div>
 			</vx-card>

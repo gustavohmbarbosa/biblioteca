@@ -1,5 +1,6 @@
 <template>
     <div :style="{'direction': $vs.rtl ? 'rtl' : 'ltr'}">
+      <feather-icon icon="EyeIcon" svgClasses="h-5 w-5 mr-4 hover:text-primary cursor-pointer" @click="viewRecord" />
       <feather-icon icon="Edit3Icon" svgClasses="h-5 w-5 mr-4 hover:text-primary cursor-pointer" @click="editRecord" />
       <feather-icon icon="Trash2Icon" svgClasses="h-5 w-5 hover:text-danger cursor-pointer" @click="confirmDeleteRecord" />
     </div>
@@ -9,24 +10,35 @@
     export default {
         name: 'CellRendererActions',
         methods: {
-          editRecord() {
-            this.$router.push("/apps/reader/reader-edit/" + 268).catch(() => {})
+          viewRecord() {
+            this.$router.push("/leitores/visualizacao/" + this.params.data.id).catch(() => {})
 
             /*
               Below line will be for actual product
               Currently it's commented due to demo purpose - Above url is for demo purpose
 
-              this.$router.push("/apps/user/user-edit/" + this.params.data.id).catch(() => {})
+              this.$router.push("/apps/reader/reader-edit/" + this.params.data.id).catch(() => {})
+            */
+          },
+          editRecord() {
+            this.$router.push("/leitores/edicao/" + this.params.data.id).catch(() => {})
+
+            /*
+              Below line will be for actual product
+              Currently it's commented due to demo purpose - Above url is for demo purpose
+
+              this.$router.push("/apps/reader/reader-edit/" + this.params.data.id).catch(() => {})
             */
           },
           confirmDeleteRecord() {
             this.$vs.dialog({
               type: 'confirm',
               color: 'danger',
-              title: `Confirm Delete`,
-              text: `You are about to delete "${this.params.data.username}"`,
+              title: `Confirmar Exclusão`,
+              text: `Você está prestes a excluir "${this.params.data.name}"`,
               accept: this.deleteRecord,
-              acceptText: "Delete"
+              acceptText: "Excluir",
+              cancelText: "Cancelar",
             })
           },
           deleteRecord() {
@@ -41,8 +53,8 @@
           showDeleteSuccess() {
             this.$vs.notify({
               color: 'success',
-              title: 'User Deleted',
-              text: 'The selected user was successfully deleted'
+              title: 'Leitor excluído',
+              text: 'O leitor selecionado foi excluído com sucesso!'
             })
           }
         }

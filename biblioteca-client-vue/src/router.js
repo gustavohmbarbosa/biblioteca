@@ -112,14 +112,14 @@ const router = new Router({
                     breadcrumb: [
                         { title: 'Home', url: '/' },
                         { title: 'Leitores' },
-                        { title: 'Lista', active: true },
+                        { title: 'Listar', active: true },
                     ],
                     pageTitle: 'Leitores',
                     rule: 'editor'
                 },
               },
               {
-                path: '/apps/reader/reader-view/:readerId',
+                path: '/leitores/visualizacao/:readerId',
                 name: 'admin-reader-view',
                 component: () => import('@/views/admin/reader/ReaderView.vue'),
                 meta: {
@@ -138,14 +138,14 @@ const router = new Router({
                 component: () => import('@/views/admin/reader/ReaderCreate.vue')
               },
               {
-                path: '/apps/reader/reader-edit/:readerId',
+                path: '/leitores/edicao/:readerId',
                 name: 'admin-reader-edit',
-                component: () => import('@/views/admin/reader/reader-edit/ReaderEdit.vue'),
+                component: () => import('@/views/admin/reader/ReaderEdit.vue'),
                 meta: {
                     breadcrumb: [
                         { title: 'Home', url: '/' },
                         { title: 'Leitores' },
-                        { title: 'Edit', active: true },
+                        { title: 'Edição', active: true },
                     ],
                     pageTitle: 'Editar Leitor',
                     rule: 'editor'
