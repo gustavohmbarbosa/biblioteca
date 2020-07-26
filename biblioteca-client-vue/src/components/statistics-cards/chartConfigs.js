@@ -82,7 +82,7 @@ export default {
     xaxis: {
       type: 'numeric',
     },
-    // colors: ['#7367F0'],
+    // colors: ['#039BE5'],
     fill: {
       type: 'gradient',
       gradient: {
