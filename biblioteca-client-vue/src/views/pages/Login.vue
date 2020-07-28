@@ -87,6 +87,7 @@ export default{
         this.$vs.loading.close()
 
         console.log(res)
+        this.$router.push('/')
       }).catch(err => {
         console.log(err)
 

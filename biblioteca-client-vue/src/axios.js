@@ -1,6 +1,6 @@
 // axios
 import axios from 'axios'
-
+import interceptors from '@/store/auth/interceptors'
 const domain = ""
 
 export default axios.create({
@@ -8,3 +8,5 @@ export default axios.create({
   domain
   // You can add your headers here
 })
+
+axios.interceptors.response.use(interceptors)

@@ -10,6 +10,7 @@
 
 import Vue from 'vue'
 import Router from 'vue-router'
+import store from '@/store/store'
 
 Vue.use(Router)
 
@@ -247,6 +248,25 @@ router.afterEach(() => {
     if (appLoading) {
         appLoading.style.display = "none";
     }
+})
+
+router.beforeEach(async (to, from, next) => {
+
+  if(to.name !== 'page-login' && !store.getters['auth/hasToken']) {
+    try {
+      await store.dispatch('auth/checkToken')
+      next({ name: to.name })
+    } catch (err) {
+      console.log(err)
+      next({ name: 'page-login' })
+    }
+  } else {
+    if(to.name === 'page-login' && store.getters['auth/hasToken']) {
+      next({ name: 'home' })
+    } else {
+      next()
+    }
+  }
 })
 
 export default router

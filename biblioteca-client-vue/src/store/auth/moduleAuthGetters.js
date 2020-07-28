@@ -8,4 +8,12 @@
 ==========================================================================================*/
 
 
-export default {}
+export default {
+  hasToken({ token }) {
+    if(token) {
+      return true
+    } else {
+      return false
+    }
+  }
+}

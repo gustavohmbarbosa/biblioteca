@@ -8,6 +8,7 @@
 ==========================================================================================*/
 
 import axios from "@/axios.js"
+import storage from "./storage.js"
 
 export default {
   // addItem({ commit }, item) {
@@ -31,10 +32,44 @@ export default {
         .catch((error) => { reject(error) })
       })
   },
+  checkToken({ dispatch, state }) {
+    if(state.token) {
+      return new Promise.resolve(state.token)
+    }
+
+    const token = storage.getLocalToken()
+
+    if(!token) {
+      return Promise.reject(new Error("Token Inválido"))
+    }
+
+    dispatch('setToken', token)
+    return dispatch('loadSession')
+  },
+  loadSession({ dispatch, state }) {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const user = await state.user
+        dispatch('setUser', user)
+        resolve()
+      } catch (err) {
+        dispatch('signOut')
+        reject(err)
+      }
+    })
+  },
   setUser({ commit }, payload) {
     commit("SET_USER", payload)
   },
   setToken({ commit }, payload) {
+    storage.setLocalToken(payload)
+    storage.setHeaderToken(payload)
     commit("SET_TOKEN", payload)
   },
+  signOut({ dispatch }) {
+    storage.setHeaderToken('')
+    storage.deleteLocalToken()
+    dispatch('setUser', {})
+    dispatch('setToken', '')
+  }
 }
