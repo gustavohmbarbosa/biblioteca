@@ -35,7 +35,7 @@
                       icon="icon icon-user"
                       icon-pack="feather"
                       label-placeholder="Email"
-                      v-model="email"
+                      v-model="form.email"
                       class="w-full"/>
 
                   <vs-input
@@ -45,15 +45,14 @@
                       icon="icon icon-lock"
                       icon-pack="feather"
                       label-placeholder="Senha"
-                      v-model="password"
+                      v-model="form.password"
                       class="w-full mt-6" />
 
                   <div class="flex flex-wrap justify-between my-5">
-                      <vs-checkbox v-model="checkbox_remember_me" class="mb-3">Mantenha-me conectado</vs-checkbox>
                       <router-link to="">Esqueceu sua senha?</router-link>
                   </div>
                   <vs-button type="border" to="/pages/register">Criar Conta</vs-button>
-                  <vs-button class="float-right">Entrar</vs-button>
+                  <vs-button class="float-right" @click.prevent="submit()">Entrar</vs-button>
                 </div>
 
               </div>
@@ -66,13 +65,43 @@
 </template>
 
 <script>
+
 export default{
   data() {
     return {
-      email: "",
-      password: "",
-      checkbox_remember_me: false,
+      form: {
+        email: "stamm.abbie@example.org",
+        password: "password",
+      },
     }
+  },
+  methods: {
+
+    submit() {
+
+      // Loading
+      this.$vs.loading()
+
+      this.$store.dispatch('auth/doLogin', this.form).then(res => {
+        // Close Loading
+        this.$vs.loading.close()
+
+        console.log(res)
+      }).catch(err => {
+        console.log(err)
+
+        // Close Loading
+        this.$vs.loading.close()
+        this.$vs.notify({
+          title: 'Error',
+          text: 'Não foi possível realizar o login.',
+          iconPack: 'feather',
+          icon: 'icon-alert-circle',
+          color: 'danger'
+        })
+      })
+    }
+
   }
 }
 </script>
