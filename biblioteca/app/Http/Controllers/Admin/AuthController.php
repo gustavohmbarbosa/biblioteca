@@ -15,7 +15,8 @@ class AuthController extends Controller
      */
     public function login(Request $request)
     {
-        $credentials = $request->only(['email', 'password']);
+        // $credentials = $this->validator($request->only(['email', 'password']));
+        $credentials = $request->all();
 
         if (! $token = auth('api')->attempt($credentials)) {
             return response()->json(['error' => 'Unauthorized'], 401);
@@ -54,4 +55,30 @@ class AuthController extends Controller
             'expires_in'   => auth('api')->factory()->getTTL() * 60
         ]);
     }
+
+    /**
+    * Get a validator.
+    *
+    * @param  array  $data
+    * @return \Illuminate\Contracts\Validation\Validator
+    */
+   protected function validator($data, $id = null)
+   {
+        $fields = [
+            'name'         => ['required', 'string', 'max:190'],
+            'email'        => ['required', 'string', 'email', 'max:190'],
+            'password'     => ['required', 'string', 'min:8'],
+
+        ];
+
+        $messages = [
+            'required'    => 'Este campo é obrigatório!',
+            'min'         => 'Campo deve ter no mínimo :min caracteres.',
+            'max'         => 'Campo deve ter no máximo :max caracteres.',
+            'email'       => 'Insira um endereço de e-mail válido!',
+            'string'      => 'Insira caracteres válidos!',
+        ];
+
+        return $data->validate($fields, $messages);
+   }
 }

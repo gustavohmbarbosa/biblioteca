@@ -36,7 +36,9 @@
                       icon-pack="feather"
                       label-placeholder="Email"
                       v-model="form.email"
+                      v-validate="'required'"
                       class="w-full"/>
+                  <span class="text-danger text-sm" v-show="errors.has('email')">{{ errors.first('email') }}</span>
 
                   <vs-input
                       type="password"
@@ -46,7 +48,9 @@
                       icon-pack="feather"
                       label-placeholder="Senha"
                       v-model="form.password"
+                      v-validate="'required'"
                       class="w-full mt-6" />
+                  <span class="text-danger text-sm" v-show="errors.has('password')">{{ errors.first('password') }}</span>
 
                   <div class="flex flex-wrap justify-between my-5">
                       <router-link to="">Esqueceu sua senha?</router-link>
@@ -65,6 +69,21 @@
 </template>
 
 <script>
+// For custom error message
+import { Validator } from 'vee-validate';
+const dict = {
+  custom: {
+    email: {
+      required: 'Este campo é obrigatório.'
+    },
+    password: {
+      required: 'Este campo é obrigatório.'
+    },
+  }
+};
+
+// register custom messages
+Validator.localize('ptBR', dict);
 
 export default{
   data() {
@@ -79,12 +98,33 @@ export default{
 
     submit() {
 
+      // Validating
+      this.$validator.validateAll().then(result => {
+        if(!result) {
+          this.$vs.notify({
+            title: 'Aviso!',
+            text: 'Preencha os campos corretamente',
+            iconPack: 'feather',
+            icon: 'icon-alert-circle',
+            color: 'warning'
+          })
+          return;
+        }
+      })
+
       // Loading
       this.$vs.loading()
 
       this.$store.dispatch('auth/doLogin', this.form).then(res => {
         // Close Loading
         this.$vs.loading.close()
+        this.$vs.notify({
+          title: 'Sucesso!',
+          text: 'Login Realizado com Sucesso!',
+          iconPack: 'feather',
+          icon: 'icon-check',
+          color: 'success'
+        })
 
         console.log(res)
         this.$router.push('/')
