@@ -15,14 +15,14 @@
       <vs-dropdown-menu class="vx-navbar-dropdown">
         <ul style="min-width: 9rem">
 
-          <li 
+          <li
             class="flex py-2 px-4 cursor-pointer hover:bg-primary hover:text-white"
             @click="$router.push('/perfil').catch(() => {})">
             <feather-icon icon="UserIcon" svgClasses="w-4 h-4" />
             <span class="ml-2">Perfil</span>
           </li>
 
-          <li 
+          <li
             class="flex py-2 px-4 cursor-pointer hover:bg-primary hover:text-white"
             @click="$router.push('/contas/editar').catch(() => {})">
             <feather-icon icon="SettingsIcon" svgClasses="w-4 h-4" />
@@ -35,7 +35,7 @@
             class="flex py-2 px-4 cursor-pointer hover:bg-primary hover:text-white"
             @click="logout">
             <feather-icon icon="LogOutIcon" svgClasses="w-4 h-4" />
-            <span class="ml-2">Sair</span>
+            <span class="ml-2" @click="logout()">Sair</span>
           </li>
         </ul>
       </vs-dropdown-menu>
@@ -58,6 +58,7 @@ export default {
   methods: {
     logout() {
       // This is just for demo Purpose. If user clicks on logout -> redirect
+      this.$store.dispatch('auth/signOut')
       this.$router.push('/pages/login').catch(() => {})
     },
   }
