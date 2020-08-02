@@ -51,6 +51,9 @@ Route::post('admin/login', 'Admin\\AuthController@login')->name('admin.login');
 Route::group(['middleware' => 'auth.admin.jwt'], function () {
     Route::prefix('admin')->name('admin.')->namespace('Admin')->group(function(){
 
+        // Load Session
+        Route::get('load-session/{email}', 'AuthController@loadSession');
+
         // Users
         Route::name('users.')->group(function(){
             Route::resource('users', 'UserController');

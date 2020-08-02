@@ -31,7 +31,7 @@ const themeConfig = {
   theme             : "light",     // options[String]  : "light"(default), "dark", "semi-dark"
 
   // Not required yet - WIP
-  userInfoLocalStorageKey: "userInfo",
+  userInfoLocalStorageKey: "user",
 
   // NOTE: themeTour will be disabled in screens < 1200. Please refer docs for more info.
 }

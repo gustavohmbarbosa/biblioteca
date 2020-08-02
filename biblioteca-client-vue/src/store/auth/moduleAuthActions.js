@@ -46,10 +46,10 @@ export default {
     dispatch('setToken', token)
     return dispatch('loadSession')
   },
-  loadSession({ dispatch, state }) {
+  loadSession({ dispatch }) {
     return new Promise(async (resolve, reject) => {
       try {
-        const user = await state.user
+        const user = await storage.getLocalUser()
         dispatch('setUser', user)
         resolve()
       } catch (err) {
@@ -59,6 +59,7 @@ export default {
     })
   },
   setUser({ commit }, payload) {
+    storage.setLocalUser(payload)
     commit("SET_USER", payload)
   },
   setToken({ commit }, payload) {

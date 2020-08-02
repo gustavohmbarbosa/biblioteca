@@ -1,6 +1,18 @@
 import axios from '@/axios'
 
 export default {
+  // User
+  getLocalUser() {
+    return JSON.parse(localStorage.getItem('user'))
+  },
+  deleteLocalUser() {
+    localStorage.removeItem('user')
+  },
+  setLocalUser(user) {
+    localStorage.setItem('user', JSON.stringify(user))
+  },
+
+  // Token
   getLocalToken() {
     return localStorage.getItem('token')
   },

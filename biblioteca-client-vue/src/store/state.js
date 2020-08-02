@@ -16,13 +16,15 @@ import colors from "@/../themeConfig.js"
 // Variables
 // /////////////////////////////////////////////
 
+let user = JSON.parse(localStorage.getItem('user')) ? JSON.parse(localStorage.getItem('user')) : ''
+
 const userDefaults = {
   uid         : 0,          // From Auth
-  displayName : "John Doe", // From Auth
+  displayName : user.name, // From Auth
   about       : "Dessert chocolate cake lemon drops jujubes. Biscuit cupcake ice cream bear claw brownie brownie marshmallow.",
   photoURL    : require("@/assets/images/portrait/small/avatar-s-11.jpg"), // From Auth
   status      : "online",
-  userRole    : "admin"
+  userRole    : user.role
 }
 
 // /////////////////////////////////////////////

@@ -125,8 +125,6 @@ export default{
           icon: 'icon-check',
           color: 'success'
         })
-
-        console.log(res)
         this.$router.push('/')
       }).catch(err => {
         console.log(err)
