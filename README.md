@@ -50,6 +50,13 @@ Copie o arquivo .env do .env.exemple:
 
 ```
 cd biblioteca
+copy .env.example .env
+```
+
+ou
+
+```
+cd biblioteca
 cp .env.example .env
 ```
 
@@ -61,22 +68,17 @@ DB_USERNAME=root
 DB_PASSWORD=
 ```
 
-Agora gere uma chave JWT para autenticação:
-
-```
-php artisan jwt:secret
-```
-
-Agora instale as dependências do Laravel, gere uma chave, execute as migrações e inicie o servidor:
+Agora instale as dependências do Laravel, gere uma chave, gere uma chave JWT, execute as migrações e inicie o servidor:
 
 ```
 composer install
 php artisan key:generate
+php artisan jwt:secret
 php artisan migrate --seed
 php artisan serve
 ```
 
-Com isso você podera acessar a API pela rota/link: **[http://127.0.0.1:8000/api/](http://127.0.0.1:8000/api/)**
+Com isso você podera acessar a API pela rota/link: (**[http://127.0.0.1:8000/api/](http://127.0.0.1:8000/api/)**)
 
 ### Configurando Frontend
 
@@ -91,7 +93,7 @@ npm run serve
 ou
 ```
 yarn install
-yarn run serve
+yarn start
 ```
 
-Finalmente, você poderá acessar o site pela rota/link: **[https://127.0.0.1:8080](https://127.0.0.1:8080)**
+Finalmente, você poderá acessar o site pela rota/link: (**[https://127.0.0.1:8080](https://127.0.0.1:8080)**)
