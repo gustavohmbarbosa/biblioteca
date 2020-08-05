@@ -292,7 +292,7 @@ export default {
       this.$store.registerModule('readerManagement', moduleReaderManagement)
       moduleReaderManagement.isRegistered = true
     }
-    this.$store.dispatch("readerManagement/fetchReaders").catch(err => { console.error(err) })
+    this.$store.dispatch("readerManagement/index").catch(err => { console.error(err) })
   }
 }
 

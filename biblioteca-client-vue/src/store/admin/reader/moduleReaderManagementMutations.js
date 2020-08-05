@@ -13,7 +13,10 @@ export default {
     state.readers = readers
   },
   REMOVE_RECORD(state, itemId) {
-      const readerIndex = state.readers.findIndex((reader) => reader.id == itemId)
-      state.readers.splice(readerIndex, 1)
+    const readerIndex = state.readers.findIndex((reader) => reader.id == itemId)
+    state.readers.splice(readerIndex, 1)
   },
+  SET_BOOKS(state, books) {
+    state.books = books
+  }
 }

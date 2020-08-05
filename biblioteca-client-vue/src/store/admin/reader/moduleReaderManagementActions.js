@@ -10,19 +10,9 @@
 import axios from "@/axios.js"
 
 export default {
-  // addItem({ commit }, item) {
-  //   return new Promise((resolve, reject) => {
-  //     axios.post("/api/data-list/products/", {item: item})
-  //       .then((response) => {
-  //         commit('ADD_ITEM', Object.assign(item, {id: response.data.id}))
-  //         resolve(response)
-  //       })
-  //       .catch((error) => { reject(error) })
-  //   })
-  // },
-  fetchReaders({ commit }) {
+  index({ commit }) {
     return new Promise((resolve, reject) => {
-      axios.get("/api/reader-management/readers")
+      axios.get("admin/readers")
         .then((response) => {
           commit('SET_READERS', response.data)
           resolve(response)
@@ -30,23 +20,62 @@ export default {
         .catch((error) => { reject(error) })
     })
   },
-  fetchReader(context, readerId) {
+  store({ commit }, item) {
     return new Promise((resolve, reject) => {
-      axios.get(`/api/reader-management/readers/${readerId}`)
+      axios.post("admin/readers", {item: item})
+        .then((response) => {
+          commit('ADD_ITEM', Object.assign(item, {id: response.data.id}))
+          resolve(response)
+        })
+        .catch((error) => { reject(error) })
+    })
+  },
+  update(context, readerId) {
+    return new Promise((resolve, reject) => {
+      axios.put(`admin/readers/${readerId}`)
+      .then((response) => {
+        resolve(response)
+      })
+      .catch((error) => { reject(error) })
+    })
+  },
+  show(context, readerId) {
+    return new Promise((resolve, reject) => {
+      axios.get(`admin/readers/${readerId}`)
         .then((response) => {
           resolve(response)
         })
         .catch((error) => { reject(error) })
     })
   },
-  removeRecord({ commit }, readerId) {
+  destroy({ commit }, readerId) {
     return new Promise((resolve, reject) => {
-      axios.delete(`/api/reader-management/readers/${readerId}`)
+      axios.delete(`admin/readers/${readerId}`)
         .then((response) => {
           commit('REMOVE_RECORD', readerId)
           resolve(response)
         })
         .catch((error) => { reject(error) })
+    })
+  },
+  showBooks(commit, readerId) {
+    return new Promise((resolve, reject) => {
+      axios.get(`admin/${readerId}/books`)
+      .then((response) => {
+        commit('SET_BOOKS', response.data)
+        resolve(response)
+      })
+      .catch((error) => { reject(error) })
+    })
+  },
+  showBook(commit, bookId) {
+    return new Promise((resolve, reject) => {
+      axios.get(`admin/books/${bookId}`)
+      .then((response) => {
+        commit('SET_BOOKS', response.data[0])
+        resolve(response)
+      })
+      .catch((error) => { reject(error) })
     })
   }
 }
