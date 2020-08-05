@@ -20,7 +20,7 @@
       </div>
     </vx-card>
 
-    <div class="vx-card p-6">
+    <vx-card class="vx-card p-2" id="div-list-readers" refresh-content-action @refresh="refreshCard">
 
       <div class="flex flex-wrap items-center">
 
@@ -114,7 +114,7 @@
         :max="7"
         v-model="currentPage" />
 
-    </div>
+    </vx-card>
   </div>
 
 </template>
@@ -155,8 +155,8 @@ export default {
       statusFilter: { label: 'Todos', value: 'all' },
       statusOptions: [
         { label: 'Todos', value: 'all' },
-        { label: 'Ativado', value: 'Ativo' },
-        { label: 'Desativado', value: 'Desativo' },
+        { label: 'Ativado', value: 'AtivoAtivo' },
+        { label: 'Desativado', value: 'Inativo' },
         { label: 'Bloqueado', value: 'Bloqueado' },
       ],
 
@@ -174,7 +174,7 @@ export default {
         {
           headerName: 'ID',
           field: 'id',
-          width: 100,
+          width: 125,
           filter: true,
           checkboxSelection: true,
           headerCheckboxSelectionFilteredOnly: true,
@@ -272,6 +272,9 @@ export default {
     },
     updateSearchQuery(val) {
       this.gridApi.setQuickFilter(val)
+    },
+    refreshCard(card) {
+      card.removeRefreshAnimation(3000);
     }
   },
   mounted() {
@@ -292,6 +295,7 @@ export default {
       this.$store.registerModule('readerManagement', moduleReaderManagement)
       moduleReaderManagement.isRegistered = true
     }
+
     this.$store.dispatch("readerManagement/index").catch(err => { console.error(err) })
   }
 }

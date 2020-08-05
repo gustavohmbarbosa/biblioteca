@@ -33,7 +33,7 @@ class ReaderController extends Controller
      */
     public function index()
     {
-        $readers = $this->reader->paginate(10);
+        $readers = $this->reader->all();
 
         return response()->json($readers);
     }
