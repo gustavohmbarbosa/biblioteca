@@ -11,7 +11,7 @@
     <img alt="GitHub Last Commit" src="https://img.shields.io/github/last-commit/Gustavo-HMB/biblioteca" />
 </p>
 
-Este repositório será utilizado para salvar os arquivos do projeto do ***:books: Sistema da Biblioteca ETE-AVS*** que servirá para auxiliar os bibliotecários na administração de livros, leitores e empréstimos e facilitar o acesso dos livros aos leitores.
+Este repositório será utilizado para salvar os arquivos do projeto do **:books: Sistema da Biblioteca ETE-AVS** que servirá para auxiliar os bibliotecários na administração de livros, leitores e empréstimos e facilitar o acesso dos livros aos leitores.
 
 ## 💻 Sobre o Projeto
 
@@ -39,7 +39,7 @@ Primeiro clone este projeto usando os seguintes comandos no Terminal:
 
 ```
 git clone https://github.com/Gustavo-HMB/biblioteca.git
-cd biblioteca
+cd server
 ```
 
 ### 🎲 Configurando Backend
@@ -53,14 +53,14 @@ CREATE DATABASE biblioteca CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 Copie o arquivo .env do .env.exemple:
 
 ```
-cd biblioteca
+cd server
 copy .env.example .env
 ```
 
 ou
 
 ```
-cd biblioteca
+cd server
 cp .env.example .env
 ```
 
@@ -86,7 +86,7 @@ Com isso você podera acessar a API pela rota/link: (**[http://127.0.0.1:8000/ap
 
 ### 🧭 Configurando Frontend
 
-Entre no diretório do Frontend da aplicação com `cd biblioteca-client-vue`.
+Entre no diretório do Frontend da aplicação com `cd web`.
 
 Agora vamos instalar as dependências do Vue e iniciar o servidor:
 
