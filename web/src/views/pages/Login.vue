@@ -89,7 +89,7 @@ export default{
   data() {
     return {
       form: {
-        email: "clarabelle31@example.com",
+        email: "bauch.vito@example.org",
         password: "password",
       },
     }
@@ -115,7 +115,7 @@ export default{
       // Loading
       this.$vs.loading()
 
-      this.$store.dispatch('auth/doLogin', this.form).then(res => {
+      this.$store.dispatch('auth/doLogin', this.form).then(() => {
         // Close Loading
         this.$vs.loading.close()
         this.$vs.notify({

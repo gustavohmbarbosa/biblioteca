@@ -37,11 +37,6 @@ const router = new Router({
                 name: 'home',
                 component: () => import('./views/Home.vue')
               },
-              {
-                path: '/page2',
-                name: 'page-2',
-                component: () => import('./views/Page2.vue')
-              },
 
 
               /* Administrative */

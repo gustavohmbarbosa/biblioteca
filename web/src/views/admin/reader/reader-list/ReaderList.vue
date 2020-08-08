@@ -13,14 +13,18 @@
 
     <vx-card ref="filterCard" title="Filtros" class="reader-list-filters mb-8" actionButtons @refresh="resetColFilters" @remove="resetColFilters">
       <div class="vx-row">
-        <div class="vx-col w-full">
+        <div class="vx-col md:w-1/2 sm:w-1/2 w-full">
+          <label class="text-sm opacity-75">Função</label>
+          <v-select :options="roleOptions" :clearable="false" :dir="$vs.rtl ? 'rtl' : 'ltr'" v-model="roleFilter" class="mb-4 md:mb-0" />
+        </div>
+        <div class="vx-col md:w-1/2 sm:w-1/2 w-full">
           <label class="text-sm opacity-75">Status</label>
           <v-select :options="statusOptions" :clearable="false" :dir="$vs.rtl ? 'rtl' : 'ltr'" v-model="statusFilter" class="mb-4 md:mb-0" />
         </div>
       </div>
     </vx-card>
 
-    <vx-card class="vx-card p-2" id="div-list-readers" refresh-content-action @refresh="refreshCard">
+    <div class="vx-card p-6">
 
       <div class="flex flex-wrap items-center">
 
@@ -92,6 +96,7 @@
 
       <!-- AgGrid Table -->
       <ag-grid-vue
+        id="datatable-list"
         ref="agGridTable"
         :components="components"
         :gridOptions="gridOptions"
@@ -114,7 +119,7 @@
         :max="7"
         v-model="currentPage" />
 
-    </vx-card>
+    </div>
   </div>
 
 </template>
@@ -155,7 +160,7 @@ export default {
       statusFilter: { label: 'Todos', value: 'all' },
       statusOptions: [
         { label: 'Todos', value: 'all' },
-        { label: 'Ativado', value: 'AtivoAtivo' },
+        { label: 'Ativado', value: 'Ativo' },
         { label: 'Desativado', value: 'Inativo' },
         { label: 'Bloqueado', value: 'Bloqueado' },
       ],
@@ -289,6 +294,12 @@ export default {
       const header = this.$refs.agGridTable.$el.querySelector(".ag-header-container")
       header.style.left = "-" + String(Number(header.style.transform.slice(11,-3)) + 9) + "px"
     }
+
+    // Loading for Readers Request
+    this.$vs.loading({
+      container: '#datatable-list',
+      scale: 0.6
+    })
   },
   created() {
     if(!moduleReaderManagement.isRegistered) {
@@ -296,11 +307,39 @@ export default {
       moduleReaderManagement.isRegistered = true
     }
 
-    this.$store.dispatch("readerManagement/index").catch(err => { console.error(err) })
+    this.$store.dispatch("readerManagement/index")
+    .then(() => {
+      this.$vs.loading.close("#datatable-list > .con-vs-loading")
+    })
+    .catch(err => {
+      this.$vs.loading.close("#datatable-list > .con-vs-loading")
+
+      this.$vs.notify({
+        title: 'Erro!',
+        text: 'Não foi possível carregar os dados!',
+        iconPack: 'feather',
+        icon: 'icon-alert-circle',
+        color: 'danger'
+      })
+      console.error(err)
+    })
   }
 }
 
 </script>
+
+<style lang="scss">
+#page-user-list {
+  .user-list-filters {
+    .vs__actions {
+      position: absolute;
+      right: 0;
+      top: 50%;
+      transform: translateY(-58%);
+    }
+  }
+}
+</style>
 
 <style lang="scss">
 #page-user-list {

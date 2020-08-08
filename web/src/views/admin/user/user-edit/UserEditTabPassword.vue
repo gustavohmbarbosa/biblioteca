@@ -68,7 +68,7 @@ export default {
       // You can get data in "this.data_local"
     },
     cancel_changes() {
-      return router.push({ name: 'admin-user-view', params: { userId: this.data_local.id } })
+      return this.$router.push({ name: 'admin-user-view', params: { userId: this.data_local.id } })
     }
   },
 }

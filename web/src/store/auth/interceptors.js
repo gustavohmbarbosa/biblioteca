@@ -1,6 +1,6 @@
 import store from '../store'
 
-export default req => {
+const pushToLogin = () => {
   return ({ status }) => {
     if (status === 401) {
       store.dispatch('auth/signOut')
@@ -8,3 +8,5 @@ export default req => {
     }
   }
 }
+
+export default pushToLogin

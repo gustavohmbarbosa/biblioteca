@@ -14,7 +14,6 @@ export default {
     return new Promise((resolve, reject) => {
       axios.get("admin/readers")
         .then((response) => {
-          console.log(response)
           commit('SET_READERS', response.data)
           resolve(response)
         })
