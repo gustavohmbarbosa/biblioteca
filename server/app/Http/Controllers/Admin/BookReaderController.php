@@ -47,7 +47,7 @@ class BookReaderController extends Controller
             'book_reader.*',
         )->paginate(10);
 
-        return response()->json(['data' => $loans]);
+        return response()->json($loans);
     }
 
     /**
@@ -60,7 +60,7 @@ class BookReaderController extends Controller
         $readers = Reader::all(['id','name']);
         $books = Book::all(['id', 'title']);
 
-        return response()->json(['data' => ['readers' => $readers, 'books' => $books]]);
+        return response()->json(['readers' => $readers, 'books' => $books]);
     }
 
     /**
@@ -106,7 +106,7 @@ class BookReaderController extends Controller
             return $this->errorMessage("Nenhum dado foi encontrado.");
         }
 
-        return response()->json(['data' => $loan]);
+        return response()->json($loan);
     }
 
     /**
@@ -122,7 +122,7 @@ class BookReaderController extends Controller
         $readers = Reader::all(['id','name']);
         $books = Book::all(['id', 'title']);
 
-        return response()->json(['data' => ['readers' => $readers, 'books' => $books]]);
+        return response()->json(['readers' => $readers, 'books' => $books]);
     }
 
     /**
@@ -145,7 +145,7 @@ class BookReaderController extends Controller
         if ($data['status'] != 'ATIVO') {
             $data['return_date'] = date('Y-m-d');
         }
- 
+
         $loan->update($data);
 
         return $this->message("Os dados atualizados com sucesso!");
@@ -205,12 +205,12 @@ class BookReaderController extends Controller
          $fields = [
              'status'    =>  ['required', Rule::in(['ATIVO', 'INATIVO'])],
          ];
- 
+
          $messages = [
              'required'          =>  'Este campo é obrigatório!',
              'in'                =>  'Selecione um dos valores pré-informados.',
          ];
- 
+
          return $data->validate($fields, $messages);
     }
 }

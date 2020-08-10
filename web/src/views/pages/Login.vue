@@ -115,32 +115,35 @@ export default{
       // Loading
       this.$vs.loading()
 
-      this.$store.dispatch('auth/doLogin', this.form).then(() => {
+      this.$store.dispatch('auth/doLogin', this.form).then(res => {
         // Close Loading
         this.$vs.loading.close()
-        this.$vs.notify({
+        this.showSignInSuccess(res.data.message)
+        this.$router.push('/')
+      }).catch(() => {
+        // Close Loading
+        this.$vs.loading.close()
+        this.showSignInFailed('Erro ao realizar o login!')
+      })
+    },
+    showSignInSuccess(message) {
+      this.$vs.notify({
           title: 'Sucesso!',
-          text: 'Login Realizado com Sucesso!',
+          text: message,
           iconPack: 'feather',
           icon: 'icon-check',
           color: 'success'
         })
-        this.$router.push('/')
-      }).catch(err => {
-        console.log(err)
-
-        // Close Loading
-        this.$vs.loading.close()
-        this.$vs.notify({
-          title: 'Error',
-          text: 'Não foi possível realizar o login.',
+    },
+    showSignInFailed(message) {
+      this.$vs.notify({
+          title: 'Erro!',
+          text: message,
           iconPack: 'feather',
           icon: 'icon-alert-circle',
           color: 'danger'
         })
-      })
-    }
-
+    },
   }
 }
 </script>

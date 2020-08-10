@@ -36,7 +36,7 @@ class AuthorBookController extends Controller
         ->join('authors', 'authors.id', '=', 'author_book.author_id')
         ->select('author_book.*', 'books.title as book_title', 'books.subtitle as book_subtitle', 'authors.name as author_name')->get();
 
-        return response()->json(['data' => $authorBook]);
+        return response()->json($authorBook);
     }
 
     /**
@@ -49,7 +49,7 @@ class AuthorBookController extends Controller
         $authors = Author::all(['id','name']);
         $books = Book::all(['id', 'title']);
 
-        return response()->json(['data' => ['authors' => $authors, 'books' => $books]]);
+        return response()->json(['authors' => $authors, 'books' => $books]);
     }
 
     /**
@@ -63,7 +63,7 @@ class AuthorBookController extends Controller
         $data = $this->validator($request);
 
         $this->authorBook->create($data);
-        return $this->message('Relation Author-Book created successfully', 201);
+        return $this->message('Relação Autor-Livro criada com sucesso!', 201);
     }
 
     /**
@@ -81,10 +81,10 @@ class AuthorBookController extends Controller
         ->select('author_book.*', 'books.title as book_title', 'books.subtitle as book_subtitle', 'authors.name as author_name')->get()->first();
 
         if (is_null($authorBook)) {
-            return $this->errorMessage("Relation Author-Book not found");
+            return $this->errorMessage("Esta relação entre Autor e Livro não existe!");
         }
 
-        return response()->json(['data' => $authorBook]);
+        return response()->json($authorBook);
     }
 
     /**
@@ -100,7 +100,7 @@ class AuthorBookController extends Controller
         $authors = Author::all(['id','name']);
         $books = Book::all(['id', 'title']);
 
-        return response()->json(['data' => ['authors' => $authors, 'books' => $books]]);
+        return response()->json(['authors' => $authors, 'books' => $books]);
     }
 
     /**
@@ -115,13 +115,13 @@ class AuthorBookController extends Controller
         $authorBook = $this->authorBook->find($id);
 
         if (is_null($authorBook)) {
-            return $this->errorMessage("Relation Author-Book not found");
+            return $this->errorMessage("Esta relação entre Autor e Livro não existe!");
         }
 
         $data = $this->validator($request);
         $authorBook->update($data);
 
-        return $this->message("Relation Author-Book updated successfully");
+        return $this->message("Relação Autor-Livro atualizada com sucesso!");
     }
 
     /**
@@ -135,12 +135,12 @@ class AuthorBookController extends Controller
         $authorBook = $this->authorBook->find($id);
 
         if (is_null($authorBook)) {
-            return $this->errorMessage("Relation Author-Book not found");
+            return $this->errorMessage("Esta relação entre Autor e Livro não existe!");
         }
 
         $authorBook->delete();
 
-        return $this->message("Relation Author-Book deleted successfully");
+        return $this->message("Relação Autor-Livro deletada com sucesso");
     }
 
     /**

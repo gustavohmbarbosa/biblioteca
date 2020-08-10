@@ -58,9 +58,25 @@ export default {
   methods: {
     logout() {
       // This is just for demo Purpose. If user clicks on logout -> redirect
+      // Loading
+      this.$vs.loading()
+
       this.$store.dispatch('auth/signOut')
-      this.$router.push('/pages/login').catch(() => {})
+        .then(res => {
+          this.$vs.loading.close()
+          this.showSignInSuccess(res.data.message)
+          this.$router.push('/pages/login').catch(() => {})
+        })
     },
+    showSignInSuccess(message) {
+      this.$vs.notify({
+          title: 'Sucesso!',
+          text: message,
+          iconPack: 'feather',
+          icon: 'icon-check',
+          color: 'success'
+        })
+    }
   }
 }
 </script>

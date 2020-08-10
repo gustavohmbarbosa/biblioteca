@@ -31,7 +31,7 @@ class CompanyController extends Controller
     {
         $companies = $this->company->paginate(10);
 
-        return response()->json(['data' => $companies], 200);
+        return response()->json($companies, 200);
     }
 
     /**
@@ -69,7 +69,7 @@ class CompanyController extends Controller
 
         $company['books'] = $books;
 
-        return response()->json(['data' => $company], 200);
+        return response()->json($company, 200);
     }
 
     /**
@@ -86,7 +86,7 @@ class CompanyController extends Controller
             return $this->errorMessage("Nenhum livro encontrada.");
         }
 
-        return response()->json(['data' => $books], 200);
+        return response()->json($books, 200);
     }
 
     /**
@@ -104,7 +104,7 @@ class CompanyController extends Controller
             return $this->errorMessage("Nenhum livro encontrado.");
         }
 
-        return response()->json(['data' => $book], 200);
+        return response()->json($book, 200);
     }
 
     /**

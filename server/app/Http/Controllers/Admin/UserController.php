@@ -68,7 +68,7 @@ class UserController extends Controller
             return $this->errorMessage("Usuário não encontrado");
         }
 
-        return response()->json(['data' => $user]);
+        return response()->json($user);
     }
 
     /**

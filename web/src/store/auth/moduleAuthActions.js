@@ -68,9 +68,16 @@ export default {
     commit("SET_TOKEN", payload)
   },
   signOut({ dispatch }) {
-    storage.setHeaderToken('')
-    storage.deleteLocalToken()
-    dispatch('setUser', {})
-    dispatch('setToken', '')
+    return new Promise((resolve, reject) => {
+      axios.post("admin/logout")
+        .then((response) => {
+          storage.setHeaderToken('')
+          storage.deleteLocalToken()
+          dispatch('setUser', {})
+          dispatch('setToken', '')
+          resolve(response)
+        })
+        .catch((error) => { reject(error) })
+      })
   }
 }

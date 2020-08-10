@@ -58,7 +58,7 @@
               </tr>
               <tr>
                 <td class="font-semibold">Sala</td>
-                <td>{{ reader.grade + 'º ' + reader.class }}</td>
+                <td>{{ reader.grade + 'º Ano ' + reader.class }}</td>
               </tr>
               <tr>
                 <td class="font-semibold">Matrícula</td>

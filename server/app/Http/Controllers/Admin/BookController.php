@@ -75,7 +75,7 @@ class BookController extends Controller
         $book->company;
         $book->authors;
 
-        return response()->json(['data' => $book]);
+        return response()->json($book);
     }
 
     /**
@@ -148,7 +148,7 @@ class BookController extends Controller
             return $this->errorMessage("Nenhum livro foi encontrado.");
         }
 
-        return response()->json(['data' => $books], 200);
+        return response()->json($books, 200);
     }
 
     /**

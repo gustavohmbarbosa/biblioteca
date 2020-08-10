@@ -28,7 +28,7 @@ class CourseController extends Controller
     {
         $courses = $this->course->all(['id', 'name']);
 
-        return response()->json(['data' => $courses]);
+        return response()->json($courses);
     }
 
     /**
@@ -59,7 +59,7 @@ class CourseController extends Controller
             return $this->errorMessage("Curso não encontrado.");
         }
 
-        return response()->json(['data' => $course]);
+        return response()->json($course);
     }
 
     /**
@@ -80,7 +80,7 @@ class CourseController extends Controller
         $data = $this->validator($request);
         $course->update($data);
 
-        return $this->message("Cuso atualizado com sucesso!");
+        return $this->message("Curso atualizado com sucesso!");
     }
 
     /**

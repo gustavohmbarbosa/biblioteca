@@ -19,7 +19,7 @@ class AuthController extends Controller
         $credentials = $request->all();
 
         if (! $token = auth('api')->attempt($credentials)) {
-            return response()->json(['error' => 'Unauthorized'], 401);
+            return response()->json(['error' => 'Não autorizado'], 401);
         }
 
         $userDatas = DB::table('users')->where('email', $credentials['email'])->first();
@@ -36,7 +36,7 @@ class AuthController extends Controller
     {
         auth('api')->logout();
 
-        return response()->json(['message' => 'Successfully logged out']);
+        return response()->json(['message' => 'Deslogado com sucesso!']);
     }
 
     /**
@@ -52,7 +52,8 @@ class AuthController extends Controller
             'user'         => $userDatas,
             'access_token' => $token,
             'token_type'   => 'bearer',
-            'expires_in'   => auth('api')->factory()->getTTL() * 60
+            'expires_in'   => auth('api')->factory()->getTTL() * 60,
+            'message'      => "Logado com sucesso!"
         ]);
     }
 

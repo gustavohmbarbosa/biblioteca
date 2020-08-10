@@ -31,7 +31,7 @@ class AuthorController extends Controller
     {
         $authors = $this->author->all(['id', 'name']);
 
-        return response()->json(['data' => $authors]);
+        return response()->json($authors);
     }
 
     /**
@@ -67,7 +67,7 @@ class AuthorController extends Controller
             return $this->errorMessage("Autor não encontrado.");
         }
 
-        return response()->json(['data' => $author]);
+        return response()->json($author);
     }
 
     /**

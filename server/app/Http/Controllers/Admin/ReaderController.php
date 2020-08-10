@@ -142,7 +142,7 @@ class ReaderController extends Controller
             return $this->errorMessage("Nenhum livro foi encontrado.");
         }
 
-        return response()->json(['data' => $book], 200);
+        return response()->json($book, 200);
     }
 
     /**
