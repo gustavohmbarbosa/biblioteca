@@ -46,7 +46,7 @@ class ReaderController extends Controller
      */
     public function store(Request $request)
     {
-        $data = $this->validator($request);
+        $data = $request->all(); // $this->validator($request);
         $data['password'] = Hash::make($data['password']);
 
         if($request->hasFile('image')) {
@@ -204,7 +204,7 @@ class ReaderController extends Controller
             'gender'       => ['required', Rule::in(['Masculino', 'Feminino'])],
             'grade'        => ['required', Rule::in(['1', '2', '3'])],
             'class'        => ['required', Rule::in(['A', 'B', 'C'])],
-            'course_id'    => ['required', 'string', 'exists:courses,id'],
+            'course_id'    => ['required', 'string', 'exists:courses.id'],
             'registration' => ['required', 'string'],
             'entry_year'   => ['required', 'size:4', 'date_format:Y'],
             'image'        => ['image', 'mimes:jpeg,jpg,png']
