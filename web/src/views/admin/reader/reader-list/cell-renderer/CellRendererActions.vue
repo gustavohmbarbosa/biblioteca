@@ -11,24 +11,10 @@
         name: 'CellRendererActions',
         methods: {
           viewRecord() {
-            this.$router.push("/leitores/visualizacao/" + this.params.data.id).catch(() => {})
-
-            /*
-              Below line will be for actual product
-              Currently it's commented due to demo purpose - Above url is for demo purpose
-
-              this.$router.push("/apps/reader/reader-edit/" + this.params.data.id).catch(() => {})
-            */
+            this.$router.push('/leitores/visualizacao/' + this.params.data.id).catch(() => {})
           },
           editRecord() {
             this.$router.push("/leitores/edicao/" + this.params.data.id).catch(() => {})
-
-            /*
-              Below line will be for actual product
-              Currently it's commented due to demo purpose - Above url is for demo purpose
-
-              this.$router.push("/apps/reader/reader-edit/" + this.params.data.id).catch(() => {})
-            */
           },
           confirmDeleteRecord() {
             this.$vs.dialog({
@@ -42,19 +28,27 @@
             })
           },
           deleteRecord() {
-            /* Below two lines are just for demo purpose */
-            this.showDeleteSuccess()
-
-            /* UnComment below lines for enabling true flow if deleting user */
-            // this.$store.dispatch("userManagement/removeRecord", this.params.data.id)
-            //   .then(()   => { this.showDeleteSuccess() })
-            //   .catch(err => { console.error(err)       })
+            this.$store.dispatch("readerManagement/destroy", this.params.data.id)
+              .then(res => {
+                this.showDeleteSuccess(res.data.message)
+              })
+              .catch(err => {
+                this.showDeleteFailed(err.data.message)
+                console.error(err)
+              })
           },
-          showDeleteSuccess() {
+          showDeleteSuccess(message) {
             this.$vs.notify({
               color: 'success',
               title: 'Leitor excluído',
-              text: 'O leitor selecionado foi excluído com sucesso!'
+              text: message
+            })
+          },
+          showDeleteFailed(message) {
+            this.$vs.notify({
+              color: 'danger',
+              title: 'Leitor não excluído',
+              text: message
             })
           }
         }

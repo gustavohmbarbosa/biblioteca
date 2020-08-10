@@ -107,7 +107,7 @@ class ReaderController extends Controller
 
         $reader->course;
 
-        return response()->json(['data' => $reader]);
+        return response()->json($reader);
     }
 
     /**
@@ -156,7 +156,7 @@ class ReaderController extends Controller
         $reader = $this->reader->find($id);
 
         if (is_null($reader)) {
-            return $this->errorMessage("Leitor não encontrado.");
+            return $this->errorMessage("Este leitor não existe.");
         }
 
         $reader->delete();

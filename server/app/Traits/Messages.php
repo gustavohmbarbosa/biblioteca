@@ -15,11 +15,11 @@ trait Messages
      */
     private function message($message, $status = 200, $type = "success")
     {
-        return response()->json(["message" => [
+        return response()->json([
             "message" => $message,
             "type" => $type,
             "code" => $status,
-        ]], $status);
+        ], $status);
     }
 
     /**
@@ -32,11 +32,11 @@ trait Messages
      */
     private function errorMessage($message, $status = 404, $type = "warning")
     {
-        return response()->json(["message" => [
+        return response()->json([
             "error" => true,
             "message" => $message,
             "type" => $type,
             "code" => $status,
-        ]], $status);
+        ], $status);
     }
 }

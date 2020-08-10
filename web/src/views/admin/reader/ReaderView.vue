@@ -10,7 +10,7 @@
 
     <div id="user-data" v-if="reader">
 
-      <vx-card title="Registro" class="mb-base">
+      <vx-card title="Registro" class="mb-base" id="data-show">
 
         <!-- image -->
         <div class="vx-row">
@@ -34,16 +34,16 @@
                 <td>{{ reader.email }}</td>
               </tr>
               <tr>
-                <td class="font-semibold">Senha</td>
-                <td>{{ reader.password }}</td>
-              </tr>
-              <tr>
                 <td class="font-semibold">Telefone</td>
                 <td>{{ reader.phone }}</td>
               </tr>
               <tr>
                 <td class="font-semibold">Status</td>
                 <td>{{ reader.status }}</td>
+              </tr>
+              <tr>
+                <td class="font-semibold">Gênero</td>
+                <td>{{ reader.gender }}</td>
               </tr>
             </table>
           </div>
@@ -53,16 +53,12 @@
           <div class="vx-col flex-1" id="account-info-col-2">
             <table>
               <tr>
-                <td class="font-semibold">Gênero</td>
-                <td>{{ reader.gender }}</td>
-              </tr>
-              <tr>
                 <td class="font-semibold">Curso</td>
-                <td>{{ reader.course_name }}</td>
+                <td>{{ reader.course.name }}</td>
               </tr>
               <tr>
                 <td class="font-semibold">Sala</td>
-                <td>{{ reader.grade + ' ' + reader.class }}</td>
+                <td>{{ reader.grade + 'º ' + reader.class }}</td>
               </tr>
               <tr>
                 <td class="font-semibold">Matrícula</td>
@@ -93,21 +89,7 @@ import moduleReaderManagement from '@/store/admin/reader/moduleReaderManagement.
 export default {
   data() {
     return {
-      reader: {
-          "id": 1,
-          "image": require("@/assets/images/portrait/small/avatar-s-3.jpg"),
-          "name": "Angelo Sashington",
-          "email": "angelo@sashington.com",
-          "status": "Ativo",
-          "grade": "1º",
-          "class": "B",
-          "course_name": 'Des. de Sistemas',
-          "gender": "Masculino",
-          "password": "12345678",
-          "phone": "(00) 00000-0000",
-          "registration": "1234657",
-          "entry_year": "2019"
-      },
+      reader: {},
       reader_not_found: false,
     }
   },
@@ -125,21 +107,36 @@ export default {
     },
     deleteRecord() {
       /* Below two lines are just for demo purpose */
-      this.$router.push({name:'admin-reader-list'});
-      this.showDeleteSuccess()
-
-      /* UnComment below lines for enabling true flow if deleting reader */
-      // this.$store.dispatch("readerManagement/removeRecord", this.reader.id)
-      //   .then(()   => { this.$router.push({name:'app-reader-list'}); this.showDeleteSuccess() })
-      //   .catch(err => { console.error(err)       })
+      this.$store.dispatch('readerManagement/destroy', this.reader.id)
+        .then(res => {
+          this.$router.push({name:'admin-reader-list'});
+          this.showDeleteSuccess(res.data.message)
+        })
+        .catch(err => {
+          this.showDeleteFailed(err.message)
+        })
     },
-    showDeleteSuccess() {
+    showDeleteSuccess(message) {
       this.$vs.notify({
         color: 'success',
         title: 'Leitor Excluído',
-        text: 'O leitor selecionado foi excluído com sucesso!'
+        text: message
       })
-    }
+    },
+    showDeleteFailed(message) {
+      this.$vs.notify({
+        color: 'danger',
+        title: 'Leitor Não Excluído',
+        text: message
+      })
+    },
+  },
+  mounted() {
+    // Loading for Readers Request
+    this.$vs.loading({
+      container: '#data-show',
+      scale: 0.6
+    })
   },
   created() {
     // Register Module ReaderManagement Module
@@ -149,14 +146,15 @@ export default {
     }
 
     const readerId = this.$route.params.readerId
-    this.$store.dispatch("readerManagement/fetchReader", readerId)
-      .then(res => { this.reader = res.data })
+    this.$store.dispatch("readerManagement/show", readerId)
+      .then(res => {
+        this.reader = res.data
+        this.$vs.loading.close("#data-show > .con-vs-loading")
+      })
       .catch(err => {
-        if(err.response.status === 404) {
-          this.reader_not_found = true
-          return
-        }
-        console.error(err) })
+        this.showDeleteFailed(err.data.message)
+        this.$vs.loading.close("#data-show > .con-vs-loading")
+      })
   }
 }
 
