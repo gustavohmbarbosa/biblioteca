@@ -10,43 +10,20 @@
 import axios from "@/axios.js"
 
 export default {
-  // addItem({ commit }, item) {
-  //   return new Promise((resolve, reject) => {
-  //     axios.post("/api/data-list/products/", {item: item})
-  //       .then((response) => {
-  //         commit('ADD_ITEM', Object.assign(item, {id: response.data.id}))
-  //         resolve(response)
-  //       })
-  //       .catch((error) => { reject(error) })
-  //   })
-  // },
-  fetchBooks({ commit }) {
+  store({ commit }, book) {
+    alert('foi poh');
     return new Promise((resolve, reject) => {
-      axios.get("/api/book-management/books")
+      axios.post("/admin/books", {book: book})
         .then((response) => {
-          commit('SET_BOOKS', response.data)
+          console.log(response)
+          commit('ADD_BOOK', Object.assign(book, {id: response.data.id}))
           resolve(response)
         })
-        .catch((error) => { reject(error) })
+        .catch((error) => 
+        { 
+          console.log(error) 
+          reject(error) 
+        })
     })
   },
-  fetchBook(context, bookId) {
-    return new Promise((resolve, reject) => {
-      axios.get(`/api/book-management/books/${bookId}`)
-        .then((response) => {
-          resolve(response)
-        })
-        .catch((error) => { reject(error) })
-    })
-  },
-  removeRecord({ commit }, bookId) {
-    return new Promise((resolve, reject) => {
-      axios.delete(`/api/book-management/books/${bookId}`)
-        .then((response) => {
-          commit('REMOVE_RECORD', bookId)
-          resolve(response)
-        })
-        .catch((error) => { reject(error) })
-    })
-  }
 }
