@@ -20,10 +20,11 @@ export default {
         .catch((error) => { reject(error) })
     })
   },
-  store({ commit }, payload) {
+  store({ commit }, reader) {
     return new Promise((resolve, reject) => {
-      axios.post("admin/readers", payload)
+      axios.post("admin/readers", reader)
         .then((response) => {
+          commit('ADD_READERS', Object.assign(reader , {id: response.data.id}))
           resolve(response)
         })
         .catch((error) => { reject(error) })

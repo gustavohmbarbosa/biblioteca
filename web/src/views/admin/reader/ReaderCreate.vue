@@ -1,7 +1,6 @@
 <template>
     <div class="vx-col w-full mb-base">
 			<vx-card title="Cadastrar Leitor">
-
             <div class="vx-row">
               <div class="vx-col w-full mb-3">
                 <label>Nome</label>
@@ -85,12 +84,12 @@
                   </div>
                 </div>
 
-                <div class="vx-row">
+                <!-- <div class="vx-row">
                   <div class="vx-col w-full mb-3">
                     <label>Status</label>
                     <v-select class="w-full" :options="['Ativo', 'Inativo', 'Bloqueado']" :dir="$vs.rtl ? 'rtl' : 'ltr'" v-model="reader.status"/>
                   </div>
-                </div>
+                </div> -->
               </div>
             </div>
 
@@ -102,7 +101,7 @@
 
 				<div class="vx-row">
 					<div class="vx-col w-full">
-						<vs-button class="mr-3 mb-2" @click="storeReader">Criar</vs-button>
+						<vs-button class="mr-3 mb-2" @click="storeReader(reader)">Criar</vs-button>
 						<vs-button color="danger" class="mr-3 mb-2" :to="{name:'admin-reader-list'}">Voltar</vs-button>
             <vs-button color="warning" class="mb-2" @click="clearForm">Limpar formulário</vs-button>
 					</div>
@@ -123,42 +122,46 @@ export default {
         name: 'teste',
         email: 'teste@teste.com',
         password: '12345678',
+        password_confirmation: '12345678',
         phone: '00 00000-0000',
-        gender: { label: 'Sexo' },
+        gender: 'Masculino',
         grade: 2,
         class: 'B',
-        courde_id: 1,
+        course_id: "1",
         registration: '12345678',
         entry_year: '2019',
-        status: { label: 'Status' }
-      }
+      },
+      validations: {}
     }
   },
   components: {
     'v-select': vSelect
   },
   methods: {
-    storeReader() {
+    storeReader(reader) {
       // Saving datas of reader
-      this.$store.dispatch('readerManagement/store', this.reader)
-        .then(res => {
-          this.showDeleteSuccess(res.data.message)
+      this.$store.dispatch('readerManagement/store', reader)
+        .then(response => {
+          this.showCreatedSuccess(response.data.message)
         })
-        .catch(err => {
-          this.showDeleteFailed(err)
+        .catch(error => {
+          console.log(error)
+          // this.validations = JSON.stringify(error.response.data.errors)
+          // console.log(this.validations)
+          // this.showCreatedFailed("Preencha os campos corretamente!")
         })
     },
     clearForm() {
       this.reader = {}
     },
-    showDeleteSuccess(message) {
+    showCreatedSuccess(message) {
       this.$vs.notify({
         color: 'success',
         title: 'Leitor Criado com sucesso!',
         text: message
       })
     },
-    showDeleteFailed(message) {
+    showCreatedFailed(message) {
       this.$vs.notify({
         color: 'danger',
         title: 'Erro ao criar leitor!',

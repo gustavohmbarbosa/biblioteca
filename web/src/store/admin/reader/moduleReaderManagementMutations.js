@@ -9,6 +9,9 @@
 
 
 export default {
+  ADD_READERS(state, reader) {
+    state.readers.push(reader)
+  },
   SET_READERS(state, readers) {
     state.readers = readers
   },

@@ -17,7 +17,8 @@ class BookController extends Controller
 
     private $book;
 
-    public function __construct(Book $book){
+    public function __construct(Book $book)
+    {
         $this->book = $book;
     }
 

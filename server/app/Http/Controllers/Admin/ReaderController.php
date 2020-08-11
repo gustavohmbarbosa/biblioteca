@@ -46,14 +46,14 @@ class ReaderController extends Controller
      */
     public function store(Request $request)
     {
-        $data = $request->all(); // $this->validator($request);
+        $data = $this->validator($request);
         $data['password'] = Hash::make($data['password']);
-
+        
         if($request->hasFile('image')) {
             $data['image'] = $this->imageUpload($request->file('image'), 'readers');
         }
 
-        $reader = $this->reader->create($data);
+        $this->reader->create($data);
 
         return $this->message("Leitor criado com sucesso!", 201);
     }
@@ -201,13 +201,14 @@ class ReaderController extends Controller
             'email'        => ['required', 'string', 'email', 'max:190', Rule::unique('readers')->ignore($id)],
             'password'     => [Rule::requiredIf(!$id), 'string', 'min:8', 'confirmed'],
             'phone'        => ['required', 'string'],
-            'gender'       => ['required', Rule::in(['Masculino', 'Feminino'])],
+            'gender'       => ['required', Rule::in(['Masculino', 'Feminino', 'Não-Binário','Desejo não informar'])],
             'grade'        => ['required', Rule::in(['1', '2', '3'])],
             'class'        => ['required', Rule::in(['A', 'B', 'C'])],
-            'course_id'    => ['required', 'string', 'exists:courses.id'],
+            'course_id'    => ['required', 'string', 'exists:courses,id'],
             'registration' => ['required', 'string'],
             'entry_year'   => ['required', 'size:4', 'date_format:Y'],
-            'image'        => ['image', 'mimes:jpeg,jpg,png']
+            'image'        => ['image', 'mimes:jpeg,jpg,png'],
+            'status'       => [Rule::in(['Ativo', 'Inativo', 'Bloqueado'])],
         ];
 
         $messages = [

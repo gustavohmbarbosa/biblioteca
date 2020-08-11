@@ -12,7 +12,6 @@ export default {
   ADD_BOOK(state, book) {
     state.books.push(book)
   },
-
   SET_BOOKS(state, books) {
     state.books = books
   },

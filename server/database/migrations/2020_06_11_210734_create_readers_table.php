@@ -28,7 +28,7 @@ class CreateReadersTable extends Migration
             $table->unsignedBigInteger('course_id');
             $table->string('registration');
             $table->year('entry_year');
-            $table->string('status');
+            $table->string('status')->default("Ativo");
             $table->string('image')->nullable();
 
             $table->timestamps();
