@@ -48,7 +48,7 @@ class ReaderController extends Controller
     {
         $data = $this->validator($request);
         $data['password'] = Hash::make($data['password']);
-        
+
         if($request->hasFile('image')) {
             $data['image'] = $this->imageUpload($request->file('image'), 'readers');
         }
@@ -197,34 +197,37 @@ class ReaderController extends Controller
    protected function validator($data, $id = null)
    {
         $fields = [
-            'name'         => ['required', 'string', 'max:190'],
-            'email'        => ['required', 'string', 'email', 'max:190', Rule::unique('readers')->ignore($id)],
-            'password'     => [Rule::requiredIf(!$id), 'string', 'min:8', 'confirmed'],
-            'phone'        => ['required', 'string'],
-            'gender'       => ['required', Rule::in(['Masculino', 'Feminino', 'Não-Binário','Desejo não informar'])],
-            'grade'        => ['required', Rule::in(['1', '2', '3'])],
-            'class'        => ['required', Rule::in(['A', 'B', 'C'])],
-            'course_id'    => ['required', 'string', 'exists:courses,id'],
-            'registration' => ['required', 'string'],
-            'entry_year'   => ['required', 'size:4', 'date_format:Y'],
-            'image'        => ['image', 'mimes:jpeg,jpg,png'],
-            'status'       => [Rule::in(['Ativo', 'Inativo', 'Bloqueado'])],
+            'name'            => ['required', 'string', 'max:190'],
+            'email'           => ['required', 'string', 'email', 'max:190', Rule::unique('readers')->ignore($id)],
+            'password'        => [Rule::requiredIf(!$id), 'string', 'min:8', 'confirmed'],
+            'password_confirmation'=> ['required_with:password', 'same:password'],
+            'phone'           => ['required', 'string'],
+            'gender'          => ['required', Rule::in(['Masculino', 'Feminino', 'Não-Binário','Desejo não informar'])],
+            'grade'           => ['required', Rule::in(['1', '2', '3'])],
+            'class'           => ['required', Rule::in(['A', 'B', 'C'])],
+            'course_id'       => ['required', 'string', 'exists:courses,id'],
+            'registration'    => ['required', 'string'],
+            'entry_year'      => ['required', 'size:4', 'date_format:Y'],
+            'image'           => ['image', 'mimes:jpeg,jpg,png'],
+            // 'status'          => [Rule::in(['Ativo', 'Inativo', 'Bloqueado'])],
         ];
 
         $messages = [
-            'required'    => 'Este campo é obrigatório!',
-            'date_format' => 'Essa não é uma data válida.',
-            'size'        => 'Campo deve ter exatamente :size números.',
-            'min'         => 'Campo deve ter no mínimo :min caracteres.',
-            'max'         => 'Campo deve ter no máximo :max caracteres.',
-            'email'       => 'Insira um endereço de e-mail válido!',
-            'unique'      => 'Este e-mail já esta em uso. Tente outro.',
-            'confirmed'   => 'As senhas não coincidem. Tente novamente.',
-            'string'      => 'Insira caracteres válidos!',
-            'in'          => 'Selecione um dos valores pré-informados.',
-            'exists'      => 'Esse curso não existe. Tente novamente.',
-            'image'       => 'Você deve inserir uma imagem.',
-            'mimes'       => 'A imagem deve se do tipo: jpeg, jpg ou png.'
+            'required'      => 'Este campo é obrigatório!',
+            'required_with' => 'Este campo é obrigatório quando a senha é informada.',
+            'confirmed'     => 'As senhas não coincidem.',
+            'same'          => 'As senhas não coincidem.',
+            'date_format'   => 'Essa não é uma data válida.',
+            'size'          => 'Campo deve ter exatamente :size números.',
+            'min'           => 'Campo deve ter no mínimo :min caracteres.',
+            'max'           => 'Campo deve ter no máximo :max caracteres.',
+            'email'         => 'Insira um endereço de e-mail válido!',
+            'unique'        => 'Este e-mail já esta em uso. Tente outro.',
+            'string'        => 'Insira caracteres válidos!',
+            'in'            => 'Selecione um dos valores pré-informados.',
+            'exists'        => 'Esse curso não existe. Tente novamente.',
+            'image'         => 'Você deve inserir uma imagem.',
+            'mimes'         => 'A imagem deve se do tipo: jpeg, jpg ou png.'
         ];
 
         return $data->validate($fields, $messages);

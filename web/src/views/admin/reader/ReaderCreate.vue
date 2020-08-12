@@ -5,6 +5,9 @@
               <div class="vx-col w-full mb-3">
                 <label>Nome</label>
                 <vs-input class="w-full" icon-pack="feather" icon="icon-user" icon-no-border placeholder="Nome" v-model="reader.name" />
+                <div class="text-danger text-sm" v-if="validations.name">
+                  <span v-show="validations.name">{{ validations.name[0] }}</span>
+                </div>
               </div>
             </div>
 
@@ -12,10 +15,23 @@
               <div class="vx-col sm:w-1/2 w-full mb-2">
                 <label>Email</label>
                 <vs-input class="w-full" icon-pack="feather" icon="icon-mail" icon-no-border placeholder="Email" v-model="reader.email" />
+                <div class="text-danger text-sm" v-if="validations.email">
+                  <span v-show="validations.email">{{ validations.email[0] }}</span>
+                </div>
               </div>
-              <div class="vx-col sm:w-1/2 w-full mb-2">
+              <div class="vx-col sm:w-1/4 w-full mb-2">
                 <label>Senha</label>
                 <vs-input type="password" class="w-full" icon-pack="feather" icon="icon-lock" icon-no-border placeholder="Senha" v-model="reader.password" />
+                <div class="text-danger text-sm" v-if="validations.password">
+                  <span v-show="validations.password">{{ validations.password[0] }}</span>
+                </div>
+              </div>
+              <div class="vx-col sm:w-1/4 w-full mb-2">
+                <label>Confirmar Senha</label>
+                <vs-input type="password" class="w-full" icon-pack="feather" icon="icon-lock" icon-no-border placeholder="Confirme a senha" v-model="reader.password_confirmation" />
+                <div class="text-danger text-sm" v-if="validations.password_confirmation">
+                  <span v-show="validations.password_confirmation">{{ validations.password_confirmation[0] }}</span>
+                </div>
               </div>
             </div>
 
@@ -23,11 +39,17 @@
               <div class="vx-col sm:w-1/2 w-full mb-3">
                 <label>Telefone</label>
                 <vs-input class="w-full" icon-pack="feather" icon="icon-phone" icon-no-border placeholder="Telefone" v-model="reader.phone" />
+                <div class="text-danger text-sm" v-if="validations.phone">
+                  <span v-show="validations.phone">{{ validations.phone[0] }}</span>
+                </div>
               </div>
 
               <div class="vx-col sm:w-1/2 w-full mb-2">
                 <label>Sexo</label>
                 <v-select class="w-full" :options="['Masculino', 'Feminino', 'Não-Binário','Desejo não informar']" :dir="$vs.rtl ? 'rtl' : 'ltr'" v-model="reader.gender"/>
+                <div class="text-danger text-sm" v-if="validations.gender">
+                  <span v-show="validations.gender">{{ validations.gender[0] }}</span>
+                </div>
               </div>
             </div>´
 
@@ -76,11 +98,17 @@
                   <div class="vx-col sm:w-1/2 w-full mb-3">
                     <label>Matrícula</label>
                     <vs-input class="w-full" icon-pack="feather" icon="icon-archive" icon-no-border placeholder="Matrícula" v-model="reader.registration" />
+                    <div class="text-danger text-sm" v-if="validations.registration">
+                      <span v-show="validations.registration">{{ validations.registration[0] }}</span>
+                    </div>
                   </div>
 
                   <div class="vx-col sm:w-1/2 w-full mb-3">
                     <label>Ano de Matrícula</label>
                     <vs-input class="w-full" icon-pack="feather" icon="icon-calendar" icon-no-border placeholder="Ano de Matrícula" v-model="reader.entry_year" />
+                    <div class="text-danger text-sm" v-if="validations.entry_year">
+                      <span v-show="validations.entry_year">{{ validations.entry_year[0] }}</span>
+                    </div>
                   </div>
                 </div>
 
@@ -145,10 +173,8 @@ export default {
           this.showCreatedSuccess(response.data.message)
         })
         .catch(error => {
-          console.log(error)
-          // this.validations = JSON.stringify(error.response.data.errors)
-          // console.log(this.validations)
-          // this.showCreatedFailed("Preencha os campos corretamente!")
+          this.validations = error.response.data
+          this.showCreatedFailed("Preencha os campos corretamente!")
         })
     },
     clearForm() {
@@ -158,14 +184,18 @@ export default {
       this.$vs.notify({
         color: 'success',
         title: 'Leitor Criado com sucesso!',
-        text: message
+        text: message,
+        iconPack: 'feather',
+        icon: 'icon-check',
       })
     },
     showCreatedFailed(message) {
       this.$vs.notify({
         color: 'danger',
         title: 'Erro ao criar leitor!',
-        text: message
+        text: message,
+        iconPack: 'feather',
+        icon: 'icon-alert-circle',
       })
     },
   },

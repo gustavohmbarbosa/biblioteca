@@ -120,14 +120,18 @@ export default {
       this.$vs.notify({
         color: 'success',
         title: 'Leitor Excluído',
-        text: message
+        text: message,
+        iconPack: 'feather',
+        icon: 'icon-check',
       })
     },
     showDeleteFailed(message) {
       this.$vs.notify({
         color: 'danger',
         title: 'Leitor Não Excluído',
-        text: message
+        text: message,
+        iconPack: 'feather',
+        icon: 'icon-alert-circle',
       })
     },
   },
