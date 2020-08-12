@@ -111,13 +111,6 @@
                     </div>
                   </div>
                 </div>
-
-                <!-- <div class="vx-row">
-                  <div class="vx-col w-full mb-3">
-                    <label>Status</label>
-                    <v-select class="w-full" :options="['Ativo', 'Inativo', 'Bloqueado']" :dir="$vs.rtl ? 'rtl' : 'ltr'" v-model="reader.status"/>
-                  </div>
-                </div> -->
               </div>
             </div>
 
