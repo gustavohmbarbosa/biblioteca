@@ -22,7 +22,7 @@ export default {
   },
   store({ commit }, reader) {
     return new Promise((resolve, reject) => {
-      axios.post("admin/readers", reader)
+      axios.post("admin/readers/", reader)
         .then((response) => {
           commit('ADD_READERS', Object.assign(reader , {id: response.data.id}))
           resolve(response)
@@ -30,9 +30,9 @@ export default {
         .catch((error) => { reject(error) })
     })
   },
-  update(context, readerId) {
+  update(context, reader) {
     return new Promise((resolve, reject) => {
-      axios.put(`admin/readers/${readerId}`)
+      axios.put(`admin/readers/${reader.id}`, reader)
       .then((response) => {
         resolve(response)
       })

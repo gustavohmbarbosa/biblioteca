@@ -162,8 +162,8 @@ export default {
     storeReader(reader) {
       // Saving datas of reader
       this.$store.dispatch('readerManagement/store', reader)
-        .then(response => {
-          this.showCreatedSuccess(response.data.message)
+        .then(res => {
+          this.showCreatedSuccess(res.data.message)
         })
         .catch(error => {
           this.validations = error.response.data
