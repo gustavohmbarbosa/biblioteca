@@ -15,9 +15,7 @@
 
 ## 💻 Sobre o Projeto
 
-Este repositório será utilizado para salvar os arquivos do projeto do **:books: Sistema da Biblioteca ETE-AVS** que servirá para auxiliar os bibliotecários na administração de livros, leitores e empréstimos e facilitar o acesso dos livros aos leitores.
-
-Neste projeto, utilizaremos no Backend o Framework PHP **Laravel** como API e **Vue JS** SPA no Frontend.
+**:books: Sistema da Biblioteca ETE-AVS:** é um sistema que auxilirá os bibliotecários na administração de livros, leitores e empréstimos e facilitar o acesso dos livros aos leitores.
 
 **SPA**:
 
@@ -26,10 +24,15 @@ Neste projeto, utilizaremos no Backend o Framework PHP **Laravel** como API e **
 **API**:
 > É um acrônimo de Application Programming Interface (Interface de Programação de  Aplicações). É basicamente um conjunto de rotinas e padrões estabelecidos por uma aplicação, para que outras aplicações possam utilizar as funcionalidades desta aplicação, servindo como intermediador para o acesso a informações.
 
-## 🛠 Tecnologias
+## :atom: Tecnologias
 
-- **[XAMPP](https://www.apachefriends.org/pt_br/index.html)** (Para iniciar os servidores **MySQL** e **PHP**)
-- **[MySQL Front](https://mysql-front.software.informer.com/6.0/)** (Opcional)
+- **[Laravel](https://laravel.com/)** (Framework **PHP**)
+- **[VueJS](https://vuejs.org/)** (Framework **JavaScript**)
+
+## 🛠 Ferramentas
+
+- **[XAMPP](https://www.apachefriends.org/pt_br/index.html)** (Servidores **MySQL** e **PHP**)
+- **[MySQL Front](https://mysql-front.software.informer.com/6.0/)** (SGBD)
 - **[Node.js](https://nodejs.org/)** ou **[Yarn](https://classic.yarnpkg.com/pt-BR/docs/install/#windows-stable)** (Para manuseamento dos pacotes JavaScript)
 - **[Composer](https://getcomposer.org/doc/00-intro.md)** (Para manuseamento dos pacotes PHP)
 
