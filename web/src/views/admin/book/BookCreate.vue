@@ -291,6 +291,7 @@
               iconPack: 'feather',
               icon: 'icon-check',
             })
+            this.resetData()
           })
           .catch(error => {
             this.$vs.notify({

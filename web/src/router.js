@@ -152,7 +152,7 @@ const router = new Router({
               {
                 path: '/livros/cadastro',
                 name: 'admin-book-create',
-                component: () => import('@/views/admin/book/book-create/BookCreate.vue'),
+                component: () => import('@/views/admin/book/BookCreate.vue'),
                 meta: {
                   breadcrumb: [
                       { title: 'Home', url: '/' },
