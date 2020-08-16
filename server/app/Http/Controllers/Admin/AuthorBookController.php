@@ -128,8 +128,8 @@ class AuthorBookController extends Controller
         ];
 
         $messages = [
-            'required'          =>  'Este campo é obrigatório!',
-            'numeric'            =>  'Insira caracteres válidos!',
+            'required'          =>  'Preencha esse campo.',
+            'numeric'           =>  'Insira apenas números.',
             'author_id.exists'  =>  'Esse escritor não está cadastrado no sistema. Tente novamente.',
             'book_id.exists'    =>  'Esse livro não existe no acervo. Tente novamente.',
         ];

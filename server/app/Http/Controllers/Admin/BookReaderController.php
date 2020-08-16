@@ -155,8 +155,8 @@ class BookReaderController extends Controller
         ];
 
         $messages = [
-            'required'          =>  'Este campo é obrigatório!',
-            'string'            =>  'Insira caracteres válidos!',
+            'required'          =>  'Preencha esse campo.',
+            'string'            =>  'Insira caracteres válidos.',
             'reader_id.exists'  =>  'Esse leitor não está cadastrado no sistema. Tente novamente.',
             'book_id.exists'    =>  'Esse livro não existe no arcevo. Tente novamente.',
             'in'                =>  'Selecione um dos valores pré-informados.',
@@ -178,7 +178,7 @@ class BookReaderController extends Controller
          ];
 
          $messages = [
-             'required'          =>  'Este campo é obrigatório!',
+             'required'          =>  'Preencha esse campo.',
              'in'                =>  'Selecione um dos valores pré-informados.',
          ];
 

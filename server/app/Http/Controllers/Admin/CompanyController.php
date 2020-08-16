@@ -160,8 +160,8 @@ class CompanyController extends Controller
         ];
 
         $messages = [
-            'required'  =>  'Este campo é obrigatório!',
-            'string'    =>  'Insira caracteres válidos!',
+            'required'  =>  'Preencha esse campo.',
+            'string'    =>  'Insira caracteres válidos.',
             'max'       =>  'Campo deve ter no máximo :max caracteres.',
         ];
 

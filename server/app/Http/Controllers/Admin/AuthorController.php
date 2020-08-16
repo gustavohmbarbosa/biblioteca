@@ -133,8 +133,8 @@ class AuthorController extends Controller
         ];
 
         $messages = [
-            'required' => 'Este campo é obrigatório!',
-            'string'   => 'Insira caracteres válidos!',
+            'required' => 'Preencha esse campo.',
+            'string'   => 'Insira caracteres válidos.',
             'max'      => 'Campo deve ter no máximo :max caracteres.',
             'image'    => 'Você deve inserir uma imagem.',
             'mimes'    => 'A imagem deve se do tipo: jpeg, jpg ou png.'

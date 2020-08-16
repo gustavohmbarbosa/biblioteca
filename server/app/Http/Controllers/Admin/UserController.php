@@ -146,7 +146,7 @@ class UserController extends Controller
             'email'     => 'Insira um endereço de e-mail válido!',
             'unique'    => 'Esse e-mail já está em uso. Tente outro.',
             'confirmed' => 'As senhas não coincidem. Tente novamente.',
-            'string'    => 'Insira caracteres válidos!',
+            'string'    => 'Insira caracteres válidos.',
             'min'       => 'Campo deve ter no mínimo :min caracteres.',
             'in'        => 'Selecione um dos valores pré-informados.',
             'image'     => 'Você deve inserir uma imagem.',

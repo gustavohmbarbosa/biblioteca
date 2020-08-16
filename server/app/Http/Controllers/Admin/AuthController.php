@@ -73,11 +73,11 @@ class AuthController extends Controller
         ];
 
         $messages = [
-            'required'    => 'Este campo é obrigatório!',
+            'required'    => 'Preencha esse campo.',
             'min'         => 'Campo deve ter no mínimo :min caracteres.',
             'max'         => 'Campo deve ter no máximo :max caracteres.',
             'email'       => 'Insira um endereço de e-mail válido!',
-            'string'      => 'Insira caracteres válidos!',
+            'string'      => 'Insira caracteres válidos.',
         ];
 
         return $data->validate($fields, $messages);

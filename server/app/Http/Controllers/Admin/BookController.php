@@ -182,8 +182,8 @@ class BookController extends Controller
         ];
 
         $messages = [
-            'required'          => 'Este campo é obrigatório!',
-            'string'            => 'Insira caracteres válidos!',
+            'required'          => 'Preencha esse campo.',
+            'string'            => 'Insira caracteres válidos.',
             'max'               => 'Campo deve ter no máximo :max caracteres.',
             'in'                => 'Selecione um dos valores pré-informados.',
             'company_id.exists' => 'Essa editora ainda não foi cadastrada.',

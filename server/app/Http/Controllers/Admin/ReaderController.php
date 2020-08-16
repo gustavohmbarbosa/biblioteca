@@ -214,7 +214,7 @@ class ReaderController extends Controller
         ];
 
         $messages = [
-            'required'      => 'Este campo é obrigatório!',
+            'required'      => 'Preencha esse campo.',
             'required_with' => 'Este campo é obrigatório quando a senha é informada.',
             'confirmed'     => 'As senhas não coincidem.',
             'same'          => 'As senhas não coincidem.',
@@ -224,7 +224,7 @@ class ReaderController extends Controller
             'max'           => 'Campo deve ter no máximo :max caracteres.',
             'email'         => 'Insira um endereço de e-mail válido!',
             'unique'        => 'Este e-mail já esta em uso. Tente outro.',
-            'string'        => 'Insira caracteres válidos!',
+            'string'        => 'Insira caracteres válidos.',
             'in'            => 'Selecione um dos valores pré-informados.',
             'exists'        => 'Esse curso não existe. Tente novamente.',
             // 'image'         => 'Você deve inserir uma imagem.',
