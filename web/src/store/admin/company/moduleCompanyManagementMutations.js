@@ -1,26 +1,22 @@
 /*=========================================================================================
-  File Name: moduleCalendarActions.js
-  Description: Calendar Module Actions
+  File Name: moduleCalendarMutations.js
+  Description: Calendar Module Mutations
   ----------------------------------------------------------------------------------------
   Item Name: Vuexy - Vuejs, HTML & Laravel Admin Dashboard Template
   Author: Pixinvent
   Author URL: http://www.themeforest.net/user/pixinvent
 ==========================================================================================*/
 
-import axios from "@/axios.js"
 
 export default {
-  store({ commit }, book) {
-    return new Promise((resolve, reject) => {
-      axios.post("/admin/books", book)
-        .then((response) => {
-          commit('ADD_BOOK', Object.assign(book, {id: response.data.id}))
-          resolve(response)
-        })
-        .catch((error) => 
-        { 
-          reject(error) 
-        })
-    })
+  ADD_COMPANY(state, company) {
+    state.companies.push(company)
+  },
+  SET_COMPANIES(state, companies) {
+    state.companies = companies
+  },
+  REMOVE_RECORD(state, itemId) {
+      const userIndex = state.companies.findIndex((u) => u.id == itemId)
+      state.companies.splice(userIndex, 1)
   },
 }

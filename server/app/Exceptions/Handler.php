@@ -53,7 +53,7 @@ class Handler extends ExceptionHandler
         if ($request->is("api/*")){
             if ($exception){
                 return response()->json(
-                    $exception->errors(),
+                    ["errors" => $exception->errors()],
                     $exception->status
                 );
             }

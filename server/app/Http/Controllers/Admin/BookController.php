@@ -9,6 +9,7 @@ use Illuminate\Validation\Rule;
 use App\Traits\Messages;
 use App\Traits\Upload;
 use App\Book;
+use App\AuthorBook;
 
 class BookController extends Controller
 {
@@ -48,15 +49,16 @@ class BookController extends Controller
     public function store(Request $request)
     {
         $data = $this->validator($request);
-        $data['publication_date'] = date('Y-m-d');
 
         if($request->hasFile('cape')) {
             $data['cape'] = $this->imageUpload($request->file('cape'), 'books');
         }
 
-        $this->book->create($data);
+        $book = $this->book->create($data);
+        
+        $authorBook = $book->authors()->attach($data['author_id']);
 
-        return $this->message("Livro adicionado ao acervo com sucesso!", 201);
+        return $this->message("Livro adicionado ao acervo com sucesso!", $book->id, 201);
     }
 
     /**
@@ -107,7 +109,7 @@ class BookController extends Controller
 
         $book->update($data);
 
-        return $this->message("Dados do livro atualizado com sucesso!");
+        return $this->message("Dados do livro atualizado com sucesso!", $book->id);
     }
 
     /**
@@ -126,7 +128,7 @@ class BookController extends Controller
 
         $book->delete();
 
-        return $this->message('O livro ' . $book->title . ' foi removido do acervo!');
+        return $this->message('O livro ' . $book->title . ' foi removido do acervo!', $book->id);
     }
 
     /**
@@ -162,31 +164,33 @@ class BookController extends Controller
    {
         $fields = [
             'title'            => ['required', 'string', 'max:190'],
-            'subtitle'         => ['string', 'max:190'],
+            'subtitle'         => ['nullable', 'string', 'max:190'],
             'origin'           => ['required', Rule::in(['Doado', 'Comprado'])],
-            'price'            => ['string'],
+            'price'            => ['nullable', 'max:7'],
             'isbn'             => ['required', 'string', 'max:13'],
-            'synopsis'         => ['string'],
+            'synopsis'         => ['nullable', 'string', 'max:1000'],
             'pages'            => ['required', 'string', 'max:5'],
             'language'         => ['required', 'string', 'max:190'],
-            'observations'     => ['string'],
+            'observations'     => ['nullable', 'string', 'max:190'],
             'edition'          => ['required', 'string', 'max:3'],
-            'publication_date' => ['required', 'date_format:d/m/Y'],
+            'publication_date' => ['required', 'date_format:Y-m-d'],
             'color'            => ['required', 'string'],
-            'cdd'              => ['required', 'string'],
-            'cape'             => ['image', 'mimes:jpeg,jpg,png'],
-            'company_id'       => ['required', 'string', 'exists:companies,id'],
+            'cdd'              => ['required'],
+            'cape'             => ['nullable', 'image', 'mimes:jpeg,jpg,png'],
+            'company_id'       => ['required', 'exists:companies,id'],
+            'author_id'        => ['required', 'exists:authors,id'],
         ];
 
         $messages = [
-            'required'    => 'Este campo é obrigatório!',
-            'string'      => 'Insira caracteres válidos!',
-            'max'         => 'Campo deve ter no máximo :max caracteres.',
-            'in'          => 'Selecione um dos valores pré-informados.',
-            'exists'      => 'Essa editora não existe. Tente novamente.',
-            'date_format' => 'Essa não é uma data válida.',
-            'image'       => 'A capa deve ser uma imagem.',
-            'mimes'       => 'A imagem deve se do tipo: jpeg, jpg ou png.'
+            'required'          => 'Este campo é obrigatório!',
+            'string'            => 'Insira caracteres válidos!',
+            'max'               => 'Campo deve ter no máximo :max caracteres.',
+            'in'                => 'Selecione um dos valores pré-informados.',
+            'company_id.exists' => 'Essa editora ainda não foi cadastrada.',
+            'author_id.exists'  => 'Esse autor ainda não foi cadastrado.',
+            'date_format'       => 'Essa não é uma data válida.',
+            'image'             => 'A capa deve ser uma imagem.',
+            'mimes'             => 'A imagem deve se do tipo: jpeg, jpg ou png.'
         ];
 
         return $data->validate($fields, $messages);

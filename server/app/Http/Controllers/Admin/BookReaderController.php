@@ -51,19 +51,6 @@ class BookReaderController extends Controller
     }
 
     /**
-     * Show the form for creating a new loan.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        $readers = Reader::all(['id','name']);
-        $books = Book::all(['id', 'title']);
-
-        return response()->json(['readers' => $readers, 'books' => $books]);
-    }
-
-    /**
      * Store a newly created loan in storage.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -76,7 +63,7 @@ class BookReaderController extends Controller
 
         $loan = $this->bookReader->create($data);
 
-        return $this->message("Empréstimo criado com sucesso!", 201);
+        return $this->message("Empréstimo criado com sucesso!", $loan->id, 201);
     }
 
     /**
@@ -110,22 +97,6 @@ class BookReaderController extends Controller
     }
 
     /**
-     * Show the form for editing the specified loan.
-     *
-     * @param  int  $id
-     * @var string $readers
-     * @var string $books
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        $readers = Reader::all(['id','name']);
-        $books = Book::all(['id', 'title']);
-
-        return response()->json(['readers' => $readers, 'books' => $books]);
-    }
-
-    /**
      * Update the specified loan in storage.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -148,7 +119,7 @@ class BookReaderController extends Controller
 
         $loan->update($data);
 
-        return $this->message("Os dados atualizados com sucesso!");
+        return $this->message("Os dados atualizados com sucesso!", $loan->id);
     }
 
     /**
@@ -167,7 +138,7 @@ class BookReaderController extends Controller
 
         $loan->delete();
 
-        return $this->message('Empréstimo #' . $loan->id . ' deletado com sucesso!');
+        return $this->message('Empréstimo #' . $loan->id . ' deletado com sucesso!', $loan->id);
     }
 
     /**

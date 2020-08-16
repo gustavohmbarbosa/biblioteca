@@ -40,9 +40,9 @@ class CourseController extends Controller
     public function store(Request $request)
     {
         $data = $this->validator($request);
-        $this->course->create($data);
+        $course = $this->course->create($data);
 
-        return $this->message("Curso criado com sucesso!", 201);
+        return $this->message("Curso criado com sucesso!", $course->id,201);
     }
 
     /**
@@ -80,7 +80,7 @@ class CourseController extends Controller
         $data = $this->validator($request);
         $course->update($data);
 
-        return $this->message("Curso atualizado com sucesso!");
+        return $this->message("Curso atualizado com sucesso!", $course->id);
     }
 
     /**
@@ -99,7 +99,7 @@ class CourseController extends Controller
 
         $course->delete();
 
-        return $this->message('Curso de ' . $course->name . ' deletado com sucesso!');
+        return $this->message('Curso de ' . $course->name . ' deletado com sucesso!', $course->id);
     }
 
     /**

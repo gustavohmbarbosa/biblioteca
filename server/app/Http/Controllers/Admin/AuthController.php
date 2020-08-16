@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 
 class AuthController extends Controller
 {
-        /**
+    /**
      * Get a JWT via given credentials.
      *
      * @return \Illuminate\Http\JsonResponse
@@ -22,7 +22,7 @@ class AuthController extends Controller
             return response()->json(['error' => 'Não autorizado'], 401);
         }
 
-        $userDatas = DB::table('users')->where('email', $credentials['email'])->first();
+        $userDatas = auth('api')->user();
 
         return $this->respondWithTokenAndDatas($token, $userDatas);
     }

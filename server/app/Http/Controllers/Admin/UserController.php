@@ -49,9 +49,9 @@ class UserController extends Controller
             $data['image'] = $this->imageUpload($request->file('image'), 'users');
         }
 
-        $this->user->create($data);
+        $user = $this->user->create($data);
 
-        return $this->message("Usuário criado!", 201);
+        return $this->message("Usuário criado!", $user->id, 201);
     }
 
     /**
@@ -101,7 +101,7 @@ class UserController extends Controller
 
         $user->update($data);
 
-        return $this->message("Usuário atualizado com sucesso!");
+        return $this->message("Usuário atualizado com sucesso!", $user->id);
     }
 
     /**
@@ -120,7 +120,7 @@ class UserController extends Controller
 
         $user->delete();
 
-        return $this->message($user->name . ' foi removido do sistema!');
+        return $this->message($user->name . ' foi removido do sistema!', $user->id);
     }
 
     /**

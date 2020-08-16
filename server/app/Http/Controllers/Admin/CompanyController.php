@@ -29,9 +29,9 @@ class CompanyController extends Controller
      */
     public function index()
     {
-        $companies = $this->company->paginate(10);
+        $companies = $this->company->all();
 
-        return response()->json($companies, 200);
+        return response()->json($companies);
     }
 
     /**
@@ -45,7 +45,7 @@ class CompanyController extends Controller
         $data = $this->validator($request);
         $company = $this->company->create($data);
 
-        return $this->message("Editora criada com sucesso!", 201);
+        return $this->message("Editora criada com sucesso!", $company->id, 201);
     }
 
     /**
@@ -125,7 +125,7 @@ class CompanyController extends Controller
         $data = $this->validator($request);
         $company->update($data);
 
-        return $this->message("Editora atualizada com sucesso!", 200);
+        return $this->message("Editora atualizada com sucesso!", $company->id, 200);
     }
 
     /**
@@ -144,7 +144,7 @@ class CompanyController extends Controller
 
         $company->delete();
 
-        return $this->message('Editora #' . $company->id . ' deletada com sucesso!');
+        return $this->message('Editora #' . $company->id . ' deletada com sucesso!', $company->id);
     }
 
     /**
