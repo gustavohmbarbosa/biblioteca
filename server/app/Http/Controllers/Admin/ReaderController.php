@@ -106,6 +106,7 @@ class ReaderController extends Controller
         }
 
         $reader->course;
+        $reader['course_id'] = $reader->course->id;
 
         return response()->json($reader);
     }
@@ -205,10 +206,10 @@ class ReaderController extends Controller
             'gender'          => ['required', Rule::in(['Masculino', 'Feminino', 'Não-Binário','Desejo não informar'])],
             'grade'           => ['required', Rule::in(['1', '2', '3'])],
             'class'           => ['required', Rule::in(['A', 'B', 'C'])],
-            'course_id'       => ['required', 'string', 'exists:courses,id'],
+            'course_id'       => ['required', 'exists:courses,id'],
             'registration'    => ['required', 'string'],
             'entry_year'      => ['required', 'size:4', 'date_format:Y'],
-            'image'           => ['image', 'mimes:jpeg,jpg,png'],
+            // 'image'           => ['image', 'mimes:jpeg,jpg,png'],
             // 'status'          => [Rule::in(['Ativo', 'Inativo', 'Bloqueado'])],
         ];
 
@@ -226,8 +227,8 @@ class ReaderController extends Controller
             'string'        => 'Insira caracteres válidos!',
             'in'            => 'Selecione um dos valores pré-informados.',
             'exists'        => 'Esse curso não existe. Tente novamente.',
-            'image'         => 'Você deve inserir uma imagem.',
-            'mimes'         => 'A imagem deve se do tipo: jpeg, jpg ou png.'
+            // 'image'         => 'Você deve inserir uma imagem.',
+            // 'mimes'         => 'A imagem deve se do tipo: jpeg, jpg ou png.'
         ];
 
         return $data->validate($fields, $messages);
