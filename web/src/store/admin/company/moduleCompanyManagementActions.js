@@ -10,11 +10,21 @@
 import axios from "@/axios.js"
 
 export default {
-  store({ commit }, book) {
+  index({ commit }) {
     return new Promise((resolve, reject) => {
-      axios.post("/admin/books", book)
+      axios.get("admin/companies")
         .then((response) => {
-          commit('ADD_BOOK', Object.assign(book, {id: response.data.id}))
+          commit('SET_COMPANIES', response.data)
+          resolve(response)
+        })
+        .catch((error) => { reject(error) })
+    })
+  },
+  store({ commit }, company) {
+    return new Promise((resolve, reject) => {
+      axios.post("/admin/companies", company)
+        .then((response) => {
+          commit('ADD_COMPANY', Object.assign(company, {id: response.data.id}))
           resolve(response)
         })
         .catch((error) => 

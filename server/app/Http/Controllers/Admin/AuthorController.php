@@ -48,9 +48,9 @@ class AuthorController extends Controller
             $data['image'] = $this->imageUpload($request->file('image'), 'authors');
         }
 
-        $this->author->create($data);
+        $author = $this->author->create($data);
 
-        return $this->message("Autor adicionado com sucesso!", 201);
+        return $this->message("Autor adicionado com sucesso!", $author->id, 201);
     }
 
     /**
@@ -96,7 +96,7 @@ class AuthorController extends Controller
 
         $author->update($data);
 
-        return $this->message('Dados do autor atualizados com sucesso!');
+        return $this->message('Dados do autor atualizados com sucesso!', $author->id);
     }
 
     /**
@@ -115,7 +115,7 @@ class AuthorController extends Controller
 
         $author->delete();
 
-        return $this->message('Autor #' . $author->id . ' removido com sucesso!');
+        return $this->message('Autor #' . $author->id . ' removido com sucesso!', $author->id);
     }
 
     /**
@@ -128,8 +128,8 @@ class AuthorController extends Controller
    {
         $fields = [
             'name'      => ['required', 'string', 'max:190'],
-            'biography' => ['string'],
-            'image'     => ['image', 'mimes:jpeg,jpg,png']
+            'biography' => ['nullable', 'string'],
+            'image'     => ['nullable', 'image', 'mimes:jpeg,jpg,png']
         ];
 
         $messages = [

@@ -53,9 +53,9 @@ class ReaderController extends Controller
             $data['image'] = $this->imageUpload($request->file('image'), 'readers');
         }
 
-        $this->reader->create($data);
+        $reader = $this->reader->create($data);
 
-        return $this->message("Leitor criado com sucesso!", 201);
+        return $this->message("Leitor criado com sucesso!", $reader->id, 201);
     }
 
      /**
@@ -88,7 +88,7 @@ class ReaderController extends Controller
 
         $reader->update($data);
 
-        return $this->message("Leitor #". $reader->id ." atualizado com sucesso!");
+        return $this->message("Leitor atualizado com sucesso!", $reader->id);
     }
 
     /**
@@ -162,7 +162,7 @@ class ReaderController extends Controller
 
         $reader->delete();
 
-        return $this->message('Leitor #' . $id . ' deletado com sucesso!');
+        return $this->message('Leitor #' . $id . ' deletado com sucesso!', $reader->id);
     }
 
     /**

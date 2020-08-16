@@ -10,17 +10,14 @@
 import axios from "@/axios.js"
 
 export default {
-  store({ commit }, book) {
-    return new Promise((resolve, reject) => {
-      axios.post("/admin/books", book)
-        .then((response) => {
-          commit('ADD_BOOK', Object.assign(book, {id: response.data.id}))
-          resolve(response)
-        })
-        .catch((error) => 
-        { 
-          reject(error) 
-        })
-    })
-  },
+  // index({ commit }) {
+  //   return new Promise((resolve, reject) => {
+  //     axios.get("admin/author_book")
+  //       .then((response) => {
+  //         commit('SET_AUTHORS_BOOKS', response.data)
+  //         resolve(response)
+  //       })
+  //       .catch((error) => { reject(error) })
+  //   })
+  // },
 }

@@ -40,19 +40,6 @@ class AuthorBookController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        $authors = Author::all(['id','name']);
-        $books = Book::all(['id', 'title']);
-
-        return response()->json(['authors' => $authors, 'books' => $books]);
-    }
-
-    /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -61,9 +48,9 @@ class AuthorBookController extends Controller
     public function store(Request $request)
     {
         $data = $this->validator($request);
-
-        $this->authorBook->create($data);
-        return $this->message('Relação Autor-Livro criada com sucesso!', 201);
+        dd($data);
+        $authorBook = $this->authorBook->create($data);
+        return $this->message('Relação Autor-Livro criada com sucesso!', $authorBook->id, 201);
     }
 
     /**
@@ -88,22 +75,6 @@ class AuthorBookController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @var string $authors
-     * @var string $books
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        $authors = Author::all(['id','name']);
-        $books = Book::all(['id', 'title']);
-
-        return response()->json(['authors' => $authors, 'books' => $books]);
-    }
-
-    /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -121,7 +92,7 @@ class AuthorBookController extends Controller
         $data = $this->validator($request);
         $authorBook->update($data);
 
-        return $this->message("Relação Autor-Livro atualizada com sucesso!");
+        return $this->message("Relação Autor-Livro atualizada com sucesso!", $authorBook->id);
     }
 
     /**
@@ -140,7 +111,7 @@ class AuthorBookController extends Controller
 
         $authorBook->delete();
 
-        return $this->message("Relação Autor-Livro deletada com sucesso");
+        return $this->message("Relação Autor-Livro deletada com sucesso", $authorBook->id);
     }
 
     /**
@@ -152,16 +123,15 @@ class AuthorBookController extends Controller
    protected function validator($data)
    {
         $fields = [
-            'author_id' =>  ['required', 'string', 'exists:authors,id'],
-            'book_id'   =>  ['required', 'string', 'exists:books,id'],
+            'author_id' =>  ['required', 'numeric', 'exists:authors,id'],
+            'book_id'   =>  ['required', 'numeric', 'exists:books,id'],
         ];
 
         $messages = [
             'required'          =>  'Este campo é obrigatório!',
-            'string'            =>  'Insira caracteres válidos!',
+            'numeric'            =>  'Insira caracteres válidos!',
             'author_id.exists'  =>  'Esse escritor não está cadastrado no sistema. Tente novamente.',
-            'book_id.exists'    =>  'Esse livro não existe no arcevo. Tente novamente.',
-            'in'                =>  'Selecione um dos valores pré-informados.',
+            'book_id.exists'    =>  'Esse livro não existe no acervo. Tente novamente.',
         ];
 
         return $data->validate($fields, $messages);

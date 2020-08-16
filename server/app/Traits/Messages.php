@@ -9,16 +9,16 @@ trait Messages
      *  Message
      *
      * @param string $message
+     * @param int $id
      * @param int $status
-     * @param string $type
      * @return json
      */
-    private function message($message, $status = 200, $type = "success")
+    private function message($message, $id = 0, $status = 200)
     {
         return response()->json([
-            "message" => $message,
-            "type" => $type,
-            "code" => $status,
+          "code"  => $status,
+          "message" => $message,
+          "id"      => $id
         ], $status);
     }
 
@@ -30,13 +30,12 @@ trait Messages
      * @param string $type
      * @return json
      */
-    private function errorMessage($message, $status = 404, $type = "warning")
+    private function errorMessage($message, $status = 404)
     {
         return response()->json([
-            "error" => true,
-            "message" => $message,
-            "type" => $type,
-            "code" => $status,
+          "error" => true,
+          "code" => $status,
+          "message" => $message
         ], $status);
     }
 }
