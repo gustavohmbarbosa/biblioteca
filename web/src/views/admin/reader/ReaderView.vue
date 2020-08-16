@@ -109,30 +109,24 @@ export default {
       /* Below two lines are just for demo purpose */
       this.$store.dispatch('readerManagement/destroy', this.reader.id)
         .then(res => {
-          this.$router.push({name:'admin-reader-list'});
-          this.showDeleteSuccess(res.data.message)
+          this.$router.push({name:'admin-reader-list'})
+          this.$vs.notify({
+            title: 'Leitor Excluído',
+            text: res.data.message,
+            color: 'success',
+            iconPack: 'feather',
+            icon: 'icon-check',
+          })
         })
         .catch(err => {
-          this.showDeleteFailed(err.message)
+          this.$vs.notify({
+            title: 'Leitor Não Excluído',
+            text: err.message,
+            color: 'danger',
+            iconPack: 'feather',
+            icon: 'icon-alert-circle',
+          })
         })
-    },
-    showDeleteSuccess(message) {
-      this.$vs.notify({
-        color: 'success',
-        title: 'Leitor Excluído',
-        text: message,
-        iconPack: 'feather',
-        icon: 'icon-check',
-      })
-    },
-    showDeleteFailed(message) {
-      this.$vs.notify({
-        color: 'danger',
-        title: 'Leitor Não Excluído',
-        text: message,
-        iconPack: 'feather',
-        icon: 'icon-alert-circle',
-      })
     },
   },
   mounted() {

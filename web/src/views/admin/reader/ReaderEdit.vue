@@ -134,7 +134,7 @@
 
       <div class="vx-row">
         <div class="vx-col w-full">
-          <vs-button class="mr-3 mb-2" @click="updateReader">Criar</vs-button>
+          <vs-button class="mr-3 mb-2" @click="updateReader">Atualizar</vs-button>
           <vs-button color="danger" type="border" class="mb-2" :to="{name:'admin-reader-list'}">Voltar</vs-button>
         </div>
       </div>
@@ -180,9 +180,9 @@ export default {
         .then(res => {
           this.$vs.loading.close("#update-form > .con-vs-loading")
           this.$vs.notify({
-            color: 'success',
             title: "Leitor atualizado!",
             text: res.data.message,
+            color: 'success',
             iconPack: 'feather',
             icon: 'icon-check',
           })
@@ -192,9 +192,9 @@ export default {
           console.log(this.validations)
           this.$vs.loading.close("#update-form > .con-vs-loading")
           this.$vs.notify({
-            color: 'danger',
             title: "Leitor não atualizado!",
             text: "Preencha os campos corretamente!",
+            color: 'danger',
             iconPack: 'feather',
             icon: 'icon-circle-alert',
           })
@@ -223,9 +223,9 @@ export default {
       })
       .catch(err => {
         this.$vs.notify({
-          color: 'success',
           title: "Erro",
           text: err.data.message,
+          color: 'success',
           iconPack: 'feather',
           icon: 'icon-check',
           time: 4000

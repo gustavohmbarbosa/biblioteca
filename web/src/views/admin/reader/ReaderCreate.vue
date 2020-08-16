@@ -140,17 +140,17 @@ export default {
   data() {
     return {
       reader: {
-        name: 'teste',
-        email: 'teste@teste.com',
-        password: '12345678',
-        password_confirmation: '12345678',
-        phone: '00 00000-0000',
+        name: '',
+        email: '',
+        password: '',
+        password_confirmation: '',
+        phone: '',
         gender: 'Masculino',
-        grade: 2,
-        class: 'B',
-        course_id: "1",
-        registration: '12345678',
-        entry_year: '2019',
+        grade: 1,
+        class: 'A',
+        course_id: '1',
+        registration: '',
+        entry_year: '',
       },
       validations: {}
     }
@@ -163,33 +163,27 @@ export default {
       // Saving datas of reader
       this.$store.dispatch('readerManagement/store', reader)
         .then(res => {
-          this.showCreatedSuccess(res.data.message)
+          this.$vs.notify({
+            title: 'Leitor Criado com sucesso!',
+            text: res.data.message,
+            color: 'success',
+            iconPack: 'feather',
+            icon: 'icon-check',
+          })
         })
         .catch(error => {
           this.validations = error.response.data
-          this.showCreatedFailed("Preencha os campos corretamente!")
+          this.$vs.notify({
+            title: 'Erro ao criar leitor!',
+            text: "Preencha os campos corretamente!",
+            color: 'danger',
+            iconPack: 'feather',
+            icon: 'icon-alert-circle',
+          })
         })
     },
     clearForm() {
       this.reader = {}
-    },
-    showCreatedSuccess(message) {
-      this.$vs.notify({
-        color: 'success',
-        title: 'Leitor Criado com sucesso!',
-        text: message,
-        iconPack: 'feather',
-        icon: 'icon-check',
-      })
-    },
-    showCreatedFailed(message) {
-      this.$vs.notify({
-        color: 'danger',
-        title: 'Erro ao criar leitor!',
-        text: message,
-        iconPack: 'feather',
-        icon: 'icon-alert-circle',
-      })
     },
   },
   created() {

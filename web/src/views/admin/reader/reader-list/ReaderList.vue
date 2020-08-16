@@ -13,11 +13,7 @@
 
     <vx-card ref="filterCard" title="Filtros" class="reader-list-filters mb-8" actionButtons @refresh="resetColFilters" @remove="resetColFilters">
       <div class="vx-row">
-        <div class="vx-col md:w-1/2 sm:w-1/2 w-full">
-          <label class="text-sm opacity-75">Função</label>
-          <v-select :options="roleOptions" :clearable="false" :dir="$vs.rtl ? 'rtl' : 'ltr'" v-model="roleFilter" class="mb-4 md:mb-0" />
-        </div>
-        <div class="vx-col md:w-1/2 sm:w-1/2 w-full">
+        <div class="vx-col w-full">
           <label class="text-sm opacity-75">Status</label>
           <v-select :options="statusOptions" :clearable="false" :dir="$vs.rtl ? 'rtl' : 'ltr'" v-model="statusFilter" class="mb-4 md:mb-0" />
         </div>
@@ -150,7 +146,6 @@ export default {
     return {
 
       // Filter Options
-      roleFilter: { label: 'Todos', value: 'all' },
       roleOptions: [
         { label: 'Todos', value: 'all' },
         { label: 'Nome', value: 'name' },
@@ -317,9 +312,9 @@ export default {
       this.$vs.notify({
         title: 'Erro!',
         text: 'Não foi possível carregar os dados!',
+        color: 'danger',
         iconPack: 'feather',
         icon: 'icon-alert-circle',
-        color: 'danger'
       })
       console.error(err)
     })
