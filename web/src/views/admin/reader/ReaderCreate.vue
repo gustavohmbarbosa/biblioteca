@@ -1,36 +1,17 @@
 <template>
     <div class="vx-col w-full mb-base">
-			<vx-card title="Cadastrar Leitor">
-            <div class="vx-row">
+			<vx-card title="Cadastrar Leitor" id="create-form">
+
+        <vs-tabs v-model="activeTab" class="tab-action-btn-fill-conatiner">
+          <!-- Informations -->
+          <vs-tab label="Informações" icon-pack="feather" icon="icon-info">
+            <div class="tab-text">
+              <div class="vx-row">
               <div class="vx-col w-full mb-3">
                 <label>Nome</label>
                 <vs-input class="w-full" icon-pack="feather" icon="icon-user" icon-no-border placeholder="Nome" v-model="reader.name" />
                 <div class="text-danger text-sm" v-if="validations.name">
                   <span v-show="validations.name">{{ validations.name[0] }}</span>
-                </div>
-              </div>
-            </div>
-
-            <div class="vx-row">
-              <div class="vx-col sm:w-1/2 w-full mb-2">
-                <label>Email</label>
-                <vs-input class="w-full" icon-pack="feather" icon="icon-mail" icon-no-border placeholder="Email" v-model="reader.email" />
-                <div class="text-danger text-sm" v-if="validations.email">
-                  <span v-show="validations.email">{{ validations.email[0] }}</span>
-                </div>
-              </div>
-              <div class="vx-col sm:w-1/4 w-full mb-2">
-                <label>Senha</label>
-                <vs-input type="password" class="w-full" icon-pack="feather" icon="icon-lock" icon-no-border placeholder="Senha" v-model="reader.password" />
-                <div class="text-danger text-sm" v-if="validations.password">
-                  <span v-show="validations.password">{{ validations.password[0] }}</span>
-                </div>
-              </div>
-              <div class="vx-col sm:w-1/4 w-full mb-2">
-                <label>Confirmar Senha</label>
-                <vs-input type="password" class="w-full" icon-pack="feather" icon="icon-lock" icon-no-border placeholder="Confirme a senha" v-model="reader.password_confirmation" />
-                <div class="text-danger text-sm" v-if="validations.password_confirmation">
-                  <span v-show="validations.password_confirmation">{{ validations.password_confirmation[0] }}</span>
                 </div>
               </div>
             </div>
@@ -51,7 +32,7 @@
                   <span v-show="validations.gender">{{ validations.gender[0] }}</span>
                 </div>
               </div>
-            </div>´
+            </div>
 
             <div class="vx-row">
               <div class="vx-col sm:w-1/6 w-full mb-3">
@@ -114,11 +95,43 @@
               </div>
             </div>
 
-          <div class="vx-col m-auto">
-            <div class="centerx">
-              <vs-upload action="https://jsonplaceholder.typicode.com/posts/" text="Salvar Foto"/>
+            <div class="vx-col m-auto">
+              <div class="centerx">
+                <vs-upload action="https://jsonplaceholder.typicode.com/posts/" text="Salvar Foto"/>
+              </div>
             </div>
-          </div>
+            </div>
+          </vs-tab>
+          <!-- Account -->
+          <vs-tab label="Conta" icon-pack="feather" icon="icon-user">
+            <div class="tab-text">
+              <div class="vx-row">
+                <div class="vx-col sm:w-1/2 w-full mb-2">
+                  <label>Email</label>
+                  <vs-input class="w-full" icon-pack="feather" icon="icon-mail" icon-no-border placeholder="Email" v-model="reader.email" />
+                  <div class="text-danger text-sm" v-if="validations.email">
+                    <span v-show="validations.email">{{ validations.email[0] }}</span>
+                  </div>
+                </div>
+                <div class="vx-col sm:w-1/4 w-full mb-2">
+                  <label>Senha</label>
+                  <vs-input type="password" class="w-full" icon-pack="feather" icon="icon-lock" icon-no-border placeholder="Senha" v-model="reader.password" />
+                  <div class="text-danger text-sm" v-if="validations.password">
+                    <span v-show="validations.password">{{ validations.password[0] }}</span>
+                  </div>
+                </div>
+                <div class="vx-col sm:w-1/4 w-full mb-2">
+                  <label>Confirmar Senha</label>
+                  <vs-input type="password" class="w-full" icon-pack="feather" icon="icon-lock" icon-no-border placeholder="Confirme a senha" v-model="reader.password_confirmation" />
+                  <div class="text-danger text-sm" v-if="validations.password_confirmation">
+                    <span v-show="validations.password_confirmation">{{ validations.password_confirmation[0] }}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </vs-tab>
+        </vs-tabs>
+
 
 				<div class="vx-row">
 					<div class="vx-col w-full">
@@ -160,9 +173,15 @@ export default {
   },
   methods: {
     storeReader(reader) {
+      // Loading
+      this.$vs.loading({
+        container: '#create-form',
+        scale: 0.6
+      })
       // Saving datas of reader
       this.$store.dispatch('readerManagement/store', reader)
         .then(res => {
+          this.$vs.loading.close("#create-form > .con-vs-loading")
           this.$vs.notify({
             title: 'Leitor Criado com sucesso!',
             text: res.data.message,
@@ -172,7 +191,8 @@ export default {
           })
         })
         .catch(error => {
-          this.validations = error.response.data
+          this.$vs.loading.close("#create-form > .con-vs-loading")
+          this.validations = error.response.data.errors
           this.$vs.notify({
             title: 'Erro ao criar leitor!',
             text: "Preencha os campos corretamente!",

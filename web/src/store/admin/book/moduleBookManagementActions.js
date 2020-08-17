@@ -12,14 +12,14 @@ import axios from "@/axios.js"
 export default {
   store({ commit }, book) {
     return new Promise((resolve, reject) => {
-      axios.post("/admin/books", book)
+      axios.post(`admin/books/${book.id}`, book)
         .then((response) => {
           commit('ADD_BOOK', Object.assign(book, {id: response.data.id}))
           resolve(response)
         })
-        .catch((error) => 
-        { 
-          reject(error) 
+        .catch((error) =>
+        {
+          reject(error)
         })
     })
   },

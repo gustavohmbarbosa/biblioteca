@@ -194,7 +194,7 @@ const router = new Router({
               {
                 path: '/livros/edicao/:bookId',
                 name: 'admin-book-edit',
-                component: () => import('@/views/admin/book/book-edit/BookEdit.vue'),
+                component: () => import('@/views/admin/book/BookEdit.vue'),
                 meta: {
                     breadcrumb: [
                         { title: 'Home', url: '/' },
