@@ -10,6 +10,16 @@
 import axios from "@/axios.js"
 
 export default {
+  index({ commit }) {
+    return new Promise((resolve, reject) => {
+      axios.get("admin/books")
+        .then((response) => {
+          commit('SET_BOOKS', response.data)
+          resolve(response)
+        })
+        .catch((error) => { reject(error) })
+    })
+  },
   store({ commit }, book) {
     return new Promise((resolve, reject) => {
       axios.post("/admin/books", book)

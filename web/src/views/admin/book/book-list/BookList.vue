@@ -13,11 +13,7 @@
 
     <vx-card ref="filterCard" title="Filtros" class="reader-list-filters mb-8" actionButtons @refresh="resetColFilters" @remove="resetColFilters">
       <div class="vx-row">
-        <div class="vx-col md:w-1/2 sm:w-1/2 w-full">
-          <label class="text-sm opacity-75">Função</label>
-          <v-select :options="roleOptions" :clearable="false" :dir="$vs.rtl ? 'rtl' : 'ltr'" v-model="roleFilter" class="mb-4 md:mb-0" />
-        </div>
-        <div class="vx-col md:w-1/2 sm:w-1/2 w-full">
+        <div class="vx-col w-full">
           <label class="text-sm opacity-75">Status</label>
           <v-select :options="statusOptions" :clearable="false" :dir="$vs.rtl ? 'rtl' : 'ltr'" v-model="statusFilter" class="mb-4 md:mb-0" />
         </div>
@@ -96,6 +92,7 @@
 
       <!-- AgGrid Table -->
       <ag-grid-vue
+        id="datatable-list"
         ref="agGridTable"
         :components="components"
         :gridOptions="gridOptions"
@@ -124,186 +121,218 @@
 </template>
 
 <script>
-import { AgGridVue } from "ag-grid-vue"
-import '@/assets/scss/vuexy/extraComponents/agGridStyleOverride.scss'
-import vSelect from 'vue-select'
+  import { AgGridVue } from "ag-grid-vue"
+  import '@/assets/scss/vuexy/extraComponents/agGridStyleOverride.scss'
+  import vSelect from 'vue-select'
 
-// Store Module
-import moduleReaderManagement from '@/store/admin/reader/moduleReaderManagement.js'
+  import moduleBookManagement from '@/store/admin/book/moduleBookManagement.js'
 
-// Cell Renderer
-import CellRendererStatus from "./cell-renderer/CellRendererStatus.vue"
-import CellRendererActions from "./cell-renderer/CellRendererActions.vue"
+  // Cell Renderer
+  import CellRendererStatus from "./cell-renderer/CellRendererStatus.vue"
+  import CellRendererActions from "./cell-renderer/CellRendererActions.vue"
 
 
-export default {
-  components: {
-    AgGridVue,
-    vSelect,
+  export default {
+    components: {
+      AgGridVue,
+      vSelect,
 
-    // Cell Renderer
-    CellRendererStatus,
-    CellRendererActions,
-  },
-  data() {
-    return {
+      // Cell Renderer
+      CellRendererStatus,
+      CellRendererActions,
+    },
+    data() {
+      return {
 
-      // Filter Options
-      roleFilter: { label: 'Todos', value: 'all' },
-      roleOptions: [
-        { label: 'Todos', value: 'all' },
-        { label: 'Nome', value: 'name' },
-        { label: 'Email', value: 'email' },
-      ],
+        // Filter Options
+        roleOptions: [
+          { label: 'Todos', value: 'all' },
+          { label: 'Nome', value: 'name' },
+          { label: 'Email', value: 'email' },
+        ],
 
-      statusFilter: { label: 'Todos', value: 'all' },
-      statusOptions: [
-        { label: 'Todos', value: 'all' },
-        { label: 'Ativado', value: 'active' },
-        { label: 'Desativado', value: 'deactivated' },
-        { label: 'Bloqueado', value: 'blocked' },
-      ],
+        statusFilter: { label: 'Todos', value: 'all' },
+        statusOptions: [
+          { label: 'Todos', value: 'all' },
+          { label: 'Ativado', value: 'Ativo' },
+          { label: 'Desativado', value: 'Inativo' },
+          { label: 'Bloqueado', value: 'Bloqueado' },
+        ],
 
-      searchQuery: "",
+        searchQuery: "",
 
-      // AgGrid
-      gridApi: null,
-      gridOptions: {},
-      defaultColDef: {
-        sortable: true,
-        resizable: true,
-        suppressMenu: true
-      },
-      columnDefs: [
-        {
-          headerName: 'ID',
-          field: 'id',
-          width: 100,
-          filter: true,
-          checkboxSelection: true,
-          headerCheckboxSelectionFilteredOnly: true,
-          headerCheckboxSelection: true,
+        // AgGrid
+        gridApi: null,
+        gridOptions: {},
+        defaultColDef: {
+          sortable: true,
+          resizable: true,
+          suppressMenu: true
         },
-        {
-          headerName: 'Nome',
-          field: 'name',
-          filter: true,
-          width: 250
-        },
-        {
-          headerName: 'Email',
-          field: 'email',
-          filter: true,
-          width: 275,
-        },
-        {
-          headerName: 'Telefone',
-          field: 'phone',
-          filter: true,
-          width: 200,
-        },
-        {
-          headerName: 'Status',
-          field: 'status',
-          filter: true,
-          width: 175,
-          cellRendererFramework: 'CellRendererStatus'
+        columnDefs: [
+          {
+            headerName: 'ID',
+            field: 'id',
+            width: 125,
+            filter: true,
+            checkboxSelection: true,
+            headerCheckboxSelectionFilteredOnly: true,
+            headerCheckboxSelection: true,
+          },
+          {
+            headerName: 'Nome',
+            field: 'name',
+            filter: true,
+            width: 310
+          },
+          {
+            headerName: 'Email',
+            field: 'email',
+            filter: true,
+            width: 275,
+          },
+          {
+            headerName: 'Status',
+            field: 'status',
+            filter: true,
+            width: 150,
+            cellRendererFramework: 'CellRendererStatus'
+          },
+          {
+            headerName: 'Ações',
+            field: 'transactions',
+            width: 150,
+            cellRendererFramework: 'CellRendererActions',
+          },
+        ],
+
+        // Cell Renderer Components
+        components: {
+          CellRendererStatus,
+          CellRendererActions,
         }
-      ],
-
-      // Cell Renderer Components
-      components: {
-        CellRendererStatus,
-        CellRendererActions,
       }
-    }
-  },
-  watch: {
-    roleFilter(obj) {
-      this.setColumnFilter("role", obj.value)
     },
-    statusFilter(obj) {
-      this.setColumnFilter("status", obj.value)
-    },
-    isVerifiedFilter(obj) {
-      let val = obj.value === "all" ? "all" : obj.value == "yes" ? "true" : "false"
-      this.setColumnFilter("is_verified", val)
-    },
-    departmentFilter(obj) {
-      this.setColumnFilter("department", obj.value)
-    },
-  },
-  computed: {
-    readersData() {
-      return this.$store.state.readerManagement.readers
-    },
-    paginationPageSize() {
-      if(this.gridApi) return this.gridApi.paginationGetPageSize()
-      else return 10
-    },
-    totalPages() {
-      if(this.gridApi) return this.gridApi.paginationGetTotalPages()
-      else return 0
-    },
-    currentPage: {
-      get() {
-        if(this.gridApi) return this.gridApi.paginationGetCurrentPage() + 1
-        else return 1
+    watch: {
+      statusFilter(obj) {
+        this.setColumnFilter("status", obj.value)
       },
-      set(val) {
-        this.gridApi.paginationGoToPage(val - 1)
-      }
-    }
-  },
-  methods: {
-    setColumnFilter(column, val) {
-      const filter = this.gridApi.getFilterInstance(column)
-      let modelObj = null
-
-      if(val !== "all") {
-        modelObj = { type: "equals", filter: val }
-      }
-
-      filter.setModel(modelObj)
-      this.gridApi.onFilterChanged()
+      isVerifiedFilter(obj) {
+        let val = obj.value === "all" ? "all" : obj.value == "yes" ? "true" : "false"
+        this.setColumnFilter("is_verified", val)
+      },
+      departmentFilter(obj) {
+        this.setColumnFilter("department", obj.value)
+      },
     },
-    resetColFilters() {
-      // Reset Grid Filter
-      this.gridApi.setFilterModel(null)
-      this.gridApi.onFilterChanged()
-
-      // Reset Filter Options
-      this.roleFilter = this.statusFilter = this.isVerifiedFilter = this.departmentFilter = { label: 'Todos', value: 'all' }
-
-      this.$refs.filterCard.removeRefreshAnimation()
+    computed: {
+      readersData() {
+        return this.$store.state.bookManagement.readers
+      },
+      paginationPageSize() {
+        if(this.gridApi) return this.gridApi.paginationGetPageSize()
+        else return 10
+      },
+      totalPages() {
+        if(this.gridApi) return this.gridApi.paginationGetTotalPages()
+        else return 0
+      },
+      currentPage: {
+        get() {
+          if(this.gridApi) return this.gridApi.paginationGetCurrentPage() + 1
+          else return 1
+        },
+        set(val) {
+          this.gridApi.paginationGoToPage(val - 1)
+        }
+      }
     },
-    updateSearchQuery(val) {
-      this.gridApi.setQuickFilter(val)
-    }
-  },
-  mounted() {
-    this.gridApi = this.gridOptions.api
+    methods: {
+      setColumnFilter(column, val) {
+        const filter = this.gridApi.getFilterInstance(column)
+        let modelObj = null
 
-    /* =================================================================
-      NOTE:
-      Header is not aligned properly in RTL version of agGrid table.
-      However, we given fix to this issue. If you want more robust solution please contact them at gitHub
-    ================================================================= */
-    if(this.$vs.rtl) {
-      const header = this.$refs.agGridTable.$el.querySelector(".ag-header-container")
-      header.style.left = "-" + String(Number(header.style.transform.slice(11,-3)) + 9) + "px"
+        if(val !== "all") {
+          modelObj = { type: "equals", filter: val }
+        }
+
+        filter.setModel(modelObj)
+        this.gridApi.onFilterChanged()
+      },
+      resetColFilters() {
+        // Reset Grid Filter
+        this.gridApi.setFilterModel(null)
+        this.gridApi.onFilterChanged()
+
+        // Reset Filter Options
+        this.roleFilter = this.statusFilter = this.isVerifiedFilter = this.departmentFilter = { label: 'Todos', value: 'all' }
+
+        this.$refs.filterCard.removeRefreshAnimation()
+      },
+      updateSearchQuery(val) {
+        this.gridApi.setQuickFilter(val)
+      },
+      refreshCard(card) {
+        card.removeRefreshAnimation(3000);
+      }
+    },
+    mounted() {
+      this.gridApi = this.gridOptions.api
+
+      /* =================================================================
+        NOTE:
+        Header is not aligned properly in RTL version of agGrid table.
+        However, we given fix to this issue. If you want more robust solution please contact them at gitHub
+      ================================================================= */
+      if(this.$vs.rtl) {
+        const header = this.$refs.agGridTable.$el.querySelector(".ag-header-container")
+        header.style.left = "-" + String(Number(header.style.transform.slice(11,-3)) + 9) + "px"
+      }
+
+      // Loading for Readers Request
+      this.$vs.loading({
+        container: '#datatable-list',
+        scale: 0.6
+      })
+    },
+    created() {
+      if(!moduleBookManagement.isRegistered) {
+        this.$store.registerModule('bookManagement', moduleBookManagement)
+        moduleBookManagement.isRegistered = true
+      }
+
+      this.$store.dispatch("bookManagement/index")
+      .then(() => {
+        this.$vs.loading.close("#datatable-list > .con-vs-loading")
+      })
+      .catch(err => {
+        this.$vs.loading.close("#datatable-list > .con-vs-loading")
+
+        this.$vs.notify({
+          title: 'Erro!',
+          text: 'Não foi possível carregar os dados!',
+          color: 'danger',
+          iconPack: 'feather',
+          icon: 'icon-alert-circle',
+        })
+        console.error(err)
+      })
     }
-  },
-  created() {
-    if(!moduleReaderManagement.isRegistered) {
-      this.$store.registerModule('readerManagement', moduleReaderManagement)
-      moduleReaderManagement.isRegistered = true
+  }
+</script>
+
+<style lang="scss">
+#page-user-list {
+  .user-list-filters {
+    .vs__actions {
+      position: absolute;
+      right: 0;
+      top: 50%;
+      transform: translateY(-58%);
     }
-    this.$store.dispatch("readerManagement/fetchReaders").catch(err => { console.error(err) })
   }
 }
-
-</script>
+</style>
 
 <style lang="scss">
 #page-user-list {

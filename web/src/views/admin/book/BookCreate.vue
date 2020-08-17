@@ -160,19 +160,32 @@
           <div class="vx-col sm:w-1/4 w-full upload-img">
             <label>Capa</label>
 
-            <template v-if="!book.cape">
-              <input type="file" class="hidden" ref="uploadImgInput" @change="updateCurrImg" accept="image/*">
+            <template v-if="!cape">
+              <input 
+              type="file" 
+              class="hidden" 
+              ref="uploadImgInput" 
+              @change="updateCurrImg" 
+              accept="image/*"
+              >
               <vs-button color="success" class="w-full " @click="$refs.uploadImgInput.click()">Selecionar Capa
               </vs-button>
             </template>
 
-            <template v-if="book.cape">
+            <template v-if="cape">
               <!-- Image upload Buttons -->
               <input type="file" class="hidden" ref="uploadImgInput" @change="updateCurrImg" accept="image/*">
               <div class="btn-group">
-                <vs-button color="success" type="border" size="small" class="sm:w-1/2"
-                  @click="$refs.uploadImgInput.click()">Atualizar</vs-button>
-                <vs-button color="danger" type="border" size="small" class="sm:w-1/2" @click="book.cape=null">Remover
+                <vs-button 
+                  color="success"
+                  type="border" 
+                  size="small" 
+                  class="sm:w-1/2"
+                  @click="$refs.uploadImgInput.click()" 
+                >
+                  Atualizar
+                </vs-button>
+                <vs-button color="danger" type="border" size="small" class="sm:w-1/2" @click="cape=null">Remover
                 </vs-button>
               </div>
             </template>
@@ -230,6 +243,7 @@
     data() {
       return {
         language: lang['ptBR'],
+        cape: null,
         book: {
           title: '',
           subtitle: '',
@@ -244,7 +258,6 @@
           publication_date: null,
           color: '',
           cdd: '',
-          cape: null,
           company_id: null,
           author_id: null,
         },
@@ -282,7 +295,15 @@
     methods: {
       storeBook(book) {
         book = this.treatBookData(book)
-        this.$store.dispatch('bookManagement/store', book)
+
+        const config = {
+          headers: { 
+            'content-type': 'multipart/form-data',
+            'Access-Control-Allow-Origin':  '*'
+            }
+        }
+
+        this.$store.dispatch('bookManagement/store', book, config)
           .then(response => {
             this.$vs.notify({
               title: "Livro Cadastrado",
@@ -306,16 +327,41 @@
       },
       treatBookData(book) {
         book['publication_date'] = ConvertDateToStandard(book['publication_date'])
+        
+        if (this.cape != null) {
+
+          let data = new FormData()
+          data.append('cape', this.cape)
+          data.append('title', book.title)
+          data.append('subtitle', book.subtitle) 
+          data.append('origin', book.origin) 
+          data.append('price', book.price) 
+          data.append('isbn', book.isbn)
+          data.append('synopsis', book.synopsis) 
+          data.append('pages', book.pages) 
+          data.append('language', book.language) 
+          data.append('observations', book.observations) 
+          data.append('edition', book.edition) 
+          data.append('publication_date', book.publication_date) 
+          data.append('color', book.color) 
+          data.append('cdd', book.cdd)
+          data.append('cape', book.cape) 
+          data.append('company_id', book.company_id) 
+          data.append('author_id', book.author_id) 
+
+          return data
+        }
 
         return book
       },
       updateCurrImg(input) {
         if (input.target.files && input.target.files[0]) {
-          var reader = new FileReader()
-          reader.onload = e => {
-            this.book.cape = e.target.result
-          }
-          reader.readAsDataURL(input.target.files[0])
+          // var reader = new FileReader()
+          // reader.onload = e => {
+          //   this.cape = e.target.result
+          // }
+          // reader.readAsDataURL(input.target.files[0])
+          this.cape = input.target.files[0]
         }
       },
       resetData() {
