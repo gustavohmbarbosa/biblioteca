@@ -1,146 +1,213 @@
 <template>
-  <div class="vx-col w-full mb-base">
-    <vx-card>
+  <div class="vx-row mb-base">
 
-      <company-create-sidebar :isSidebarActive="addNewSidebarToCompanyCreate" @closeSidebar="toggleCompanyCreateSidebar"
-        :data="companyCreateSidebar" />
+    <!-- To Books -->
+    <div class="vx-col lg:w-1/2 w-full relative mb-5">
+      <vx-card title="Para o Livro">
 
-      <author-create-sidebar :isSidebarActive="addNewSidebarToAuthorCreate" @closeSidebar="toggleAuthorCreateSidebar"
-        :data="authorCreateSidebar" />
+        <company-create-sidebar :isSidebarActive="addNewSidebarToCompanyCreate"
+          @closeSidebar="toggleCompanyCreateSidebar" :data="companyCreateSidebar" />
 
-      <form>
-        <div class="vx-row mb-3">
-          <div class="vx-col sm:w-1/2 w-full">
-            <label>Título</label>
-            <vs-input class="w-full" icon-pack="feather" icon="icon-book" icon-no-border placeholder="Título"
-              v-model="book.title" />
-            <div class="text-danger text-sm" v-if="validations.title">
-              <span class="text-danger text-sm" v-show="validations.title">{{ validations.title[0] }}</span>
-            </div>
-          </div>
+        <author-create-sidebar :isSidebarActive="addNewSidebarToAuthorCreate" @closeSidebar="toggleAuthorCreateSidebar"
+          :data="authorCreateSidebar" />
 
-          <div class="vx-col sm:w-1/2 w-full">
-            <label>SubTítulo</label>
-            <vs-input class="w-full" icon-pack="feather" icon="icon-bookmark" icon-no-border placeholder="SubTítulo"
-              v-model="book.subtitle" />
-            <div class="text-danger text-sm" v-if="validations.subtitle">
-              <span v-show="validations.subtitle">{{ validations.subtitle[0] }}</span>
-            </div>
+        <!-- Title -->
+        <div class="w-full mb-6">
+          <label>Título</label>
+          <vs-input class="w-full" icon-pack="feather" icon="icon-book" icon-no-border placeholder="Título"
+            v-model="book.title" />
+          <div class="text-danger text-sm" v-if="validations.title">
+            <span class="text-danger text-sm" v-show="validations.title">{{ validations.title[0] }}</span>
           </div>
         </div>
 
-        <div class="vx-row mb-3">
-          <div class="vx-col sm:w-1/4 w-full">
-            <label>Editora</label>
-            <vx-input-group>
-              <template slot="prepend">
-                <div class="prepend-text btn-addon">
-                  <vs-button color="primary" icon-pack="feather" icon="icon-plus" @click="addNewCompany"></vs-button>
-                </div>
-              </template>
-
-              <v-select class="w-full small" label="name" :options="companies" :reduce="name => name.id"
-                :dir="$vs.rtl ? 'rtl' : 'ltr'" placeholder="Editora" v-model="book.company_id" />
-            </vx-input-group>
-            <div class="text-danger text-sm" v-if="validations.company_id">
-              <span v-show="validations.company_id">{{ validations.company_id[0] }}</span>
-            </div>
-          </div>
-
-          <div class="vx-col sm:w-1/6 w-full">
-            <label>Páginas</label>
-            <vs-input class="w-full" icon-pack="feather" icon="icon-book-open" icon-no-border
-              placeholder="Nº de Páginas" v-model="book.pages" />
-            <div class="text-danger text-sm" v-if="validations.pages">
-              <span v-show="validations.pages">{{ validations.pages[0] }}</span>
-            </div>
-          </div>
-
-
-          <div class="vx-col sm:w-1/4 w-full">
-            <label>ISBN</label>
-            <vs-input class="w-full" icon-pack="feather" icon="icon-code" icon-no-border placeholder="ISBN"
-              v-model="book.isbn" />
-            <div class="text-danger text-sm" v-if="validations.isbn">
-              <span v-show="validations.isbn">{{ validations.isbn[0] }}</span>
-            </div>
-          </div>
-
-          <div class="vx-col sm:w-1/3 w-full">
-            <label>CDD</label>
-            <v-select class="w-full" label="name" :options="cdds" :reduce="name => name.id"
-              :dir="$vs.rtl ? 'rtl' : 'ltr'" placeholder="CDD" v-model="book.cdd" />
-            <div class="text-danger text-sm" v-if="validations.cdd">
-              <span v-show="validations.cdd">{{ validations.cdd[0] }}</span>
-            </div>
+        <!-- Subtitle -->
+        <div class="w-full mb-6">
+          <label>SubTítulo</label>
+          <vs-input class="w-full" icon-pack="feather" icon="icon-bookmark" icon-no-border placeholder="SubTítulo"
+            v-model="book.subtitle" />
+          <div class="text-danger text-sm" v-if="validations.subtitle">
+            <span v-show="validations.subtitle">{{ validations.subtitle[0] }}</span>
           </div>
         </div>
 
-        <div class="vx-row mb-3">
-          <div class="vx-col sm:w-1/6 w-full">
-            <label>Edição</label>
-            <vs-input class="w-full" icon-pack="feather" icon="icon-edit" icon-no-border placeholder="Edição"
-              v-model="book.edition" />
-            <div class="text-danger text-sm" v-if="validations.edition">
-              <span v-show="validations.edition">{{ validations.edition[0] }}</span>
-            </div>
-          </div>
+        <!-- Company -->
+        <div class="w-full mb-6">
+          <label>Editora</label>
+          <vx-input-group>
+            <template slot="prepend">
+              <div class="prepend-text btn-addon">
+                <vs-button color="primary" icon-pack="feather" icon="icon-plus" @click="addNewCompany"></vs-button>
+              </div>
+            </template>
 
-          <div class="vx-col sm:w-1/4 w-full">
-            <label>Linguagem</label>
-            <vs-input class="w-full" icon-pack="feather" icon="icon-globe" icon-no-border placeholder="Título"
-              v-model="book.language" />
-            <div class="text-danger text-sm" v-if="validations.language">
-              <span v-show="validations.language">{{ validations.language[0] }}</span>
-            </div>
-          </div>
-
-          <div class="vx-col sm:w-1/3 w-full">
-            <label>Autor</label>
-            <vx-input-group>
-              <template slot="prepend">
-                <div class="prepend-text btn-addon">
-                  <vs-button color="primary" icon-pack="feather" icon="icon-plus" @click="addNewAuthor"></vs-button>
-                </div>
-              </template>
-
-              <v-select class="w-full vs-justify" label="name" :options="authors" :reduce="name => name.id"
-                :dir="$vs.rtl ? 'rtl' : 'ltr'" placeholder="Autor" v-model="book.author_id" />
-            </vx-input-group>
-            <div class="text-danger text-sm" v-if="validations.author_id">
-              <span v-show="validations.author_id">{{ validations.author_id[0] }}</span>
-            </div>
-          </div>
-
-          <div class="vx-col sm:w-1/4 w-full">
-            <label>Publicação</label>
-            <datepicker class="w-full" placeholder="Dia Mês Ano" :language="language" format="d MMMM yyyy"
-              v-model="book.publication_date"></datepicker>
-            <div class="text-danger text-sm" v-if="validations.publication_date">
-              <span v-show="validations.publication_date">{{ validations.publication_date[0] }}</span>
-            </div>
+            <v-select label="name" :options="companies" :reduce="name => name.id" :dir="$vs.rtl ? 'rtl' : 'ltr'"
+              placeholder="Editora" v-model="book.company_id" />
+          </vx-input-group>
+          <div class="text-danger text-sm" v-if="validations.company_id">
+            <span v-show="validations.company_id">{{ validations.company_id[0] }}</span>
           </div>
         </div>
 
-        <div class="vx-row mb-3">
-
-          <div class="vx-col sm:w-1/4 w-full">
-            <label>Cor</label>
-            <vs-input class="w-full" icon-pack="feather" icon="icon-droplet" icon-no-border placeholder="Título"
-              v-model="book.color" />
-            <div class="text-danger text-sm" v-if="validations.color">
-              <span v-show="validations.color">{{ validations.color[0] }}</span>
-            </div>
+        <!-- Pages -->
+        <div class="w-full mb-6">
+          <label>Páginas</label>
+          <vs-input class="w-full" icon-pack="feather" icon="icon-book-open" icon-no-border placeholder="Nº de Páginas"
+            v-model="book.pages" />
+          <div class="text-danger text-sm" v-if="validations.pages">
+            <span v-show="validations.pages">{{ validations.pages[0] }}</span>
           </div>
+        </div>
 
-          <div class="vx-col sm:w-1/4 w-full">
+        <!-- ISBN -->
+        <div class="w-full mb-6">
+          <label>ISBN</label>
+          <vs-input class="w-full" icon-pack="feather" icon="icon-code" icon-no-border placeholder="ISBN"
+            v-model="book.isbn" />
+          <div class="text-danger text-sm" v-if="validations.isbn">
+            <span v-show="validations.isbn">{{ validations.isbn[0] }}</span>
+          </div>
+        </div>
+
+        <!-- Edition -->
+        <div class="w-full mb-6">
+          <label>Edição</label>
+          <vs-input class="w-full" icon-pack="feather" icon="icon-edit" icon-no-border placeholder="Edição"
+            v-model="book.edition" />
+          <div class="text-danger text-sm" v-if="validations.edition">
+            <span v-show="validations.edition">{{ validations.edition[0] }}</span>
+          </div>
+        </div>
+
+        <!-- Language -->
+        <div class="w-full mb-6">
+          <label>Linguagem</label>
+          <vs-input class="w-full" icon-pack="feather" icon="icon-globe" icon-no-border placeholder="Título"
+            v-model="book.language" />
+          <div class="text-danger text-sm" v-if="validations.language">
+            <span v-show="validations.language">{{ validations.language[0] }}</span>
+          </div>
+        </div>
+
+        <!-- Author -->
+        <div class="w-full mb-6">
+          <label>Autor</label>
+          <vx-input-group>
+            <template slot="prepend">
+              <div class="prepend-text btn-addon">
+                <vs-button color="primary" icon-pack="feather" icon="icon-plus" @click="addNewAuthor"></vs-button>
+              </div>
+            </template>
+
+            <v-select class="w-full vs-justify" label="name" :options="authors" :reduce="name => name.id"
+              :dir="$vs.rtl ? 'rtl' : 'ltr'" placeholder="Autor" v-model="book.author_id" />
+          </vx-input-group>
+          <div class="text-danger text-sm" v-if="validations.author_id">
+            <span v-show="validations.author_id">{{ validations.author_id[0] }}</span>
+          </div>
+        </div>
+
+        <!-- Publication Date -->
+        <div class="w-full mb-6">
+          <label>Publicação</label>
+          <datepicker class="w-full" placeholder="Dia Mês Ano" :language="language" format="d MMMM yyyy"
+            v-model="book.publication_date"></datepicker>
+          <div class="text-danger text-sm" v-if="validations.publication_date">
+            <span v-show="validations.publication_date">{{ validations.publication_date[0] }}</span>
+          </div>
+        </div>
+
+        <!-- Synopsis -->
+        <div class="w-full">
+          <label>Sinopse</label>
+          <vs-textarea rows="5" counter="1000" :counter-danger.sync="counterDanger[0]" v-model="book.synopsis" />
+          <div class="text-danger text-sm" v-if="validations.synopsis">
+            <span v-show="validations.synopsis">{{ validations.synopsis[0] }}</span>
+          </div>
+        </div>
+
+        <!-- Buttons -->
+        <div v-if="screenWidth > 991" class="vx-row">
+          <div class="vx-col w-full">
+            <vs-button class="ml-auto mt-2" type="filled" @click.prevent="storeBook(book)">Cadastrar</vs-button>
+            <vs-button class="ml-4 mt-2" type="border" color="warning" @click="resetData">Redefinir</vs-button>
+          </div>
+        </div>
+
+      </vx-card>
+
+    </div>
+
+    <div class="vx-col lg:w-1/2 w-full">
+      <!-- To Book Cape -->
+      <vx-card title="Capa do Livro" id="Image-Container">
+        <!-- Cape -->
+        <div class="w-full mb-6 upload-img">
+          <template v-if="!cape">
+            <input type="file" class="hidden" ref="uploadImgInput" @change="updateCurrImg" accept="image/*">
+            <vs-button color="success" class="w-full " @click="$refs.uploadImgInput.click()">Selecionar Capa
+            </vs-button>
+          </template>
+
+          <template v-if="cape">
+            <template v-if="cape">
+              <div class="img-container w-64 mx-auto flex items-center justify-center">
+                <img :src="showCape" alt="img" class="responsive">
+              </div>
+            </template>
+
+            <!-- Image upload Buttons -->
+            <input type="file" class="hidden" ref="uploadImgInput" @change="updateCurrImg" accept="image/*">
+            <div class="btn-group mt-8 text-center">
+              <vs-button color="success" type="flat" class="sm:w-1/2" @click="$refs.uploadImgInput.click()">
+                Atualizar
+              </vs-button>
+              <vs-button color="danger" type="flat" class="sm:w-1/2" @click="cape=null">Remover
+              </vs-button>
+            </div>
+
+          </template>
+          <div class="text-danger text-sm" v-if="validations.cape">
+            <span v-show="validations.cape">{{ validations.cape[0] }}</span>
+          </div>
+        </div>
+      </vx-card>
+
+      <!-- To Library -->
+      <vx-card title="Para a Biblioteca" class="mt-8">
+
+        <!-- CDD -->
+        <div class="w-full mb-6">
+          <label>Código Decimal de Dewey</label>
+          <v-select label="name" :options="cdds" :reduce="name => name.id" :dir="$vs.rtl ? 'rtl' : 'ltr'"
+            placeholder="CDD" v-model="book.cdd" />
+          <div class="text-danger text-sm" v-if="validations.cdd">
+            <span v-show="validations.cdd">{{ validations.cdd[0] }}</span>
+          </div>
+        </div>
+
+        <!-- Color -->
+        <div class="w-full mb-6">
+          <label>Cor</label>
+          <vs-input class="w-full" icon-pack="feather" icon="icon-droplet" icon-no-border placeholder="Título"
+            v-model="book.color" />
+          <div class="text-danger text-sm" v-if="validations.color">
+            <span v-show="validations.color">{{ validations.color[0] }}</span>
+          </div>
+        </div>
+
+        <div class="vx-row">
+          <!-- Origin -->
+          <div class="vx-col w-full mb-6 sm:w-1/2">
             <label>Origem</label>
             <ul class="vx-row mt-3 ml-1">
               <li>
-                <vs-radio v-model="book.origin" vs-name="grade" vs-value="Doado">Doado</vs-radio>
+                <vs-radio class="w-full sm:w-1/2" v-model="book.origin" vs-name="grade" vs-value="Doado">Doado
+                </vs-radio>
               </li>
               <li>
-                <vs-radio class="ml-12" v-model="book.origin" vs-name="grade" vs-value="Comprado">Comprado</vs-radio>
+                <vs-radio class="w-full sm:w-1/2 ml-6" v-model="book.origin" vs-name="grade" vs-value="Comprado">
+                  Comprado</vs-radio>
               </li>
             </ul>
             <div class="text-danger text-sm" v-if="validations.origin">
@@ -148,79 +215,37 @@
             </div>
           </div>
 
-          <div class="vx-col sm:w-1/4 w-full">
+          <!-- Price -->
+          <div class="vx-col w-full mb-6 sm:w-1/2">
             <label>Preço</label>
-            <vs-input icon-pack="feather" icon="icon-dollar-sign" icon-no-border placeholder="Título"
+            <vs-input class="w-full" icon-pack="feather" icon="icon-dollar-sign" icon-no-border placeholder="Título"
               v-model="book.price" :disabled="book.origin != 'Comprado'" />
             <div class="text-danger text-sm" v-if="validations.price">
               <span v-show="validations.price">{{ validations.price[0] }}</span>
             </div>
           </div>
+        </div>
 
-          <div class="vx-col sm:w-1/4 w-full upload-img">
-            <label>Capa</label>
-
-            <template v-if="!cape">
-              <input 
-              type="file" 
-              class="hidden" 
-              ref="uploadImgInput" 
-              @change="updateCurrImg" 
-              accept="image/*"
-              >
-              <vs-button color="success" class="w-full " @click="$refs.uploadImgInput.click()">Selecionar Capa
-              </vs-button>
-            </template>
-
-            <template v-if="cape">
-              <!-- Image upload Buttons -->
-              <input type="file" class="hidden" ref="uploadImgInput" @change="updateCurrImg" accept="image/*">
-              <div class="btn-group">
-                <vs-button 
-                  color="success"
-                  type="border" 
-                  size="small" 
-                  class="sm:w-1/2"
-                  @click="$refs.uploadImgInput.click()" 
-                >
-                  Atualizar
-                </vs-button>
-                <vs-button color="danger" type="border" size="small" class="sm:w-1/2" @click="cape=null">Remover
-                </vs-button>
-              </div>
-            </template>
-            <div class="text-danger text-sm" v-if="validations.cape">
-              <span v-show="validations.cape">{{ validations.cape[0] }}</span>
-            </div>
-
+        <!-- Observations -->
+        <div class="w-full mb-6">
+          <label>Observações</label>
+          <vs-textarea rows="5" counter="190" :counter-danger.sync="counterDanger[1]" v-model="book.observations" />
+          <div class="text-danger text-sm" v-if="validations.observations">
+            <span v-show="validations.observations">{{ validations.observations[0] }}</span>
           </div>
         </div>
 
-        <div class="vx-row mb-3">
-          <div class="vx-col w-full sm:w-1/2">
-            <label>Sinopse</label>
-            <vs-textarea rows="5" counter="1000" :counter-danger.sync="counterDanger[0]" v-model="book.synopsis" />
-            <div class="text-danger text-sm" v-if="validations.synopsis">
-              <span v-show="validations.synopsis">{{ validations.synopsis[0] }}</span>
-            </div>
-          </div>
-          <div class="vx-col w-full sm:w-1/2">
-            <label>Observações</label>
-            <vs-textarea rows="5" counter="190" :counter-danger.sync="counterDanger[1]" v-model="book.observations" />
-            <div class="text-danger text-sm" v-if="validations.observations">
-              <span v-show="validations.observations">{{ validations.observations[0] }}</span>
-            </div>
-          </div>
-        </div>
-
-        <div class="vx-row">
+        <!-- Buttons -->
+        <div v-if="screenWidth <= 991" class="vx-row">
           <div class="vx-col w-full">
             <vs-button class="ml-auto mt-2" type="filled" @click.prevent="storeBook(book)">Cadastrar</vs-button>
             <vs-button class="ml-4 mt-2" type="border" color="warning" @click="resetData">Redefinir</vs-button>
           </div>
         </div>
-      </form>
-    </vx-card>
+      </vx-card>
+
+    </div>
+
   </div>
 </template>
 
@@ -242,8 +267,8 @@
   export default {
     data() {
       return {
-        language: lang['ptBR'],
         cape: null,
+        showCape: null,
         book: {
           title: '',
           subtitle: '',
@@ -252,7 +277,7 @@
           isbn: '',
           synopsis: '',
           pages: '',
-          language: '',
+          language: 'Português',
           observations: '',
           edition: '',
           publication_date: null,
@@ -264,9 +289,11 @@
         companies: [],
         addNewSidebarToCompanyCreate: false,
         companyCreateSidebar: {},
+
         authors: [],
         addNewSidebarToAuthorCreate: false,
         authorCreateSidebar: {},
+
         cdds: [{
             id: 1,
             name: 'Ciência da informação e bibliotecas e Biblioteconomia',
@@ -280,8 +307,12 @@
             name: 'teste3',
           },
         ],
+
+        language: lang['ptBR'],
         textarea: ['', ''],
         counterDanger: [false, false],
+        screenWidth: null,
+
         validations: {},
       }
     },
@@ -297,10 +328,10 @@
         book = this.treatBookData(book)
 
         const config = {
-          headers: { 
+          headers: {
             'content-type': 'multipart/form-data',
-            'Access-Control-Allow-Origin':  '*'
-            }
+            'Access-Control-Allow-Origin': '*'
+          }
         }
 
         this.$store.dispatch('bookManagement/store', book, config)
@@ -327,27 +358,27 @@
       },
       treatBookData(book) {
         book['publication_date'] = ConvertDateToStandard(book['publication_date'])
-        
+
         if (this.cape != null) {
 
           let data = new FormData()
           data.append('cape', this.cape)
           data.append('title', book.title)
-          data.append('subtitle', book.subtitle) 
-          data.append('origin', book.origin) 
-          data.append('price', book.price) 
+          data.append('subtitle', book.subtitle)
+          data.append('origin', book.origin)
+          data.append('price', book.price)
           data.append('isbn', book.isbn)
-          data.append('synopsis', book.synopsis) 
-          data.append('pages', book.pages) 
-          data.append('language', book.language) 
-          data.append('observations', book.observations) 
-          data.append('edition', book.edition) 
-          data.append('publication_date', book.publication_date) 
-          data.append('color', book.color) 
+          data.append('synopsis', book.synopsis)
+          data.append('pages', book.pages)
+          data.append('language', book.language)
+          data.append('observations', book.observations)
+          data.append('edition', book.edition)
+          data.append('publication_date', book.publication_date)
+          data.append('color', book.color)
           data.append('cdd', book.cdd)
-          data.append('cape', book.cape) 
-          data.append('company_id', book.company_id) 
-          data.append('author_id', book.author_id) 
+          data.append('cape', book.cape)
+          data.append('company_id', book.company_id)
+          data.append('author_id', book.author_id)
 
           return data
         }
@@ -356,16 +387,17 @@
       },
       updateCurrImg(input) {
         if (input.target.files && input.target.files[0]) {
-          // var reader = new FileReader()
-          // reader.onload = e => {
-          //   this.cape = e.target.result
-          // }
-          // reader.readAsDataURL(input.target.files[0])
+          var reader = new FileReader()
+          reader.onload = e => {
+            this.showCape = e.target.result
+          }
+          reader.readAsDataURL(input.target.files[0])
           this.cape = input.target.files[0]
         }
       },
       resetData() {
         Object.assign(this.$data, this.$options.data())
+        this.screenWidth = screen.width
       },
       addNewCompany() {
         this.companyCreateSidebar = {}
@@ -383,6 +415,9 @@
       }
     },
     created() {
+      // Getting Screen Width
+      this.screenWidth = screen.width
+
       // Register Module BookManagement Module
       if (!moduleBookManagement.isRegistered) {
         this.$store.registerModule('bookManagement', moduleBookManagement)
@@ -422,3 +457,28 @@
   }
 
 </script>
+
+<style lang="scss" scoped>
+  .vue-form-wizard {
+    padding-bottom: 0;
+
+    ::v-deep .wizard-header {
+      padding: 0;
+    }
+
+    ::v-deep .wizard-tab-content {
+      padding-right: 0;
+      padding-left: 0;
+      padding-bottom: 0;
+
+      .wizard-tab-container {
+        margin-bottom: 0 !important;
+      }
+    }
+  }
+
+  #Image-Container {
+    max-height: 35.2rem;
+  }
+
+</style>
