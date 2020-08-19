@@ -21,12 +21,40 @@
 
       <div class="p-6">
 
+        <!-- NAME -->
+        <div class="w-full mb-6">
+          <label>Nome</label>
+          <vs-input icon-pack="feather" icon="icon-user" icon-no-border v-model="author.name" class="w-full"
+            placeholder="Nome do Autor" />
+          <div class="text-danger text-sm" v-if="validations.name">
+            <span class="text-danger text-sm" v-show="validations.name">{{ validations.name[0] }}</span>
+          </div>
+        </div>
+
+        <!-- BIOGRAPHY -->
+        <div class="w-full mb-6">
+          <label class="">Biografia</label>
+          <vs-textarea v-model="author.biography" class="w-full" rows="5" />
+          <div class="text-danger text-sm" v-if="validations.biography">
+            <span class="text-danger text-sm" v-show="validations.biography">{{ validations.biography[0] }}</span>
+          </div>
+        </div>
+
+        <!-- Upload -->
+        <div class="upload-img" v-if="!author.image">
+          <input type="file" class="hidden" ref="uploadImgInput" @change="updateCurrImg" accept="image/*">
+          <vs-button @click="$refs.uploadImgInput.click()" color="success" class="w-full">Foto do Author</vs-button>
+          <div class="text-danger text-sm" v-if="validations.image">
+            <span class="text-danger text-sm" v-show="validations.image">{{ validations.image[0] }}</span>
+          </div>
+        </div>
+
         <!-- Author Image -->
         <template v-if="author.image">
 
           <!-- Image Container -->
           <div class="img-container w-64 mx-auto flex items-center justify-center">
-            <img :src="author.image" alt="img" class="responsive">
+            <img :src="author.image" alt="img" class="responsive rounded">
           </div>
 
           <!-- Image upload Buttons -->
@@ -36,32 +64,6 @@
             <vs-button type="flat" color="#999" @click="author.image = null">Remover Imagem</vs-button>
           </div>
         </template>
-
-
-        <!-- NAME -->
-        <label>Nome</label>
-        <vs-input icon-pack="feather" icon="icon-user" icon-no-border v-model="author.name" class="w-full"
-          placeholder="Nome do Autor" />
-        <div class="text-danger text-sm" v-if="validations.name">
-          <span class="text-danger text-sm" v-show="validations.name">{{ validations.name[0] }}</span>
-        </div>
-
-        <!-- BIOGRAPHY -->
-        <label class="mt-5">Biografia</label>
-        <vs-textarea v-model="author.biography" class="w-full" rows="5" />
-        <div class="text-danger text-sm" v-if="validations.biography">
-          <span class="text-danger text-sm" v-show="validations.biography">{{ validations.biography[0] }}</span>
-        </div>
-        <!-- Upload -->
-        <!-- <vs-upload text="Upload Image" class="img-upload" ref="fileUpload" /> -->
-
-        <div class="upload-img mt-5" v-if="!author.image">
-          <input type="file" class="hidden" ref="uploadImgInput" @change="updateCurrImg" accept="image/*">
-          <vs-button @click="$refs.uploadImgInput.click()" color="success" class="w-full">Foto do Author</vs-button>
-          <div class="text-danger text-sm" v-if="validations.image">
-            <span class="text-danger text-sm" v-show="validations.image">{{ validations.image[0] }}</span>
-          </div>
-        </div>
       </div>
     </VuePerfectScrollbar>
 
@@ -134,7 +136,7 @@
               text: "Preencha os campos corretamente",
               color: "danger",
               iconPack: 'feather',
-              icon:'icon-alert-circle'
+              icon: 'icon-alert-circle'
             })
             this.validations = error.response.data
           })
@@ -177,17 +179,8 @@
       width: 400px;
       max-width: 90vw;
 
-      .img-upload {
-        margin-top: 2rem;
-
-        .con-img-upload {
-          padding: 0;
-        }
-
-        .con-input-upload {
-          width: 100%;
-          margin: 0;
-        }
+      .img-container {
+        box-shadow: 0px 1px 8px 1px rgba(0,0,0,0.3)
       }
     }
   }

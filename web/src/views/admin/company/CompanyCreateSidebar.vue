@@ -22,7 +22,7 @@
       <div class="p-6">
         <!-- NAME -->
         <label>Nome</label>
-        <vs-input icon-pack="feather" icon="icon-user" icon-no-border v-model="company.name" class="w-full"
+        <vs-input icon-pack="feather" icon="icon-globe" icon-no-border v-model="company.name" class="w-full"
           placeholder="Nome da Editora" />
         <div class="text-danger text-sm" v-if="validations.name">
           <span class="text-danger text-sm" v-show="validations.name">{{ validations.name[0] }}</span>

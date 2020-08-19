@@ -1,8 +1,8 @@
 <template>
-  <div class="vx-row mb-base">
+  <div class="vx-row mb-base" id="form-container">
 
     <!-- To Books -->
-    <div class="vx-col lg:w-1/2 w-full relative mb-5">
+    <div class="vx-col lg:w-1/2 w-full relative mb-6">
       <vx-card title="Para o Livro">
 
         <company-create-sidebar :isSidebarActive="addNewSidebarToCompanyCreate"
@@ -99,7 +99,7 @@
               </div>
             </template>
 
-            <v-select class="w-full vs-justify" label="name" :options="authors" :reduce="name => name.id"
+            <v-select multiple class="w-full vs-justify" label="name" :options="authors" :reduce="name => name.id"
               :dir="$vs.rtl ? 'rtl' : 'ltr'" placeholder="Autor" v-model="book.author_id" />
           </vx-input-group>
           <div class="text-danger text-sm" v-if="validations.author_id">
@@ -140,19 +140,21 @@
 
     <div class="vx-col lg:w-1/2 w-full">
       <!-- To Book Cape -->
-      <vx-card title="Capa do Livro" id="Image-Container">
+      <vx-card title="Capa do Livro" id="cape-container">
         <!-- Cape -->
         <div class="w-full mb-6 upload-img">
+          <!-- Upload -->
           <template v-if="!cape">
             <input type="file" class="hidden" ref="uploadImgInput" @change="updateCurrImg" accept="image/*">
             <vs-button color="success" class="w-full " @click="$refs.uploadImgInput.click()">Selecionar Capa
             </vs-button>
           </template>
 
+          <!-- Show -->
           <template v-if="cape">
             <template v-if="cape">
               <div class="img-container w-64 mx-auto flex items-center justify-center">
-                <img :src="showCape" alt="img" class="responsive">
+                <img :src="showCape" alt="img" class="responsive rounded">
               </div>
             </template>
 
@@ -162,12 +164,12 @@
               <vs-button color="success" type="flat" class="sm:w-1/2" @click="$refs.uploadImgInput.click()">
                 Atualizar
               </vs-button>
-              <vs-button color="danger" type="flat" class="sm:w-1/2" @click="cape=null">Remover
+              <vs-button color="danger" type="flat" class="sm:w-1/2" @click="cape=null;showCape=null">Remover
               </vs-button>
             </div>
 
           </template>
-          <div class="text-danger text-sm" v-if="validations.cape">
+          <div class="text-danger text-sm text-center" v-if="validations.cape">
             <span v-show="validations.cape">{{ validations.cape[0] }}</span>
           </div>
         </div>
@@ -218,7 +220,7 @@
           <!-- Price -->
           <div class="vx-col w-full mb-6 sm:w-1/2">
             <label>Preço</label>
-            <vs-input class="w-full" icon-pack="feather" icon="icon-dollar-sign" icon-no-border placeholder="Título"
+            <vs-input class="w-full" icon-pack="feather" icon="icon-dollar-sign" icon-no-border placeholder="Preço"
               v-model="book.price" :disabled="book.origin != 'Comprado'" />
             <div class="text-danger text-sm" v-if="validations.price">
               <span v-show="validations.price">{{ validations.price[0] }}</span>
@@ -273,7 +275,7 @@
           title: '',
           subtitle: '',
           origin: 'Doado',
-          price: '',
+          price: null,
           isbn: '',
           synopsis: '',
           pages: '',
@@ -320,12 +322,17 @@
       vSelect,
       Datepicker,
       CompanyCreateSidebar,
-      AuthorCreateSidebar
+      AuthorCreateSidebar,
 
     },
     methods: {
       storeBook(book) {
         book = this.treatBookData(book)
+
+        this.$vs.loading({
+          container: '#form-container',
+          scale: 0.6
+        })
 
         const config = {
           headers: {
@@ -336,6 +343,7 @@
 
         this.$store.dispatch('bookManagement/store', book, config)
           .then(response => {
+            this.$vs.loading.close("#form-container > .con-vs-loading")
             this.$vs.notify({
               title: "Livro Cadastrado",
               text: response.data.message,
@@ -346,6 +354,7 @@
             this.resetData()
           })
           .catch(error => {
+            this.$vs.loading.close("#form-container > .con-vs-loading")
             this.$vs.notify({
               title: "Erro no Cadastro",
               text: "Preencha os campos corretamente",
@@ -414,6 +423,16 @@
         this.addNewSidebarToAuthorCreate = val
       }
     },
+    watch: {
+      'book.origin': function(origin) {
+        if (origin != 'Comprado') { 
+          this.book.price = null
+        }
+      },
+      'screen.width': function() {
+        console.log("mudou")
+      }
+    },
     created() {
       // Getting Screen Width
       this.screenWidth = screen.width
@@ -477,8 +496,12 @@
     }
   }
 
-  #Image-Container {
-    max-height: 35.2rem;
+  #cape-container {
+    max-height: 35.1rem;
+
+    .img-container {
+      box-shadow: 0px 3px 8px 3px rgba(0,0,0,0.3)
+    }
   }
 
 </style>
