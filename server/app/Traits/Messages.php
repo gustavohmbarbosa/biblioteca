@@ -32,10 +32,9 @@ trait Messages
      */
     private function errorMessage($message, $status = 404)
     {
-        return response()->json([
-          "error" => true,
+        return response()->json(["data" =>[
           "code" => $status,
-          "message" => $message
-        ], $status);
+          "errors" => $message
+        ]], $status);
     }
 }

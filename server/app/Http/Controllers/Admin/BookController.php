@@ -48,17 +48,19 @@ class BookController extends Controller
      */
     public function store(Request $request)
     {
-        $data = $this->validator($request);
+      $data = $this->validator($request);
 
-        if($request->hasFile('cape')) {
-            $data['cape'] = $this->imageUpload($request->file('cape'), 'books');
-        }
+      if($request->hasFile('cape')) {
+        $data['cape'] = $this->imageUpload($request->file('cape'), 'books');
+      }
 
-        $book = $this->book->create($data);
-        
-        $authorBook = $book->authors()->attach($data['author_id']);
+      $book = $this->book->create($data);
+    
+      foreach ($data['author_id'] as $author) {
+        $book->authors()->attach($author);
+      }
 
-        return $this->message("Livro adicionado ao acervo com sucesso!", $book->id, 201);
+      return $this->message("Livro adicionado ao acervo com sucesso!", $book->id, 201);
     }
 
     /**
@@ -178,8 +180,13 @@ class BookController extends Controller
             'cdd'              => ['required'],
             'cape'             => ['nullable', 'image', 'mimes:jpeg,jpg,png'],
             'company_id'       => ['required', 'exists:companies,id'],
-            'author_id'        => ['required', 'exists:authors,id'],
+            'author_id'        => ['required', 'array'],
         ];
+
+        foreach($data['author_id'] as $key => $val)
+        {
+          $fields['author_id.' . $key] =  ['required', 'exists:authors,id'];
+        }
 
         $messages = [
             'required'          => 'Preencha esse campo.',
@@ -187,11 +194,16 @@ class BookController extends Controller
             'max'               => 'Campo deve ter no máximo :max caracteres.',
             'in'                => 'Selecione um dos valores pré-informados.',
             'company_id.exists' => 'Essa editora ainda não foi cadastrada.',
-            'author_id.exists'  => 'Esse autor ainda não foi cadastrado.',
             'date_format'       => 'Essa não é uma data válida.',
             'image'             => 'A capa deve ser uma imagem.',
-            'mimes'             => 'A imagem deve se do tipo: jpeg, jpg ou png.'
+            'mimes'             => 'A imagem deve se do tipo: jpeg, jpg ou png.',
+            'array'             => 'Preencha novamente.'
         ];
+
+        foreach($data['author_id'] as $key => $val)
+        {
+          $messages['author_id.' . $key . '.exists'] =  'O autor selecionado ainda não foi cadastrado.';
+        }
 
         return $data->validate($fields, $messages);
    }

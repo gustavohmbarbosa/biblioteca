@@ -1,8 +1,9 @@
 <template>
   <div class="vx-row mb-base" id="form-container">
-
-    <!-- To Books -->
-    <div class="vx-col lg:w-1/2 w-full relative mb-6">
+    
+    <!-- Left -->
+    <div class="vx-col lg:w-1/2 w-full relative mb-8">
+      <!-- To Books -->
       <vx-card title="Para o Livro">
 
         <company-create-sidebar :isSidebarActive="addNewSidebarToCompanyCreate"
@@ -103,7 +104,7 @@
               :dir="$vs.rtl ? 'rtl' : 'ltr'" placeholder="Autor" v-model="book.author_id" />
           </vx-input-group>
           <div class="text-danger text-sm" v-if="validations.author_id">
-            <span v-show="validations.author_id">{{ validations.author_id[0] }}</span>
+            <span v-show="validations.author_id">{{ validations.author_id[0]}}</span>
           </div>
         </div>
 
@@ -138,6 +139,7 @@
 
     </div>
 
+    <!-- Right -->
     <div class="vx-col lg:w-1/2 w-full">
       <!-- To Book Cape -->
       <vx-card title="Capa do Livro" id="cape-container">
@@ -152,7 +154,7 @@
 
           <!-- Show -->
           <template v-if="cape">
-            <template v-if="cape">
+            <template>
               <div class="img-container w-64 mx-auto flex items-center justify-center">
                 <img :src="showCape" alt="img" class="responsive rounded">
               </div>
@@ -160,7 +162,7 @@
 
             <!-- Image upload Buttons -->
             <input type="file" class="hidden" ref="uploadImgInput" @change="updateCurrImg" accept="image/*">
-            <div class="btn-group mt-8 text-center">
+            <div class="btn-group mt-6 text-center">
               <vs-button color="success" type="flat" class="sm:w-1/2" @click="$refs.uploadImgInput.click()">
                 Atualizar
               </vs-button>
@@ -251,6 +253,7 @@
   </div>
 </template>
 
+
 <script>
   import vSelect from 'vue-select'
   import Datepicker from 'vuejs-datepicker'
@@ -275,7 +278,7 @@
           title: '',
           subtitle: '',
           origin: 'Doado',
-          price: null,
+          price: '',
           isbn: '',
           synopsis: '',
           pages: '',
@@ -286,15 +289,17 @@
           color: '',
           cdd: '',
           company_id: null,
-          author_id: null,
+          author_id: [],
         },
         companies: [],
         addNewSidebarToCompanyCreate: false,
         companyCreateSidebar: {},
+        setCompanyLabel: false,
 
         authors: [],
         addNewSidebarToAuthorCreate: false,
         authorCreateSidebar: {},
+        setAuthorLabel: false,
 
         cdds: [{
             id: 1,
@@ -315,7 +320,7 @@
         counterDanger: [false, false],
         screenWidth: null,
 
-        validations: {},
+        validations: {}
       }
     },
     components: {
@@ -367,31 +372,30 @@
       },
       treatBookData(book) {
         book['publication_date'] = ConvertDateToStandard(book['publication_date'])
-
+        
         if (this.cape != null) {
-
           let data = new FormData()
           data.append('cape', this.cape)
           data.append('title', book.title)
-          data.append('subtitle', book.subtitle)
-          data.append('origin', book.origin)
-          data.append('price', book.price)
+          data.append('subtitle', book.subtitle) 
+          data.append('origin', book.origin) 
+          data.append('price', book.price) 
           data.append('isbn', book.isbn)
-          data.append('synopsis', book.synopsis)
-          data.append('pages', book.pages)
-          data.append('language', book.language)
-          data.append('observations', book.observations)
-          data.append('edition', book.edition)
-          data.append('publication_date', book.publication_date)
-          data.append('color', book.color)
+          data.append('synopsis', book.synopsis) 
+          data.append('pages', book.pages) 
+          data.append('language', book.language) 
+          data.append('observations', book.observations) 
+          data.append('edition', book.edition) 
+          data.append('publication_date', book.publication_date) 
+          data.append('color', book.color) 
           data.append('cdd', book.cdd)
-          data.append('cape', book.cape)
           data.append('company_id', book.company_id)
-          data.append('author_id', book.author_id)
-
+          book.author_id.forEach(function(value, key) {
+            data.append('author_id[' + key + ']', value)
+          })
           return data
         }
-
+        
         return book
       },
       updateCurrImg(input) {
@@ -405,8 +409,13 @@
         }
       },
       resetData() {
-        Object.assign(this.$data, this.$options.data())
-        this.screenWidth = screen.width
+        let startData = this.$options.data()
+
+        delete startData['authors']
+        delete startData['companies']
+        delete startData['screenWidth']
+
+        Object.assign(this.$data, startData)
       },
       addNewCompany() {
         this.companyCreateSidebar = {}
@@ -414,6 +423,7 @@
       },
       toggleCompanyCreateSidebar(val = false) {
         this.addNewSidebarToCompanyCreate = val
+        this.setCompanyLabel = true
       },
       addNewAuthor() {
         this.authorCreateSidebar = {}
@@ -421,6 +431,7 @@
       },
       toggleAuthorCreateSidebar(val = false) {
         this.addNewSidebarToAuthorCreate = val
+        this.setAuthorLabel = true
       }
     },
     watch: {
@@ -429,33 +440,35 @@
           this.book.price = null
         }
       },
-      'screen.width': function() {
-        console.log("mudou")
+      'authors': function(authors) {
+        if (this.setAuthorLabel) {
+          this.book.author_id.push(authors[authors.length - 1].id)
+        }
+      },
+      'companies': function(companies) {
+        if (this.setCompanyLabel) {
+          this.book.company_id = companies[companies.length - 1].id
+        }
       }
     },
     created() {
-      // Getting Screen Width
       this.screenWidth = screen.width
 
-      // Register Module BookManagement Module
       if (!moduleBookManagement.isRegistered) {
         this.$store.registerModule('bookManagement', moduleBookManagement)
         moduleBookManagement.isRegistered = true
       }
 
-      // Register Module CompanyManagement Module
       if (!moduleCompanyManagement.isRegistered) {
         this.$store.registerModule('companyManagement', moduleCompanyManagement)
         moduleCompanyManagement.isRegistered = true
       }
 
-      // Register Module AuthorManagement Module
       if (!moduleAuthorManagement.isRegistered) {
         this.$store.registerModule('authorManagement', moduleAuthorManagement)
         moduleAuthorManagement.isRegistered = true
       }
 
-      // Getting Companies
       this.$store.dispatch('companyManagement/index')
         .then(response => {
           this.companies = response.data
@@ -464,7 +477,6 @@
           console.log(error)
         })
 
-      // Getting Authors
       this.$store.dispatch('authorManagement/index')
         .then(response => {
           this.authors = response.data
@@ -474,7 +486,6 @@
         })
     },
   }
-
 </script>
 
 <style lang="scss" scoped>
@@ -500,7 +511,7 @@
     max-height: 35.1rem;
 
     .img-container {
-      box-shadow: 0px 3px 8px 3px rgba(0,0,0,0.3)
+      box-shadow: 0px 2px 5px 2px rgba(0,0,0,0.3)
     }
   }
 
