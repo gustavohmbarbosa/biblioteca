@@ -147,6 +147,7 @@ export default {
     this.$store.dispatch("readerManagement/show", readerId)
       .then(res => {
         this.reader = res.data
+        console.log(this.reader)
         this.$vs.loading.close("#data-show > .con-vs-loading")
       })
       .catch(err => {

@@ -55,7 +55,7 @@
           <!-- <vs-button class="mb-4 md:mb-0" @click="gridApi.exportDataAsCsv()">Export as CSV</vs-button> -->
 
           <!-- EXPORT PROMPT-->
-          <vs-prompt title="Exportar para Excel" class="export-options" @cancle="clearFields" @accept="exportToExcel" accept-text="Export" @close="clearFields" :active.sync="activePrompt">
+          <vs-prompt title="Exportar para Excel" class="export-options" @cancle="clearFields" @accept="exportToExcel" accept-text="Baixar" @close="clearFields" :active.sync="activePrompt">
             <vs-input v-model="fileName" placeholder="Digite o nome do arquivo.." class="w-full" />
             <v-select v-model="selectedFormat" :options="formats" class="my-4" />
             <div class="flex">
@@ -64,7 +64,7 @@
             </div>
           </vs-prompt>
 
-            <vs-button @click="activePrompt=true">Exportar</vs-button>
+          <vs-button @click="activePrompt=true">Exportar</vs-button>
       </div>
 
 

@@ -104,12 +104,6 @@
               </div>
             </div>
           </div>
-
-          <div class="vx-col m-auto">
-            <div class="centerx">
-              <vs-upload action="https://jsonplaceholder.typicode.com/posts/" text="Salvar Foto"/>
-            </div>
-          </div>
           </div>
         </vs-tab>
 
@@ -117,7 +111,41 @@
         <vs-tab label="Conta" icon-pack="feather" icon="icon-user">
           <div class="tab-text">
             <div class="vx-row">
-              <div class="vx-col sm:w-1/2 w-full mb-2">
+
+              <div class="vx-col w-full mb-2">
+                  <!-- Image -->
+                  <div class="w-full mb-6 flex flex-wrap items-center mb-base">
+                    <!-- Show -->
+                    <template>
+                      <img :src="showImage" v-if="image" class="mr-8 rounded h-24 w-24" />
+                      <img src="@/assets/images/user-image.png" v-if="!image" class="mr-8 rounded h-24 w-24" />
+                      <!-- Image upload Buttons -->
+                      <div>
+                        <vs-button
+                          v-if="!image"
+                          class="mr-4 sm:mb-0 mb-2"
+                          color="success"
+                          @click="$refs.uploadImgInput.click()">Adicionar</vs-button>
+                        <vs-button
+                          v-if="image"
+                          class="mr-4 sm:mb-0 mb-2"
+                          color="success"
+                          @click="$refs.uploadImgInput.click()">Atualizar</vs-button>
+                        <vs-button
+                          v-if="image"
+                          type="border"
+                          color="danger"
+                          @click="image=null;showImage=null">Remover</vs-button>
+                      </div>
+                      <input type="file" class="hidden" ref="uploadImgInput" @change="updateCurrImg" accept="image/*">
+
+                    </template>
+                    <div class="text-danger text-sm text-center" v-if="validations.image">
+                      <span v-show="validations.image">{{ validations.image[0] }}</span>
+                    </div>
+                  </div>
+                </div>
+              <div class="vx-col w-full mb-2">
                 <label>Email</label>
                 <vs-input class="w-full" icon-pack="feather" icon="icon-mail" icon-no-border placeholder="Email" v-model="reader.email" />
                 <div class="text-danger text-sm" v-if="validations.email">
@@ -160,6 +188,8 @@ import vSelect from 'vue-select'
 export default {
   data() {
     return {
+      image: null,
+      showImage: null,
       reader: {
         id: '',
         name: '',
@@ -187,7 +217,18 @@ export default {
         container: '#update-form',
         scale: 0.6
       })
-      this.$store.dispatch('readerManagement/update', this.reader)
+
+      reader = this.treatReaderData(reader)
+
+      // Header Settings
+      const config = {
+        headers: {
+          'content-type': 'multipart/form-data',
+          'Access-Control-Allow-Origin': '*'
+        }
+      }
+
+      this.$store.dispatch('readerManagement/update', this.reader, config)
         .then(res => {
           this.$vs.loading.close("#update-form > .con-vs-loading")
           this.$vs.notify({
@@ -207,9 +248,36 @@ export default {
             text: "Preencha os campos corretamente!",
             color: 'danger',
             iconPack: 'feather',
-            icon: 'icon-circle-alert',
+            icon: 'icon-alert-circle',
           })
         })
+    },
+    treatReaderData(reader) {
+
+      if (this.image != null) {
+
+        let data = new FormData()
+
+        Object.entries(this.reader).forEach(([key, value]) => {
+          if (key !== 'course') {
+            data.append(key, value)
+          }
+        })
+        data.append('image', this.image)
+
+        return data
+      }
+      return reader
+    },
+    updateCurrImg(input) {
+      if (input.target.files && input.target.files[0]) {
+        var reader = new FileReader()
+        reader.onload = e => {
+          this.showImage = e.target.result
+        }
+        reader.readAsDataURL(input.target.files[0])
+        this.image = input.target.files[0]
+      }
     },
   },
   mounted() {

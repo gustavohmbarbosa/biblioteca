@@ -53,6 +53,8 @@ class ReaderController extends Controller
             $data['image'] = $this->imageUpload($request->file('image'), 'readers');
         }
 
+        //dd($data);
+
         $reader = $this->reader->create($data);
 
         return $this->message("Leitor criado com sucesso!", $reader->id, 201);
@@ -209,7 +211,7 @@ class ReaderController extends Controller
             'course_id'       => ['required', 'exists:courses,id'],
             'registration'    => ['required', 'string'],
             'entry_year'      => ['required', 'size:4', 'date_format:Y'],
-            // 'image'           => ['image', 'mimes:jpeg,jpg,png'],
+            'image'           => ['image', 'mimes:jpeg,jpg,png'],
             // 'status'          => [Rule::in(['Ativo', 'Inativo', 'Bloqueado'])],
         ];
 
@@ -227,8 +229,8 @@ class ReaderController extends Controller
             'string'        => 'Insira caracteres válidos.',
             'in'            => 'Selecione um dos valores pré-informados.',
             'exists'        => 'Esse curso não existe. Tente novamente.',
-            // 'image'         => 'Você deve inserir uma imagem.',
-            // 'mimes'         => 'A imagem deve se do tipo: jpeg, jpg ou png.'
+            'image'         => 'Você deve inserir uma imagem.',
+            'mimes'         => 'A imagem deve se do tipo: jpeg, jpg ou png.'
         ];
 
         return $data->validate($fields, $messages);

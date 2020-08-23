@@ -20,9 +20,9 @@ export default {
         .catch((error) => { reject(error) })
     })
   },
-  store({ commit }, reader) {
+  store({ commit }, reader, config) {
     return new Promise((resolve, reject) => {
-      axios.post("admin/readers/", reader)
+      axios.post("admin/readers/", reader, { headers: config })
         .then((response) => {
           commit('ADD_READERS', Object.assign(reader , {id: response.data.id}))
           resolve(response)
@@ -30,9 +30,9 @@ export default {
         .catch((error) => { reject(error) })
     })
   },
-  update(context, reader) {
+  update(context, reader, config) {
     return new Promise((resolve, reject) => {
-      axios.put(`admin/readers/${reader.id}`, reader)
+      axios.put(`admin/readers/${reader.id}`, reader, { headers: config })
       .then((response) => {
         resolve(response)
       })

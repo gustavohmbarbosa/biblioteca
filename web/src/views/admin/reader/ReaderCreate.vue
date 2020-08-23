@@ -1,4 +1,5 @@
 <template>
+  <div class="vx-row w-full">
     <div class="vx-col w-full mb-base">
 			<vx-card title="Cadastrar Leitor" id="create-form">
 
@@ -35,7 +36,25 @@
             </div>
 
             <div class="vx-row">
-              <div class="vx-col sm:w-1/6 w-full mb-3">
+              <div class="vx-col sm:w-1/2 w-full mb-3">
+                <label>Matrícula</label>
+                <vs-input class="w-full" icon-pack="feather" icon="icon-archive" icon-no-border placeholder="Matrícula" v-model="reader.registration" />
+                <div class="text-danger text-sm" v-if="validations.registration">
+                  <span v-show="validations.registration">{{ validations.registration[0] }}</span>
+                </div>
+              </div>
+
+              <div class="vx-col sm:w-1/2 w-full mb-3">
+                <label>Ano de Matrícula</label>
+                <vs-input class="w-full" icon-pack="feather" icon="icon-calendar" icon-no-border placeholder="Ano de Matrícula" v-model="reader.entry_year" />
+                <div class="text-danger text-sm" v-if="validations.entry_year">
+                  <span v-show="validations.entry_year">{{ validations.entry_year[0] }}</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="vx-row">
+              <div class="vx-col sm:w-1/3 w-full mb-3">
                 <label>Ano</label>
                 <ul class="mt-3">
                   <li>
@@ -50,7 +69,7 @@
                 </ul>
               </div>
 
-              <div class="vx-col sm:w-1/6 w-full mb-3">
+              <div class="vx-col sm:w-1/3 w-full mb-3">
                 <label>Classe</label>
                 <ul class="mt-3">
                   <li>
@@ -62,7 +81,7 @@
                 </ul>
               </div>
 
-              <div class="vx-col sm:w-1/6 w-full mb-3">
+              <div class="vx-col sm:w-1/3 w-full mb-3">
                 <label>Curso</label>
                 <ul class="mt-3">
                   <li>
@@ -73,32 +92,6 @@
                   </li>
                 </ul>
               </div>
-
-              <div class="vx-col sm:w-1/2 w-full mb-3">
-                <div class="vx-row">
-                  <div class="vx-col sm:w-1/2 w-full mb-3">
-                    <label>Matrícula</label>
-                    <vs-input class="w-full" icon-pack="feather" icon="icon-archive" icon-no-border placeholder="Matrícula" v-model="reader.registration" />
-                    <div class="text-danger text-sm" v-if="validations.registration">
-                      <span v-show="validations.registration">{{ validations.registration[0] }}</span>
-                    </div>
-                  </div>
-
-                  <div class="vx-col sm:w-1/2 w-full mb-3">
-                    <label>Ano de Matrícula</label>
-                    <vs-input class="w-full" icon-pack="feather" icon="icon-calendar" icon-no-border placeholder="Ano de Matrícula" v-model="reader.entry_year" />
-                    <div class="text-danger text-sm" v-if="validations.entry_year">
-                      <span v-show="validations.entry_year">{{ validations.entry_year[0] }}</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div class="vx-col m-auto">
-              <div class="centerx">
-                <vs-upload action="https://jsonplaceholder.typicode.com/posts/" text="Salvar Foto"/>
-              </div>
             </div>
             </div>
           </vs-tab>
@@ -106,21 +99,58 @@
           <vs-tab label="Conta" icon-pack="feather" icon="icon-user">
             <div class="tab-text">
               <div class="vx-row">
-                <div class="vx-col sm:w-1/2 w-full mb-2">
+                <div class="vx-col w-full mb-2">
+                  <!-- Image -->
+                  <div class="w-full mb-6 flex flex-wrap items-center mb-base">
+                    <!-- Show -->
+                    <template>
+                      <img :src="showImage" v-if="image" class="mr-8 rounded h-24 w-24" />
+                      <img src="@/assets/images/user-image.png" v-if="!image" class="mr-8 rounded h-24 w-24" />
+                      <!-- Image upload Buttons -->
+                      <div>
+                        <vs-button
+                          v-if="!image"
+                          class="mr-4 sm:mb-0 mb-2"
+                          color="success"
+                          @click="$refs.uploadImgInput.click()">Adicionar</vs-button>
+                        <vs-button
+                          v-if="image"
+                          class="mr-4 sm:mb-0 mb-2"
+                          color="success"
+                          @click="$refs.uploadImgInput.click()">Atualizar</vs-button>
+                        <vs-button
+                          v-if="image"
+                          type="border"
+                          color="danger"
+                          @click="image=null;showImage=null">Remover</vs-button>
+                      </div>
+                      <input type="file" class="hidden" ref="uploadImgInput" @change="updateCurrImg" accept="image/*">
+
+                    </template>
+                    <div class="text-danger text-sm text-center" v-if="validations.image">
+                      <span v-show="validations.image">{{ validations.image[0] }}</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="vx-row">
+                <div class="vx-col w-full mb-2">
                   <label>Email</label>
                   <vs-input class="w-full" icon-pack="feather" icon="icon-mail" icon-no-border placeholder="Email" v-model="reader.email" />
                   <div class="text-danger text-sm" v-if="validations.email">
                     <span v-show="validations.email">{{ validations.email[0] }}</span>
                   </div>
                 </div>
-                <div class="vx-col sm:w-1/4 w-full mb-2">
+              </div>
+              <div class="vx-row">
+                <div class="vx-col sm:w-1/2 w-full mb-2">
                   <label>Senha</label>
                   <vs-input type="password" class="w-full" icon-pack="feather" icon="icon-lock" icon-no-border placeholder="Senha" v-model="reader.password" />
                   <div class="text-danger text-sm" v-if="validations.password">
                     <span v-show="validations.password">{{ validations.password[0] }}</span>
                   </div>
                 </div>
-                <div class="vx-col sm:w-1/4 w-full mb-2">
+                <div class="vx-col sm:w-1/2 w-full mb-2">
                   <label>Confirmar Senha</label>
                   <vs-input type="password" class="w-full" icon-pack="feather" icon="icon-lock" icon-no-border placeholder="Confirme a senha" v-model="reader.password_confirmation" />
                   <div class="text-danger text-sm" v-if="validations.password_confirmation">
@@ -137,11 +167,12 @@
 					<div class="vx-col w-full">
 						<vs-button class="mr-3 mb-2" @click="storeReader(reader)">Criar</vs-button>
 						<vs-button color="danger" class="mr-3 mb-2" :to="{name:'admin-reader-list'}">Voltar</vs-button>
-            <vs-button color="warning" class="mb-2" @click="clearForm">Limpar formulário</vs-button>
+            <vs-button color="warning" class="mb-2 float-right" @click="clearForm">Limpar formulário</vs-button>
 					</div>
 				</div>
 			</vx-card>
       </div>
+    </div>
 </template>
 
 <script>
@@ -152,6 +183,8 @@ import vSelect from 'vue-select'
 export default {
   data() {
     return {
+      image: null,
+      showImage: null,
       reader: {
         name: '',
         email: '',
@@ -178,8 +211,19 @@ export default {
         container: '#create-form',
         scale: 0.6
       })
+
+      reader = this.treatReaderData(reader)
+
+      // Header Settings
+      const config = {
+        headers: {
+          'content-type': 'multipart/form-data',
+          'Access-Control-Allow-Origin': '*'
+        }
+      }
+
       // Saving datas of reader
-      this.$store.dispatch('readerManagement/store', reader)
+      this.$store.dispatch('readerManagement/store', reader, config)
         .then(res => {
           this.$vs.loading.close("#create-form > .con-vs-loading")
           this.$vs.notify({
@@ -205,6 +249,33 @@ export default {
     clearForm() {
       this.reader = {}
     },
+    treatReaderData(reader) {
+
+      if (this.image != null) {
+
+        let data = new FormData()
+
+        Object.entries(this.reader).forEach(([key, value]) => {
+          if (key !== 'course') {
+            data.append(key, value)
+          }
+        })
+        data.append('image', this.image)
+
+        return data
+      }
+      return reader
+    },
+    updateCurrImg(input) {
+      if (input.target.files && input.target.files[0]) {
+        var reader = new FileReader()
+        reader.onload = e => {
+          this.showImage = e.target.result
+        }
+        reader.readAsDataURL(input.target.files[0])
+        this.image = input.target.files[0]
+      }
+    },
   },
   created() {
     // Register Module ReaderManagement Module
@@ -215,3 +286,9 @@ export default {
   }
 }
 </script>
+
+<style>
+.float-right {
+  float: right;
+}
+</style>
