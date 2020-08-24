@@ -59,7 +59,7 @@
         company: {
           name: "",
         },
-        settings: { // perfectscrollbar settings
+        settings: {
           maxScrollbarLength: 60,
           wheelSpeed: .60,
         },
@@ -100,7 +100,7 @@
               iconPack: 'feather',
               icon:'icon-alert-circle'
             })
-            this.validations = error.response.data
+            this.validations = error.response.data.errors
           })
       },
       resetData() {

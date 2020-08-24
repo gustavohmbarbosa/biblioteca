@@ -1,9 +1,9 @@
 /**
  * @param {string} date ddd mmm ddd yyyy HH xxx-xxxx (local hour standard)
- * @return {string} newDate yyyy-mm-dd
+ * @return {string} yyyy-mm-dd
  */
 export default function ConvertDataToStandard(date) {
-  if(date) {
+  if (date) {
     const oldDate = JSON.stringify(date);
     const newDate = oldDate.slice(1,11);
     return newDate;

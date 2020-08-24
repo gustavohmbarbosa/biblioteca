@@ -166,7 +166,7 @@
               <vs-button color="success" type="flat" class="sm:w-1/2" @click="$refs.uploadImgInput.click()">
                 Atualizar
               </vs-button>
-              <vs-button color="danger" type="flat" class="sm:w-1/2" @click="cape=null;showCape=null">Remover
+              <vs-button color="#999" type="flat" class="sm:w-1/2" @click="cape=null;showCape=null">Remover
               </vs-button>
             </div>
 
@@ -274,6 +274,7 @@
       return {
         cape: null,
         showCape: null,
+        
         book: {
           title: '',
           subtitle: '',
@@ -291,6 +292,7 @@
           company_id: null,
           author_id: [],
         },
+
         companies: [],
         addNewSidebarToCompanyCreate: false,
         companyCreateSidebar: {},
