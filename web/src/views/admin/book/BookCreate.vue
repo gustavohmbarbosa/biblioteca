@@ -130,7 +130,7 @@
         <!-- Buttons -->
         <div v-if="screenWidth > 991" class="vx-row">
           <div class="vx-col w-full">
-            <vs-button class="ml-auto mt-2" type="filled" @click.prevent="storeBook(book)">Cadastrar</vs-button>
+            <vs-button class="ml-auto mt-2" type="filled" @click.prevent="submitBook(book)">Cadastrar</vs-button>
             <vs-button class="ml-4 mt-2" type="border" color="warning" @click="resetData">Redefinir</vs-button>
           </div>
         </div>
@@ -146,27 +146,33 @@
         <!-- Cape -->
         <div class="w-full mb-6 upload-img">
           <!-- Upload -->
-          <template v-if="!cape">
-            <input type="file" class="hidden" ref="uploadImgInput" @change="updateCurrImg" accept="image/*">
-            <vs-button color="success" class="w-full " @click="$refs.uploadImgInput.click()">Selecionar Capa
+          <template v-if="!book.cape">
+            <template>
+              <div class="img-container w-64 mx-auto flex items-center justify-center">
+                <img src="https://dummyimage.com/439X652/039BE5/ffffff&text=Selecione uma capa" alt="img" class="responsive rounded">
+              </div>
+            </template>
+
+            <input type="file" class="hidden" ref="uploadImgInput" @change="updateImg" accept="image/*">
+            <vs-button color="success" class="w-full mt-6" @click="$refs.uploadImgInput.click()">Selecionar Capa
             </vs-button>
           </template>
 
           <!-- Show -->
-          <template v-if="cape">
+          <template v-if="book.cape">
             <template>
               <div class="img-container w-64 mx-auto flex items-center justify-center">
-                <img :src="showCape" alt="img" class="responsive rounded">
+                <img :src="book.showCape" alt="img" class="responsive rounded">
               </div>
             </template>
 
             <!-- Image upload Buttons -->
-            <input type="file" class="hidden" ref="uploadImgInput" @change="updateCurrImg" accept="image/*">
+            <input type="file" class="hidden" ref="uploadImgInput" @change="updateImg" accept="image/*">
             <div class="btn-group mt-6 text-center">
               <vs-button color="success" type="flat" class="sm:w-1/2" @click="$refs.uploadImgInput.click()">
                 Atualizar
               </vs-button>
-              <vs-button color="#999" type="flat" class="sm:w-1/2" @click="cape=null;showCape=null">Remover
+              <vs-button color="#999" type="flat" class="sm:w-1/2" @click="book.cape=null;book.showCape=null">Remover
               </vs-button>
             </div>
 
@@ -272,9 +278,6 @@
   export default {
     data() {
       return {
-        cape: null,
-        showCape: null,
-        
         book: {
           title: '',
           subtitle: '',
@@ -291,6 +294,8 @@
           cdd: '',
           company_id: null,
           author_id: [],
+          cape: null,
+          showCape: null,
         },
 
         companies: [],
@@ -333,14 +338,33 @@
 
     },
     methods: {
-      storeBook(book) {
-        book = this.treatBookData(book)
+      submitBook(book) {
+        const bookTreated = this.treatBook(book)
 
-        this.$vs.loading({
-          container: '#form-container',
-          scale: 0.6
+        this.notifyBookStored(bookTreated)
+      },
+      treatBook(book) {
+        book['publication_date'] = ConvertDateToStandard(book['publication_date'])
+
+        if (book.cape != null)
+          return this.bookInFormData(book)
+
+        return book
+      },
+      bookInFormData(book) {
+        let data = new FormData()
+        Object.entries(book).forEach(([key, value]) => {
+          if (key == 'author_id') 
+            value.forEach((value, key) => {
+              data.append('author_id[' + key + ']', value)
+            })
+          else 
+            data.append(key, value)
         })
 
+        return data
+      },
+      storeBook(book) {
         const config = {
           headers: {
             'content-type': 'multipart/form-data',
@@ -348,21 +372,28 @@
           }
         }
 
-        this.$store.dispatch('bookManagement/store', book, config)
-          .then(response => {
+        return this.$store.dispatch('bookManagement/store', book, config)
+      },
+      async notifyBookStored(book) {
+        this.$vs.loading({
+          container: '#form-container',
+          scale: 0.6
+        })
+
+        try {
+            const bookStored = await this.storeBook(book)
             this.$vs.loading.close("#form-container > .con-vs-loading")
             this.$vs.notify({
               title: "Livro Cadastrado",
-              text: response.data.message,
+              text: bookStored.data.message,
               color: "success",
               iconPack: 'feather',
               icon: 'icon-check',
             })
             this.resetData()
-          })
-          .catch(error => {
+        } catch (error) {
             this.$vs.loading.close("#form-container > .con-vs-loading")
-            this.$vs.notify({
+            this.$vs.notify({  
               title: "Erro no Cadastro",
               text: "Preencha os campos corretamente",
               color: "danger",
@@ -370,44 +401,16 @@
               icon: 'icon-alert-circle'
             })
             this.validations = error.response.data.errors
-          })
-      },
-      treatBookData(book) {
-        book['publication_date'] = ConvertDateToStandard(book['publication_date'])
-        
-        if (this.cape != null) {
-          let data = new FormData()
-          data.append('cape', this.cape)
-          data.append('title', book.title)
-          data.append('subtitle', book.subtitle) 
-          data.append('origin', book.origin) 
-          data.append('price', book.price) 
-          data.append('isbn', book.isbn)
-          data.append('synopsis', book.synopsis) 
-          data.append('pages', book.pages) 
-          data.append('language', book.language) 
-          data.append('observations', book.observations) 
-          data.append('edition', book.edition) 
-          data.append('publication_date', book.publication_date) 
-          data.append('color', book.color) 
-          data.append('cdd', book.cdd)
-          data.append('company_id', book.company_id)
-          book.author_id.forEach(function(value, key) {
-            data.append('author_id[' + key + ']', value)
-          })
-          return data
         }
-        
-        return book
       },
-      updateCurrImg(input) {
+      updateImg(input) {
         if (input.target.files && input.target.files[0]) {
           var reader = new FileReader()
           reader.onload = e => {
-            this.showCape = e.target.result
+            this.book.showCape = e.target.result
           }
           reader.readAsDataURL(input.target.files[0])
-          this.cape = input.target.files[0]
+          this.book.cape = input.target.files[0]
         }
       },
       resetData() {
