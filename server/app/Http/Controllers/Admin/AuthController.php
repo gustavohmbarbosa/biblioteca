@@ -40,6 +40,17 @@ class AuthController extends Controller
     }
 
     /**
+     * Get a JWT refreshed token via given credentials.
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function refresh() {
+        return response()->json([
+            'refresh_token' => auth()->refresh(),
+        ]);
+    }
+
+    /**
      * Get the token array structure.
      *
      * @param  string $token

@@ -173,7 +173,7 @@
 
       <div class="vx-row">
         <div class="vx-col w-full">
-          <vs-button class="mr-3 mb-2" @click="updateReader">Atualizar</vs-button>
+          <vs-button class="mr-3 mb-2" @click="updateReader(reader)">Atualizar</vs-button>
           <vs-button color="danger" type="border" class="mb-2" :to="{name:'admin-reader-list'}">Voltar</vs-button>
         </div>
       </div>
@@ -211,13 +211,13 @@ export default {
     'v-select': vSelect
   },
   methods: {
-    updateReader() {
+    updateReader(reader) {
       // Loading in form
       this.$vs.loading({
         container: '#update-form',
         scale: 0.6
       })
-
+      const readerId = reader.id
       reader = this.treatReaderData(reader)
 
       // Header Settings
@@ -228,7 +228,7 @@ export default {
         }
       }
 
-      this.$store.dispatch('readerManagement/update', this.reader, config)
+      this.$store.dispatch('readerManagement/update', { reader, readerId }, config)
         .then(res => {
           this.$vs.loading.close("#update-form > .con-vs-loading")
           this.$vs.notify({
@@ -240,8 +240,8 @@ export default {
           })
         })
         .catch(err => {
-          this.validations = err.response.data.errors
-          console.log(this.validations)
+          this.validations = err.response.data.errors ? err.response.data.errors : ""
+
           this.$vs.loading.close("#update-form > .con-vs-loading")
           this.$vs.notify({
             title: "Leitor não atualizado!",

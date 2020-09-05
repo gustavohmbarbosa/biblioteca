@@ -58,6 +58,7 @@ Route::group(['middleware' => 'auth.admin.jwt'], function () {
         Route::name('users.')->group(function(){
             Route::resource('users', 'UserController');
             Route::post('logout', 'AuthController@logout')->name('logout');
+            Route::get('refresh', 'AuthController@refresh')->name('refresh');
         });
 
         // Readers

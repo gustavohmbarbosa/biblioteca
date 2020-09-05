@@ -30,9 +30,9 @@ export default {
         .catch((error) => { reject(error) })
     })
   },
-  update(context, reader, config) {
+  update(context, { reader, readerId }, config) {
     return new Promise((resolve, reject) => {
-      axios.put(`admin/readers/${reader.id}`, reader, { headers: config })
+      axios.put(`admin/readers/${readerId}`, reader, { headers: config })
       .then((response) => {
         resolve(response)
       })
