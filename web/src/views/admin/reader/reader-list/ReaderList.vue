@@ -153,7 +153,6 @@ export default {
           headerName: 'ID',
           field: 'id',
           width: 125,
-          filter: true,
           checkboxSelection: true,
           headerCheckboxSelectionFilteredOnly: true,
           headerCheckboxSelection: true,
