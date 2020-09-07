@@ -5,6 +5,8 @@
       <vs-tabs alignment="fixed" v-model="activeTab">
         <!-- Informations -->
         <vs-tab label="Informações" icon-pack="feather" icon="icon-info" class="mt-4">
+
+          <!-- Name -->
           <div class=" w-full mb-6">
             <label>Nome</label>
             <vs-input class="w-full" icon-pack="feather" icon="icon-user" icon-no-border placeholder="Nome"
@@ -14,6 +16,7 @@
             </div>
           </div>
 
+          <!-- Phone -->
           <div class="w-full mb-6">
             <label>Telefone</label>
             <vs-input class="w-full" icon-pack="feather" icon="icon-phone" icon-no-border placeholder="Telefone"
@@ -23,6 +26,7 @@
             </div>
           </div>
 
+          <!-- Gender -->
           <div class="w-full mb-6">
             <label>Sexo</label>
             <v-select class="w-full" :options="['Masculino', 'Feminino', 'Não-Binário','Desejo não informar']"
@@ -32,6 +36,7 @@
             </div>
           </div>
 
+          <!-- Registration -->
           <div class="w-full mb-6">
             <label>Matrícula</label>
             <vs-input class="w-full" icon-pack="feather" icon="icon-code" icon-no-border placeholder="Matrícula"
@@ -41,6 +46,7 @@
             </div>
           </div>
 
+          <!-- Entry Year -->
           <div class="w-full mb-6">
             <label>Ano de Matrícula</label>
             <vs-input class="w-full" icon-pack="feather" icon="icon-calendar" icon-no-border
@@ -50,6 +56,7 @@
             </div>
           </div>
 
+          <!-- Grade -->
           <div class="vx-row">
             <div class="vx-col w-full mb-6">
               <label>Série</label>
@@ -67,6 +74,7 @@
             </div>
           </div>
 
+          <!-- Class -->
           <div class="vx-row">
             <div class="vx-col w-full mb-6">
               <label>Turma</label>
@@ -80,6 +88,7 @@
               </ul>
             </div>
 
+            <!-- Course -->
             <div class="vx-col w-full mb-6">
               <label>Curso</label>
               <ul class="vx-row mt-3 radio-container">
@@ -108,6 +117,7 @@
         <!-- Account -->
         <vs-tab label="Conta" icon-pack="feather" icon="icon-user">
 
+          <!-- Email -->
           <div class="vx-col w-full mb-6">
             <label>Email</label>
             <vs-input class="w-full" icon-pack="feather" icon="icon-mail" icon-no-border placeholder="Email"
@@ -117,6 +127,7 @@
             </div>
           </div>
 
+          <!-- Password -->
           <div class="vx-row">
             <div class="vx-col sm:w-1/2 w-full mb-6">
               <label>Senha</label>
@@ -139,11 +150,13 @@
           <!-- Buttons -->
           <div class="vx-col w-full">
             <vs-button type="flat" color="#999" class="float-left" @click="activeTab = 0">Voltar</vs-button>
-            <vs-button class="float-right" type="filled" @click.prevent="submitReader(reader)">Cadastrar</vs-button>
+            <vs-button class="float-right" type="filled" @click.prevent="submitReaderForm(reader)">Cadastrar</vs-button>
           </div>
+          
         </vs-tab>
-      </vs-tabs>
 
+      </vs-tabs>
+      
     </vx-card>
   </div>
 </template>
@@ -156,8 +169,6 @@
   export default {
     data() {
       return {
-        image: null,
-        showImage: null,
         reader: {
           name: '',
           email: '',
@@ -172,85 +183,54 @@
           entry_year: '',
         },
 
-        validations: {},
-
         activeTab: 0,
+
+        validations: {},
       }
     },
     components: {
       'v-select': vSelect
     },
     methods: {
+      submitReaderForm(reader) {
+        this.notifyReaderStored(reader)
+      },
       storeReader(reader) {
-        // Loading
+        return this.$store.dispatch('readerManagement/store', reader)
+      },
+      async notifyReaderStored(reader) {
         this.$vs.loading({
           container: '.form-container',
           scale: 0.6
         })
 
-        reader = this.treatReaderData(reader)
-
-        // Header Settings
-        const config = {
-          headers: {
-            'content-type': 'multipart/form-data',
-            'Access-Control-Allow-Origin': '*'
-          }
-        }
-
-        // Saving datas of reader
-        this.$store.dispatch('readerManagement/store', reader, config)
-          .then(res => {
-            this.$vs.loading.close(".form-container > .con-vs-loading")
-            this.$vs.notify({
-              title: 'Leitor Criado com sucesso!',
-              text: res.data.message,
-              color: 'success',
-              iconPack: 'feather',
-              icon: 'icon-check',
-            })
+        try {
+          const readerStored = await this.storeReader(reader)
+          this.$vs.loading.close(".form-container > .con-vs-loading")
+          this.$vs.notify({
+            title: "Leitor Cadastrado!",
+            text: readerStored.data.message,
+            color: "success",
+            iconPack: 'feather',
+            icon: 'icon-check',
           })
-          .catch(error => {
-            this.$vs.loading.close(".form-container > .con-vs-loading")
-            this.validations = error.response.data.errors
-            this.$vs.notify({
-              title: 'Erro ao criar leitor!',
-              text: "Preencha os campos corretamente!",
-              color: 'danger',
-              iconPack: 'feather',
-              icon: 'icon-alert-circle',
-            })
+          this.resetData()
+        } catch (error) {
+          this.$vs.loading.close(".form-container > .con-vs-loading")
+          this.$vs.notify({
+            title: "Erro no Cadastro!",
+            text: "Preencha os campos corretamente",
+            color: "danger",
+            iconPack: 'feather',
+            icon: 'icon-alert-circle'
           })
-      },
-      clearForm() {
-        this.reader = {}
-      },
-      treatReaderData(reader) {
-
-        if (this.image != null) {
-
-          let data = new FormData()
-
-          Object.entries(this.reader).forEach(([key, value]) => {
-            if (key !== 'course') {
-              data.append(key, value)
-            }
-          })
-          data.append('image', this.image)
-
-          return data
+          this.validations = error.response.data.errors
         }
-        return reader
       },
-      updateCurrImg(input) {
-        if (input.target.files && input.target.files[0]) {
-          var reader = new FileReader()
-          reader.onload = e => {
-            this.showImage = e.target.result
-          }
-          reader.readAsDataURL(input.target.files[0])
-          this.image = input.target.files[0]
-        }
+      resetData() {
+        const startData = this.$options.data()
+
+        Object.assign(this.$data, startData)
       },
     },
     created() {
