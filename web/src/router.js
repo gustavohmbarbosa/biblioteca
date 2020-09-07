@@ -115,6 +115,20 @@ const router = new Router({
                 },
               },
               {
+                path: '/leitores/cadastro',
+                name: 'admin-reader-create',
+                component: () => import('@/views/admin/reader/ReaderCreate.vue'),
+                meta: {
+                  breadcrumb: [
+                      { title: 'Home', url: '/' },
+                      { title: 'Leitores' },
+                      { title: 'Cadastro', active: true },
+                  ],
+                  pageTitle: 'Cadastro de Leitor',
+                  rule: 'editor'
+                },
+              },
+              {
                 path: '/leitores/visualizacao/:readerId',
                 name: 'admin-reader-view',
                 component: () => import('@/views/admin/reader/ReaderView.vue'),
@@ -127,11 +141,6 @@ const router = new Router({
                     pageTitle: 'Visualizar Leitor',
                     rule: 'editor'
                 },
-              },
-              {
-                path: '/leitores/cadastro',
-                name: 'admin-reader-create',
-                component: () => import('@/views/admin/reader/ReaderCreate.vue')
               },
               {
                 path: '/leitores/edicao/:readerId',
@@ -150,20 +159,6 @@ const router = new Router({
 
               // BOOKS
               {
-                path: '/livros/cadastro',
-                name: 'admin-book-create',
-                component: () => import('@/views/admin/book/BookCreate.vue'),
-                meta: {
-                  breadcrumb: [
-                      { title: 'Home', url: '/' },
-                      { title: 'Livros' },
-                      { title: 'Cadastro', active: true },
-                  ],
-                  pageTitle: 'Cadastro de Livro',
-                  rule: 'editor'
-                },
-              },
-              {
                 path: '/livros',
                 name: 'admin-book-list',
                 component: () => import('@/views/admin/book/book-list/BookList.vue'),
@@ -175,6 +170,20 @@ const router = new Router({
                     ],
                     pageTitle: 'Lista de Livros',
                     rule: 'editor'
+                },
+              },
+              {
+                path: '/livros/cadastro',
+                name: 'admin-book-create',
+                component: () => import('@/views/admin/book/BookCreate.vue'),
+                meta: {
+                  breadcrumb: [
+                      { title: 'Home', url: '/' },
+                      { title: 'Livros' },
+                      { title: 'Cadastro', active: true },
+                  ],
+                  pageTitle: 'Cadastro de Livro',
+                  rule: 'editor'
                 },
               },
               {
