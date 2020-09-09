@@ -55,7 +55,7 @@ class BookController extends Controller
       }
 
       $book = $this->book->create($data);
-    
+
       foreach ($data['author_id'] as $author) {
         $book->authors()->attach($author);
       }

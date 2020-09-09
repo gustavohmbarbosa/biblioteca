@@ -9,17 +9,13 @@
 
 <template>
 
-  <div id="page-user-list">
+  <div id="page-reader-list">
 
-    <vx-card ref="filterCard" title="Filtros" class="user-list-filters mb-8" actionButtons @refresh="resetColFilters" @remove="resetColFilters">
+    <vx-card ref="filterCard" title="Filtros" class="reader-list-filters mb-8" actionButtons @refresh="resetColFilters" @remove="resetColFilters">
       <div class="vx-row">
-        <div class="vx-col md:w-1/2 sm:w-1/2 w-full">
+        <div class="vx-col w-full">
           <label class="text-sm opacity-75">Função</label>
           <v-select :options="roleOptions" :clearable="false" :dir="$vs.rtl ? 'rtl' : 'ltr'" v-model="roleFilter" class="mb-4 md:mb-0" />
-        </div>
-        <div class="vx-col md:w-1/2 sm:w-1/2 w-full">
-          <label class="text-sm opacity-75">Status</label>
-          <v-select :options="statusOptions" :clearable="false" :dir="$vs.rtl ? 'rtl' : 'ltr'" v-model="statusFilter" class="mb-4 md:mb-0" />
         </div>
       </div>
     </vx-card>
@@ -58,51 +54,23 @@
           <vs-input class="sm:mr-4 mr-0 sm:w-auto w-full sm:order-normal order-3 sm:mt-0 mt-4" v-model="searchQuery" @input="updateSearchQuery" placeholder="Buscar..." />
           <!-- <vs-button class="mb-4 md:mb-0" @click="gridApi.exportDataAsCsv()">Export as CSV</vs-button> -->
 
-          <!-- ACTION - DROPDOWN -->
-          <vs-dropdown vs-trigger-click class="cursor-pointer">
-
-            <div class="p-3 shadow-drop rounded-lg d-theme-dark-light-bg cursor-pointer flex items-end justify-center text-lg font-medium w-32">
-              <span class="mr-2 leading-none">Ações</span>
-              <feather-icon icon="ChevronDownIcon" svgClasses="h-4 w-4" />
+          <!-- EXPORT PROMPT-->
+          <vs-prompt title="Exportar para Excel" class="export-options" @cancle="clearFields" @accept="exportToExcel" accept-text="Baixar" @close="clearFields" :active.sync="activePrompt">
+            <vs-input v-model="fileName" placeholder="Digite o nome do arquivo.." class="w-full" />
+            <v-select v-model="selectedFormat" :options="formats" class="my-4" />
+            <div class="flex">
+              <span class="mr-4">Células com Tamanho Responsivo:</span>
+              <vs-switch v-model="cellAutoWidth">Tamanho Responsivo</vs-switch>
             </div>
+          </vs-prompt>
 
-            <vs-dropdown-menu>
-
-              <vs-dropdown-item>
-                <span class="flex items-center">
-                  <feather-icon icon="TrashIcon" svgClasses="h-4 w-4" class="mr-2" />
-                  <span>Delete</span>
-                </span>
-              </vs-dropdown-item>
-
-              <vs-dropdown-item>
-                <span class="flex items-center">
-                  <feather-icon icon="ArchiveIcon" svgClasses="h-4 w-4" class="mr-2" />
-                  <span>Archive</span>
-                </span>
-              </vs-dropdown-item>
-
-              <vs-dropdown-item>
-                <span class="flex items-center">
-                  <feather-icon icon="FileIcon" svgClasses="h-4 w-4" class="mr-2" />
-                  <span>Print</span>
-                </span>
-              </vs-dropdown-item>
-
-              <vs-dropdown-item>
-                <span class="flex items-center">
-                  <feather-icon icon="SaveIcon" svgClasses="h-4 w-4" class="mr-2" />
-                  <span>CSV</span>
-                </span>
-              </vs-dropdown-item>
-
-            </vs-dropdown-menu>
-          </vs-dropdown>
+          <vs-button @click="activePrompt=true">Exportar</vs-button>
       </div>
 
 
       <!-- AgGrid Table -->
       <ag-grid-vue
+        id="datatable-list"
         ref="agGridTable"
         :components="components"
         :gridOptions="gridOptions"
@@ -139,8 +107,9 @@ import vSelect from 'vue-select'
 import moduleUserManagement from '@/store/admin/user/moduleUserManagement.js'
 
 // Cell Renderer
-import CellRendererStatus from "./cell-renderer/CellRendererStatus.vue"
+import CellRendererRole from "./cell-renderer/CellRendererRole.vue"
 import CellRendererActions from "./cell-renderer/CellRendererActions.vue"
+import CellRendererAvatar from "./cell-renderer/CellRendererAvatar.vue"
 
 
 export default {
@@ -149,25 +118,27 @@ export default {
     vSelect,
 
     // Cell Renderer
-    CellRendererStatus,
+    CellRendererRole,
     CellRendererActions,
+    CellRendererAvatar,
   },
   data() {
     return {
 
       // Filter Options
-      roleFilter: { label: 'Todas', value: '' },
+      roleFilter: { label: 'All', value: 'all' },
       roleOptions: [
-        { label: 'Todas', value: '' },
-        { label: 'Master', value: 'MASTER' },
-        { label: 'Simples', value: 'SIMPLES' },
+        { label: 'All', value: 'all' },
+        { label: 'Master', value: 'Master' },
+        { label: 'Comum', value: 'Comum' },
+        { label: 'Staff', value: 'Staff' },
       ],
 
-      statusFilter: { label: 'Todos', value: '' },
+      statusFilter: { label: 'Todos', value: 'all' },
       statusOptions: [
-        { label: 'Todos', value: '' },
-        { label: 'Ativo', value: 'Ativo' },
-        { label: 'Inativo', value: 'Inativo' },
+        { label: 'Todos', value: 'all' },
+        { label: 'Ativado', value: 'Ativo' },
+        { label: 'Desativado', value: 'Inativo' },
         { label: 'Bloqueado', value: 'Bloqueado' },
       ],
 
@@ -186,7 +157,6 @@ export default {
           headerName: 'ID',
           field: 'id',
           width: 125,
-          filter: true,
           checkboxSelection: true,
           headerCheckboxSelectionFilteredOnly: true,
           headerCheckboxSelection: true,
@@ -195,48 +165,50 @@ export default {
           headerName: 'Nome',
           field: 'name',
           filter: true,
-          width: 210,
+          width: 310,
+          cellRendererFramework: "CellRendererAvatar"
         },
         {
           headerName: 'Email',
           field: 'email',
           filter: true,
-          width: 225,
+          width: 275,
         },
         {
           headerName: 'Função',
           field: 'role',
           filter: true,
           width: 150,
-        },
-        {
-          headerName: 'Status',
-          field: 'status',
-          filter: true,
-          width: 150,
-          cellRendererFramework: 'CellRendererStatus'
+          cellRendererFramework: 'CellRendererRole'
         },
         {
           headerName: 'Ações',
           field: 'transactions',
-          width: 150,
+          width: 125,
           cellRendererFramework: 'CellRendererActions',
         },
       ],
 
       // Cell Renderer Components
       components: {
-        CellRendererStatus,
+        CellRendererRole,
         CellRendererActions,
-      }
+        CellRendererAvatar,
+      },
+
+      // For Excel Export
+      activePrompt: false,
+      fileName: "",
+      formats:["xlsx", "csv", "txt"] ,
+      cellAutoWidth: true,
+      selectedFormat: "xlsx",
+      headerTitle: ["Id", "Nome", "Email", "Função", "Criado Em", "Atualizado Em"],
+      headerVal: ["id", "name", "email", "role", "created_at", "updated_at"],
     }
   },
   watch: {
     roleFilter(obj) {
       this.setColumnFilter("role", obj.value)
-    },
-    statusFilter(obj) {
-      this.setColumnFilter("status", obj.value)
     },
     isVerifiedFilter(obj) {
       let val = obj.value === "all" ? "all" : obj.value == "yes" ? "true" : "false"
@@ -286,12 +258,41 @@ export default {
       this.gridApi.onFilterChanged()
 
       // Reset Filter Options
-      this.roleFilter = this.statusFilter = this.isVerifiedFilter = this.departmentFilter = { label: 'All', value: 'all' }
+      this.roleFilter = this.isVerifiedFilter = this.departmentFilter = { label: 'Todos', value: 'all' }
 
       this.$refs.filterCard.removeRefreshAnimation()
     },
     updateSearchQuery(val) {
       this.gridApi.setQuickFilter(val)
+    },
+    refreshCard(card) {
+      card.removeRefreshAnimation(3000);
+    },
+
+    // For Excel Export
+    exportToExcel() {
+      import('@/vendor/Export2Excel').then(excel => {
+        const list = this.$store.state.userManagement.users
+        const data = this.formatJson(this.headerVal, list)
+        excel.export_json_to_excel({
+          header: this.headerTitle,
+          data,
+          filename: this.fileName,
+          autoWidth: this.cellAutoWidth,
+          bookType: this.selectedFormat
+        })
+        this.clearFields()
+      })
+    },
+    formatJson(filterVal, jsonData) {
+      return jsonData.map(v => filterVal.map(j => {
+        return v[j]
+      }))
+    },
+    clearFields() {
+      this.filename = "",
+      this.cellAutoWidth = true,
+      this.selectedFormat = "xlsx"
     }
   },
   mounted() {
@@ -306,17 +307,51 @@ export default {
       const header = this.$refs.agGridTable.$el.querySelector(".ag-header-container")
       header.style.left = "-" + String(Number(header.style.transform.slice(11,-3)) + 9) + "px"
     }
+
+    // Loading for Users Request
+    this.$vs.loading({
+      container: '#datatable-list',
+      scale: 0.6
+    })
   },
   created() {
     if(!moduleUserManagement.isRegistered) {
       this.$store.registerModule('userManagement', moduleUserManagement)
       moduleUserManagement.isRegistered = true
     }
-    this.$store.dispatch("userManagement/fetchUsers").catch(err => { console.error(err) })
+
+    this.$store.dispatch("userManagement/index")
+    .then(() => {
+      this.$vs.loading.close("#datatable-list > .con-vs-loading")
+    })
+    .catch(err => {
+      this.$vs.loading.close("#datatable-list > .con-vs-loading")
+
+      this.$vs.notify({
+        title: 'Erro!',
+        text: 'Não foi possível carregar os dados!',
+        color: 'danger',
+        iconPack: 'feather',
+        icon: 'icon-alert-circle',
+      })
+      console.error(err)
+    })
   }
 }
-
 </script>
+
+<style lang="scss">
+#page-user-list {
+  .user-list-filters {
+    .vs__actions {
+      position: absolute;
+      right: 0;
+      top: 50%;
+      transform: translateY(-58%);
+    }
+  }
+}
+</style>
 
 <style lang="scss">
 #page-user-list {

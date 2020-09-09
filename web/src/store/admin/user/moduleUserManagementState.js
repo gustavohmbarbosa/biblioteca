@@ -8,27 +8,5 @@
 ==========================================================================================*/
 
 export default {
-  users: [
-    {
-      id: 1,
-      name: 'Caio',
-      email: 'caio@gmail.com',
-      role: 'Master',
-      status: 'Ativo',
-    },
-    {
-      id: 2,
-      name: 'Gustavo',
-      email: 'gustavo@gmail.com',
-      role: 'Master',
-      status: 'Ativo',
-    },
-    {
-      id: 3,
-      name: 'Jean',
-      email: 'jean@gmail.com',
-      role: 'Simples',
-      status: 'Inativo',
-    }
-  ],
+  users: [],
 }

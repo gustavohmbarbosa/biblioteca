@@ -10,19 +10,9 @@
 import axios from "@/axios.js"
 
 export default {
-  // addItem({ commit }, item) {
-  //   return new Promise((resolve, reject) => {
-  //     axios.post("/api/data-list/products/", {item: item})
-  //       .then((response) => {
-  //         commit('ADD_ITEM', Object.assign(item, {id: response.data.id}))
-  //         resolve(response)
-  //       })
-  //       .catch((error) => { reject(error) })
-  //   })
-  // },
-  fetchUsers({ commit }) {
+  index({ commit }) {
     return new Promise((resolve, reject) => {
-      axios.get("/api/user-management/users")
+      axios.get("admin/users")
         .then((response) => {
           commit('SET_USERS', response.data)
           resolve(response)
@@ -39,9 +29,9 @@ export default {
         .catch((error) => { reject(error) })
     })
   },
-  removeRecord({ commit }, userId) {
+  destroy({ commit }, userId) {
     return new Promise((resolve, reject) => {
-      axios.delete(`/api/user-management/users/${userId}`)
+      axios.delete(`admin/users/${userId}`)
         .then((response) => {
           commit('REMOVE_RECORD', userId)
           resolve(response)
