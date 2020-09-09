@@ -80,6 +80,9 @@ class BookController extends Controller
         $book->company;
         $book->authors;
 
+        if (!is_null($book->image))
+            $book->cape = asset('storage/' . $book->cape);
+
         return response()->json($book);
     }
 

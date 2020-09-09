@@ -31,6 +31,11 @@ class AuthorController extends Controller
     {
         $authors = $this->author->all(['id', 'name']);
 
+        foreach($authors as $author) {
+            if (!is_null($author->image))
+                $author->image = asset('storage/' . $author->image);
+        }
+
         return response()->json($authors);
     }
 
@@ -66,6 +71,9 @@ class AuthorController extends Controller
         if(is_null($author)){
             return $this->errorMessage("Autor não encontrado.");
         }
+
+        if (!is_null($author->image))
+            $author->image = asset('storage/' . $author->image);
 
         return response()->json($author);
     }

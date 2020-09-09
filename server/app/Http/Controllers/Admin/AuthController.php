@@ -24,6 +24,9 @@ class AuthController extends Controller
 
         $userDatas = auth('api')->user();
 
+        if (!is_null($userDatas->image))
+            $userDatas->image = asset('storage/' . $userDatas->image);
+
         return $this->respondWithTokenAndDatas($token, $userDatas);
     }
 
