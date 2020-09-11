@@ -214,6 +214,22 @@ const router = new Router({
                     rule: 'editor'
                 },
               },
+
+              // AUTHORS
+              {
+                path: '/autores',
+                name: 'admin-author-list',
+                component: () => import('@/views/admin/author/author-list/AuthorList.vue'),
+                meta: {
+                    breadcrumb: [
+                        { title: 'Home', url: '/' },
+                        { title: 'Autores' },
+                        { title: 'Listar', active: true },
+                    ],
+                    pageTitle: 'Lista de Autores',
+                    rule: 'editor'
+                },
+              },
             ],
         },
         /* Authentication and Miscellaneous */

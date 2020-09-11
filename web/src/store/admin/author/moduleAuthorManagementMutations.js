@@ -16,7 +16,7 @@ export default {
     state.authors = authors
   },
   REMOVE_RECORD(state, itemId) {
-      const userIndex = state.authors.findIndex((u) => u.id == itemId)
-      state.authors.splice(userIndex, 1)
+      const authorIndex = state.authors.findIndex((u) => u.id == itemId)
+      state.authors.splice(authorIndex, 1)
   },
 }

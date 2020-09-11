@@ -11,7 +11,12 @@ class Author extends Model
     use HasSlug;
 
     protected $fillable = [
-        'name', 'biography', 'image', 'slug'
+        'name', 'biography', 'image', 'slug', 'created_at', 'updated_at'
+    ];
+
+    protected $casts = [
+        'created_at' => 'datetime:d/m/Y H:i:s',
+        'updated_at' => 'datetime:d/m/Y H:i:s',
     ];
 
     /**

@@ -183,7 +183,7 @@ class BookController extends Controller
             'cdd'              => ['required'],
             'cape'             => ['nullable', 'image', 'mimes:jpeg,jpg,png'],
             'company_id'       => ['required', 'exists:companies,id'],
-            'author_id'        => ['required', 'array'],
+            'author_id'        => ['nullable', 'array'],
         ];
 
         foreach($data['author_id'] as $key => $val)
