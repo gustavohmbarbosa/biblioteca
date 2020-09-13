@@ -29,15 +29,8 @@
           <!-- Gender -->
           <div class="w-full mb-6">
             <label>Sexo</label>
-            <v-select 
-              class="w-full" 
-              placeholder="Selecione o sexo..." 
-              :options="genders"
-              label="option"
-              :reduce="option => option.value"
-              :dir="$vs.rtl ? 'rtl' : 'ltr'" 
-              v-model="reader.gender" 
-            />
+            <v-select class="w-full" placeholder="Selecione o sexo..." :options="genders" label="option"
+              :reduce="option => option.value" :dir="$vs.rtl ? 'rtl' : 'ltr'" v-model="reader.gender" />
             <div class="text-danger text-sm" v-if="validations.gender">
               <span v-show="validations.gender">{{ validations.gender[0] }}</span>
             </div>
@@ -78,6 +71,9 @@
                   <vs-radio v-model="reader.grade" vs-name="grade" vs-value="3">3º Ano</vs-radio>
                 </li>
               </ul>
+              <div class="text-danger text-sm" v-if="validations.grade">
+                <span v-show="validations.grade">{{ validations.grade[0] }}</span>
+              </div>
             </div>
           </div>
 
@@ -93,6 +89,9 @@
                   <vs-radio color="warning" v-model="reader.class" vs-name="class" vs-value="B">B</vs-radio>
                 </li>
               </ul>
+              <div class="text-danger text-sm" v-if="validations.class">
+                <span v-show="validations.class">{{ validations.class[0] }}</span>
+              </div>
             </div>
 
             <!-- Course -->
@@ -110,6 +109,9 @@
                   </vs-radio>
                 </li>
               </ul>
+              <div class="text-danger text-sm" v-if="validations.course_id">
+                <span v-show="validations.course_id">{{ validations.course_id[0] }}</span>
+              </div>
             </div>
           </div>
 
@@ -163,7 +165,7 @@
         </vs-tab>
 
       </vs-tabs>
-      
+
     </vx-card>
   </div>
 </template>
@@ -190,8 +192,7 @@
           entry_year: '',
         },
 
-        genders: [
-          {
+        genders: [{
             value: 'Masculino',
             option: 'Masculino'
           },
