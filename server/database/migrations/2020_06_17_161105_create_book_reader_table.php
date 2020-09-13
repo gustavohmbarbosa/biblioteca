@@ -23,7 +23,7 @@ class CreateBookReaderTable extends Migration
 
             $table->date('estimated_date');
             $table->date('return_date')->nullable();
-            $table->string('status')->default('ATIVO');
+            $table->string('status')->default('Ativo');
 
             $table->timestamps();
         });
