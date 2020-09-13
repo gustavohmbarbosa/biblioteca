@@ -2,10 +2,10 @@
 
 /** @var \Illuminate\Database\Eloquent\Factory $factory */
 
+use App\Author;
 use Faker\Generator as Faker;
-use App\Model;
 
-$factory->define(\App\Author::class, function (Faker $faker) {
+$factory->define(Author::class, function (Faker $faker) {
     return [
         'name' => $faker->name,
         'biography' => $faker->sentence,
