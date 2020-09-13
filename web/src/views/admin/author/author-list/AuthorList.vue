@@ -10,16 +10,6 @@
 <template>
 
   <div id="page-reader-list">
-
-    <vx-card ref="filterCard" title="Filtros" class="reader-list-filters mb-8" actionButtons @refresh="resetColFilters" @remove="resetColFilters">
-      <div class="vx-row">
-        <div class="vx-col w-full">
-          <label class="text-sm opacity-75">Função</label>
-          <v-select :options="roleOptions" :clearable="false" :dir="$vs.rtl ? 'rtl' : 'ltr'" v-model="roleFilter" class="mb-4 md:mb-0" />
-        </div>
-      </div>
-    </vx-card>
-
     <div class="vx-card p-6">
 
       <div class="flex flex-wrap items-center">
@@ -28,7 +18,7 @@
         <div class="flex-grow">
           <vs-dropdown vs-trigger-click class="cursor-pointer">
             <div class="p-4 border border-solid d-theme-border-grey-light rounded-full d-theme-dark-bg cursor-pointer flex items-center justify-between font-medium">
-              <span class="mr-2">{{ currentPage * paginationPageSize - (paginationPageSize - 1) }} - {{ usersData.length - currentPage * paginationPageSize > 0 ? currentPage * paginationPageSize : usersData.length }} de {{ usersData.length }}</span>
+              <span class="mr-2">{{ currentPage * paginationPageSize - (paginationPageSize - 1) }} - {{ authorsData.length - currentPage * paginationPageSize > 0 ? currentPage * paginationPageSize : authorsData.length }} de {{ authorsData.length }}</span>
               <feather-icon icon="ChevronDownIcon" svgClasses="h-4 w-4" />
             </div>
             <!-- <vs-button class="btn-drop" type="line" color="primary" icon-pack="feather" icon="icon-chevron-down"></vs-button> -->
@@ -77,7 +67,7 @@
         class="ag-theme-material w-100 my-4 ag-grid-table"
         :columnDefs="columnDefs"
         :defaultColDef="defaultColDef"
-        :rowData="usersData"
+        :rowData="authorsData"
         rowSelection="multiple"
         colResizeDefault="shift"
         :animateRows="true"
@@ -104,10 +94,9 @@ import '@/assets/scss/vuexy/extraComponents/agGridStyleOverride.scss'
 import vSelect from 'vue-select'
 
 // Store Module
-import moduleUserManagement from '@/store/admin/user/moduleUserManagement.js'
+import moduleAuthorManagement from '@/store/admin/author/moduleAuthorManagement.js'
 
 // Cell Renderer
-import CellRendererRole from "./cell-renderer/CellRendererRole.vue"
 import CellRendererActions from "./cell-renderer/CellRendererActions.vue"
 import CellRendererAvatar from "./cell-renderer/CellRendererAvatar.vue"
 
@@ -118,7 +107,6 @@ export default {
     vSelect,
 
     // Cell Renderer
-    CellRendererRole,
     CellRendererActions,
     CellRendererAvatar,
   },
@@ -126,13 +114,6 @@ export default {
     return {
 
       // Filter Options
-      roleFilter: { label: 'All', value: 'all' },
-      roleOptions: [
-        { label: 'All', value: 'all' },
-        { label: 'Master', value: 'Master' },
-        { label: 'Comum', value: 'Comum' },
-        { label: 'Staff', value: 'Staff' },
-      ],
 
       searchQuery: "",
 
@@ -157,21 +138,20 @@ export default {
           headerName: 'Nome',
           field: 'name',
           filter: true,
-          width: 310,
+          width: 265,
           cellRendererFramework: "CellRendererAvatar"
         },
         {
-          headerName: 'Email',
-          field: 'email',
+          headerName: 'Criado Em',
+          field: 'created_at',
           filter: true,
-          width: 275,
+          width: 230
         },
         {
-          headerName: 'Função',
-          field: 'role',
+          headerName: 'Atualizado Em',
+          field: 'updated_at',
           filter: true,
-          width: 150,
-          cellRendererFramework: 'CellRendererRole'
+          width: 230
         },
         {
           headerName: 'Ações',
@@ -183,7 +163,6 @@ export default {
 
       // Cell Renderer Components
       components: {
-        CellRendererRole,
         CellRendererActions,
         CellRendererAvatar,
       },
@@ -194,22 +173,19 @@ export default {
       formats:["xlsx", "csv", "txt"] ,
       cellAutoWidth: true,
       selectedFormat: "xlsx",
-      headerTitle: ["Id", "Nome", "Email", "Função", "Criado Em", "Atualizado Em"],
-      headerVal: ["id", "name", "email", "role", "created_at", "updated_at"],
+      headerTitle: ["Id", "Nome", "Biografia", "Criado Em", "Atualizado Em"],
+      headerVal: ["id", "name", "biography", "created_at", "updated_at"],
     }
   },
   watch: {
-    roleFilter(obj) {
-      this.setColumnFilter("role", obj.value)
-    },
     isVerifiedFilter(obj) {
       let val = obj.value === "all" ? "all" : obj.value == "yes" ? "true" : "false"
       this.setColumnFilter("is_verified", val)
     },
   },
   computed: {
-    usersData() {
-      return this.$store.state.userManagement.users
+    authorsData() {
+      return this.$store.state.authorManagement.authors
     },
     paginationPageSize() {
       if(this.gridApi) return this.gridApi.paginationGetPageSize()
@@ -247,7 +223,7 @@ export default {
       this.gridApi.onFilterChanged()
 
       // Reset Filter Options
-      this.roleFilter = this.isVerifiedFilter = { label: 'Todos', value: 'all' }
+      this.roleFilter = this.isVerifiedFilter = this.departmentFilter = { label: 'Todos', value: 'all' }
 
       this.$refs.filterCard.removeRefreshAnimation()
     },
@@ -261,7 +237,7 @@ export default {
     // For Excel Export
     exportToExcel() {
       import('@/vendor/Export2Excel').then(excel => {
-        const list = this.$store.state.userManagement.users
+        const list = this.$store.state.authorManagement.authors
         const data = this.formatJson(this.headerVal, list)
         excel.export_json_to_excel({
           header: this.headerTitle,
@@ -297,19 +273,19 @@ export default {
       header.style.left = "-" + String(Number(header.style.transform.slice(11,-3)) + 9) + "px"
     }
 
-    // Loading for Users Request
+    // Loading for Authors Request
     this.$vs.loading({
       container: '#datatable-list',
       scale: 0.6
     })
   },
   created() {
-    if(!moduleUserManagement.isRegistered) {
-      this.$store.registerModule('userManagement', moduleUserManagement)
-      moduleUserManagement.isRegistered = true
+    if(!moduleAuthorManagement.isRegistered) {
+      this.$store.registerModule('authorManagement', moduleAuthorManagement)
+      moduleAuthorManagement.isRegistered = true
     }
 
-    this.$store.dispatch("userManagement/index")
+    this.$store.dispatch("authorManagement/index")
     .then(() => {
       this.$vs.loading.close("#datatable-list > .con-vs-loading")
     })

@@ -6,14 +6,14 @@
 
 <script>
     export default {
-        name: 'CellRendererStatus',
+        name: 'CellRendererRole',
         computed: {
           chipColor() {
             return (value) => {
-              if(value === "Ativo") return "success"
-              else if(value === "Inativo") return "danger"
-              else if(value === "Bloqueado") return "warning"
-              else "primary"
+              if(value === "Master") return "success"
+              else if(value === "Comum") return "primary"
+              else if(value === "Staff") return "warning"
+              else "danger"
             }
           }
         }
@@ -32,9 +32,9 @@
     color: rgba(var(--vs-warning),1) !important;
     font-weight: 500;
   }
-  &.vs-chip-danger {
-    background: rgba(var(--vs-danger),.15);
-    color: rgba(var(--vs-danger),1) !important;
+  &.vs-chip-primary {
+    background: rgba(var(--vs-primary),.15);
+    color: rgba(var(--vs-primary),1) !important;
     font-weight: 500;
   }
 }

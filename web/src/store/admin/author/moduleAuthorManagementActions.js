@@ -22,10 +22,20 @@ export default {
           }
           resolve(response)
         })
-        .catch((error) => 
-        { 
-          reject(error) 
+        .catch((error) =>
+        {
+          reject(error)
         })
     })
   },
+  destroy({ commit }, authorId) {
+    return new Promise((resolve, reject) => {
+      axios.delete(`admin/authors/${authorId}`)
+        .then((response) => {
+          commit('REMOVE_RECORD', authorId)
+          resolve(response)
+        })
+        .catch((error) => { reject(error) })
+    })
+  }
 }

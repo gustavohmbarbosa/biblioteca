@@ -12,19 +12,19 @@ import axios from "@/axios.js"
 export default {
   index({ commit }) {
     return new Promise((resolve, reject) => {
-      axios.get("admin/companies")
+      axios.get("admin/courses")
         .then((response) => {
-          commit('SET_COMPANIES', response.data)
+          commit('SET_COURSES', response.data)
           resolve(response)
         })
         .catch((error) => { reject(error) })
     })
   },
-  store({ commit }, company) {
+  store({ commit }, course) {
     return new Promise((resolve, reject) => {
-      axios.post("/admin/companies", company)
+      axios.post("/admin/courses", course)
         .then((response) => {
-          commit('ADD_COMPANY', Object.assign(company, {id: response.data.id}))
+          commit('ADD_COURSE', Object.assign(course, {id: response.data.id}))
           resolve(response)
         })
         .catch((error) =>
@@ -33,11 +33,11 @@ export default {
         })
     })
   },
-  destroy({ commit }, companyId) {
+  destroy({ commit }, courseId) {
     return new Promise((resolve, reject) => {
-      axios.delete(`admin/companies/${companyId}`)
+      axios.delete(`admin/courses/${courseId}`)
         .then((response) => {
-          commit('REMOVE_RECORD', companyId)
+          commit('REMOVE_RECORD', courseId)
           resolve(response)
         })
         .catch((error) => { reject(error) })

@@ -109,6 +109,7 @@ import moduleReaderManagement from '@/store/admin/reader/moduleReaderManagement.
 // Cell Renderer
 import CellRendererStatus from "./cell-renderer/CellRendererStatus.vue"
 import CellRendererActions from "./cell-renderer/CellRendererActions.vue"
+import CellRendererAvatar from "./cell-renderer/CellRendererAvatar.vue"
 
 
 export default {
@@ -119,6 +120,7 @@ export default {
     // Cell Renderer
     CellRendererStatus,
     CellRendererActions,
+    CellRendererAvatar
   },
   data() {
     return {
@@ -153,7 +155,6 @@ export default {
           headerName: 'ID',
           field: 'id',
           width: 125,
-          filter: true,
           checkboxSelection: true,
           headerCheckboxSelectionFilteredOnly: true,
           headerCheckboxSelection: true,
@@ -162,7 +163,8 @@ export default {
           headerName: 'Nome',
           field: 'name',
           filter: true,
-          width: 310
+          width: 310,
+          cellRendererFramework: 'CellRendererAvatar'
         },
         {
           headerName: 'Email',
@@ -180,7 +182,7 @@ export default {
         {
           headerName: 'Ações',
           field: 'transactions',
-          width: 150,
+          width: 110,
           cellRendererFramework: 'CellRendererActions',
         },
       ],
@@ -189,6 +191,7 @@ export default {
       components: {
         CellRendererStatus,
         CellRendererActions,
+        CellRendererAvatar
       },
 
       // For Excel Export

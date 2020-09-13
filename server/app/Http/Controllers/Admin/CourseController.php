@@ -26,7 +26,7 @@ class CourseController extends Controller
      */
     public function index()
     {
-        $courses = $this->course->all(['id', 'name']);
+        $courses = $this->course->all();
 
         return response()->json($courses);
     }

@@ -9,14 +9,14 @@
 
 
 export default {
-  ADD_AUTHOR(state, author) {
-    state.authors.push(author)
+  ADD_COURSE(state, company) {
+    state.courses.push(company)
   },
-  SET_AUTHORS(state, authors) {
-    state.authors = authors
+  SET_COURSES(state, courses) {
+    state.courses = courses
   },
   REMOVE_RECORD(state, itemId) {
-      const authorIndex = state.authors.findIndex((u) => u.id == itemId)
-      state.authors.splice(authorIndex, 1)
+      const courseIndex = state.courses.findIndex((u) => u.id == itemId)
+      state.courses.splice(courseIndex, 1)
   },
 }

@@ -33,4 +33,14 @@ export default {
         })
     })
   },
+  destroy({ commit }, bookId) {
+    return new Promise((resolve, reject) => {
+      axios.delete(`admin/books/${bookId}`)
+        .then((response) => {
+          commit('REMOVE_RECORD', bookId)
+          resolve(response)
+        })
+        .catch((error) => { reject(error) })
+    })
+  },
 }

@@ -29,7 +29,13 @@ class AuthorController extends Controller
      */
     public function index()
     {
-        $authors = $this->author->all(['id', 'name']);
+        $authors = $this->author->all();
+
+        foreach($authors as $author) {
+            if (!is_null($author->image)) {
+                $author->image = asset('storage/' . $author->image);
+            }
+        }
 
         return response()->json($authors);
     }
@@ -67,6 +73,9 @@ class AuthorController extends Controller
             return $this->errorMessage("Autor não encontrado.");
         }
 
+        if (!is_null($author->image))
+            $author->image = asset('storage/' . $author->image);
+
         return response()->json($author);
     }
 
@@ -100,7 +109,7 @@ class AuthorController extends Controller
     }
 
     /**
-     * Remove the specified author from storage.
+     * Remove the specified author from storage and your relations.
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
@@ -112,6 +121,8 @@ class AuthorController extends Controller
         if(is_null($author)){
             return $this->errorMessage("Autor não encontrado.");
         }
+
+        $author->books()->detach();
 
         $author->delete();
 

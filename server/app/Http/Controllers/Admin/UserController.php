@@ -29,7 +29,12 @@ class UserController extends Controller
      */
     public function index()
     {
-        $users = $this->user->paginate(10);
+        $users = $this->user->all();
+
+        foreach($users as $user) {
+            if (!is_null($user->image))
+                $user->image = asset('storage/' . $user->image);
+        }
 
         return response()->json($users);
     }
@@ -67,6 +72,9 @@ class UserController extends Controller
         if(is_null($user)){
             return $this->errorMessage("Usuário não encontrado");
         }
+
+        if (!is_null($user->image))
+            $user->image = asset('storage/' . $user->image);
 
         return response()->json($user);
     }

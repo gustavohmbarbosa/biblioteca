@@ -1,6 +1,6 @@
 /*=========================================================================================
-  File Name: moduleCalendarMutations.js
-  Description: Calendar Module Mutations
+  File Name: moduleUserManagement.js
+  Description: Calendar Module
   ----------------------------------------------------------------------------------------
   Item Name: Vuexy - Vuejs, HTML & Laravel Admin Dashboard Template
   Author: Pixinvent
@@ -8,15 +8,17 @@
 ==========================================================================================*/
 
 
+import state from './moduleCourseManagementState.js'
+import mutations from './moduleCourseManagementMutations.js'
+import actions from './moduleCourseManagementActions.js'
+import getters from './moduleCourseManagementGetters.js'
+
 export default {
-  ADD_AUTHOR(state, author) {
-    state.authors.push(author)
-  },
-  SET_AUTHORS(state, authors) {
-    state.authors = authors
-  },
-  REMOVE_RECORD(state, itemId) {
-      const authorIndex = state.authors.findIndex((u) => u.id == itemId)
-      state.authors.splice(authorIndex, 1)
-  },
+  isRegistered: false,
+  namespaced: true,
+  state: state,
+  mutations: mutations,
+  actions: actions,
+  getters: getters
 }
+

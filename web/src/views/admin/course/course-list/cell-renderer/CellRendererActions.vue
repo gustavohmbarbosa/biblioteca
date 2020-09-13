@@ -11,10 +11,10 @@
         name: 'CellRendererActions',
         methods: {
           viewRecord() {
-            this.$router.push('/usuarios/visualizacao/' + this.params.data.id).catch(() => {})
+            this.$router.push('/cursos/visualizacao/' + this.params.data.id).catch(() => {})
           },
           editRecord() {
-            this.$router.push("/usuarios/edicao/" + this.params.data.id).catch(() => {})
+            this.$router.push("/cursos/edicao/" + this.params.data.id).catch(() => {})
           },
           confirmDeleteRecord() {
             this.$vs.dialog({
@@ -28,7 +28,7 @@
             })
           },
           deleteRecord() {
-            this.$store.dispatch("userManagement/destroy", this.params.data.id)
+            this.$store.dispatch("courseManagement/destroy", this.params.data.id)
               .then(res => {
                 this.showDeleteSuccess(res.data.message)
               })
@@ -40,7 +40,7 @@
           showDeleteSuccess(message) {
             this.$vs.notify({
               color: 'success',
-              title: 'Usuário excluído',
+              title: 'Curso excluído!',
               text: message,
               iconPack: 'feather',
               icon: 'icon-check',
@@ -49,7 +49,7 @@
           showDeleteFailed(message) {
             this.$vs.notify({
               color: 'danger',
-              title: 'Usuário não excluído',
+              title: 'Curso não excluído!',
               text: message,
               iconPack: 'feather',
               icon: 'icon-alert-circle',

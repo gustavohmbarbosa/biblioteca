@@ -98,6 +98,7 @@ const router = new Router({
                     rule: 'editor'
                 },
               },
+              // Users/>
 
               // Readers
               {
@@ -156,8 +157,9 @@ const router = new Router({
                     rule: 'editor'
                 },
               },
+              // Readers/>
 
-              // BOOKS
+              // Books
               {
                 path: '/livros',
                 name: 'admin-book-list',
@@ -172,6 +174,7 @@ const router = new Router({
                     rule: 'editor'
                 },
               },
+
               {
                 path: '/livros/cadastro',
                 name: 'admin-book-create',
@@ -214,6 +217,58 @@ const router = new Router({
                     rule: 'editor'
                 },
               },
+              // Books/>
+
+              // Authors
+              {
+                path: '/autores',
+                name: 'admin-author-list',
+                component: () => import('@/views/admin/author/author-list/AuthorList.vue'),
+                meta: {
+                    breadcrumb: [
+                        { title: 'Home', url: '/' },
+                        { title: 'Autores' },
+                        { title: 'Listar', active: true },
+                    ],
+                    pageTitle: 'Lista de Autores',
+                    rule: 'editor'
+                },
+              },
+              // Authors/>
+
+              // Companies
+              {
+                path: '/editoras',
+                name: 'admin-company-list',
+                component: () => import('@/views/admin/company/company-list/CompanyList.vue'),
+                meta: {
+                    breadcrumb: [
+                        { title: 'Home', url: '/' },
+                        { title: 'Editoras' },
+                        { title: 'Listar', active: true },
+                    ],
+                    pageTitle: 'Lista de Editoras',
+                    rule: 'editor'
+                },
+              },
+              // Companies/>
+
+              // Courses
+              {
+                path: '/cursos',
+                name: 'admin-courses-list',
+                component: () => import('@/views/admin/course/course-list/CourseList.vue'),
+                meta: {
+                    breadcrumb: [
+                        { title: 'Home', url: '/' },
+                        { title: 'Cursos' },
+                        { title: 'Listar', active: true },
+                    ],
+                    pageTitle: 'Lista de Cursos',
+                    rule: 'editor'
+                },
+              },
+              // Courses/>
             ],
         },
         /* Authentication and Miscellaneous */

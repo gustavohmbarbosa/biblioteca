@@ -16,7 +16,7 @@ export default {
     state.companies = companies
   },
   REMOVE_RECORD(state, itemId) {
-      const userIndex = state.companies.findIndex((u) => u.id == itemId)
-      state.companies.splice(userIndex, 1)
+      const companyIndex = state.companies.findIndex((u) => u.id == itemId)
+      state.companies.splice(companyIndex, 1)
   },
 }

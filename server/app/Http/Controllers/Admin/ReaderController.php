@@ -35,6 +35,11 @@ class ReaderController extends Controller
     {
         $readers = $this->reader->all();
 
+        foreach($readers as $reader) {
+            if (!is_null($reader->image))
+                $reader->image = asset('storage/' . $reader->image);
+        }
+
         return response()->json($readers);
     }
 
@@ -109,6 +114,9 @@ class ReaderController extends Controller
 
         $reader->course;
         $reader['course_id'] = $reader->course->id;
+
+        if (!is_null($reader->image))
+            $reader->image = asset('storage/' . $reader->image);
 
         return response()->json($reader);
     }
