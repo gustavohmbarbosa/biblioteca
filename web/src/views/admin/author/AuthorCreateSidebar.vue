@@ -134,7 +134,7 @@
           .catch(error => {
             this.$vs.notify({
               title: "Erro no Cadastro",
-              text: "Preencha os campos corretamente",
+              text: "Verifique os campos e os preencha corretamente",
               color: "danger",
               iconPack: 'feather',
               icon: 'icon-alert-circle'

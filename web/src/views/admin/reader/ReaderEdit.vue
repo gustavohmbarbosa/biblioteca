@@ -245,7 +245,7 @@ export default {
           this.$vs.loading.close("#update-form > .con-vs-loading")
           this.$vs.notify({
             title: "Leitor não atualizado!",
-            text: "Preencha os campos corretamente!",
+            text: "Verifique os campos e os preencha corretamente!",
             color: 'danger',
             iconPack: 'feather',
             icon: 'icon-alert-circle',

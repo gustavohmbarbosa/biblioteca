@@ -152,7 +152,7 @@
             <vs-button type="flat" color="#999" class="float-left" @click="activeTab = 0">Voltar</vs-button>
             <vs-button class="float-right" type="filled" @click.prevent="submitReaderForm(reader)">Cadastrar</vs-button>
           </div>
-          
+
         </vs-tab>
 
       </vs-tabs>
@@ -218,8 +218,8 @@
         } catch (error) {
           this.$vs.loading.close(".form-container > .con-vs-loading")
           this.$vs.notify({
-            title: "Erro no Cadastro!",
-            text: "Preencha os campos corretamente",
+            title: "Erro no Cadastro",
+            text: "Verifique os campos e os preencha corretamente",
             color: "danger",
             iconPack: 'feather',
             icon: 'icon-alert-circle'

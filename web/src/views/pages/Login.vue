@@ -103,7 +103,7 @@ export default{
         if(!result) {
           this.$vs.notify({
             title: 'Aviso!',
-            text: 'Preencha os campos corretamente',
+            text: 'Verifique os campos e os preencha corretamente',
             iconPack: 'feather',
             icon: 'icon-alert-circle',
             color: 'warning'
