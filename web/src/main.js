@@ -14,7 +14,7 @@ import App from './App.vue'
 // Vuesax Component Framework
 import Vuesax from 'vuesax'
 import 'material-icons/iconfont/material-icons.css' //Material Icons
-import 'vuesax/dist/vuesax.css'; // Vuesax
+import 'vuesax/dist/vuesax.css' // Vuesax
 Vue.use(Vuesax)
 
 
@@ -56,11 +56,15 @@ import 'prismjs'
 import 'prismjs/themes/prism-tomorrow.css'
 
 // VeeValidate
-import VeeValidate from 'vee-validate';
+import VeeValidate from 'vee-validate'
 Vue.use(VeeValidate);
 
 // Feather font icon
 require('./assets/css/iconfont.css')
+
+// Vue Mask
+import { VueMaskDirective } from "v-mask"
+Vue.directive("mask", VueMaskDirective)
 
 
 Vue.config.productionTip = false

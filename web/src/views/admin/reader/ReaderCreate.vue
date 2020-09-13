@@ -20,7 +20,7 @@
           <div class="w-full mb-6">
             <label>Telefone</label>
             <vs-input class="w-full" icon-pack="feather" icon="icon-phone" icon-no-border placeholder="Telefone"
-              v-model="reader.phone" />
+              v-mask="maskPhone" v-model="reader.phone" />
             <div class="text-danger text-sm" v-if="validations.phone">
               <span v-show="validations.phone">{{ validations.phone[0] }}</span>
             </div>
@@ -29,8 +29,15 @@
           <!-- Gender -->
           <div class="w-full mb-6">
             <label>Sexo</label>
-            <v-select class="w-full" :options="['Masculino', 'Feminino', 'Não-Binário','Desejo não informar']"
-              :dir="$vs.rtl ? 'rtl' : 'ltr'" v-model="reader.gender" />
+            <v-select 
+              class="w-full" 
+              placeholder="Selecione o sexo..." 
+              :options="genders"
+              label="option"
+              :reduce="option => option.value"
+              :dir="$vs.rtl ? 'rtl' : 'ltr'" 
+              v-model="reader.gender" 
+            />
             <div class="text-danger text-sm" v-if="validations.gender">
               <span v-show="validations.gender">{{ validations.gender[0] }}</span>
             </div>
@@ -40,7 +47,7 @@
           <div class="w-full mb-6">
             <label>Matrícula</label>
             <vs-input class="w-full" icon-pack="feather" icon="icon-code" icon-no-border placeholder="Matrícula"
-              v-model="reader.registration" />
+              v-mask="maskRegistration" v-model="reader.registration" />
             <div class="text-danger text-sm" v-if="validations.registration">
               <span v-show="validations.registration">{{ validations.registration[0] }}</span>
             </div>
@@ -48,9 +55,9 @@
 
           <!-- Entry Year -->
           <div class="w-full mb-6">
-            <label>Ano de Matrícula</label>
+            <label>Ano de Entrada</label>
             <vs-input class="w-full" icon-pack="feather" icon="icon-calendar" icon-no-border
-              placeholder="Ano de Matrícula" v-model="reader.entry_year" />
+              placeholder="Ano de Entrada na Escola" v-mask="maskEntryYear" v-model="reader.entry_year" />
             <div class="text-danger text-sm" v-if="validations.entry_year">
               <span v-show="validations.entry_year">{{ validations.entry_year[0] }}</span>
             </div>
@@ -175,17 +182,40 @@
           password: 'bibli@avs',
           password_confirmation: 'bibli@avs',
           phone: '',
-          gender: 'Masculino',
-          grade: 1,
-          class: 'A',
-          course_id: '1',
+          gender: '',
+          grade: null,
+          class: '',
+          course_id: null,
           registration: '',
           entry_year: '',
         },
 
+        genders: [
+          {
+            value: 'Masculino',
+            option: 'Masculino'
+          },
+          {
+            value: 'Feminino',
+            option: 'Feminino'
+          },
+          {
+            value: 'Não-Binário',
+            option: 'Não-Binário'
+          },
+          {
+            value: 'Não Informado',
+            option: 'Não Informado'
+          },
+        ],
+
         activeTab: 0,
 
         validations: {},
+
+        maskPhone: "(##) #####-####",
+        maskRegistration: "#######",
+        maskEntryYear: "####",
       }
     },
     components: {
