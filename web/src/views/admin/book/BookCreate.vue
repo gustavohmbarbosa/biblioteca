@@ -148,13 +148,13 @@
             </template>
           </div>
 
-          <!-- Publication Date -->
+          <!-- Publication Year -->
           <div class="w-full mb-6">
             <label>Publicação</label>
-            <datepicker class="w-full" placeholder="Dia Mês Ano" :language="language" format="d MMMM yyyy"
-              v-model="book.publication_date"></datepicker>
-            <div class="text-danger text-sm" v-if="validations.publication_date">
-              <span v-show="validations.publication_date">{{ validations.publication_date[0] }}</span>
+            <vs-input class="w-full" icon-pack="feather" icon="icon-calendar" icon-no-border
+              placeholder="Ano de Matrícula" v-model="book.publication_year" />
+            <div class="text-danger text-sm" v-if="validations.publication_year">
+              <span v-show="validations.publication_year">{{ validations.publication_year[0] }}</span>
             </div>
           </div>
 
@@ -243,13 +243,9 @@
 
 <script>
   import vSelect from 'vue-select'
-  import Datepicker from 'vuejs-datepicker'
-  import * as lang from 'vuejs-datepicker/src/locale'
 
   import AuthorCreateSidebar from '@/views/admin/author/AuthorCreateSidebar.vue'
   import CompanyCreateSidebar from '@/views/admin/company/CompanyCreateSidebar.vue'
-
-  import ConvertDateToStandard from '@/utils/ConvertDateToStandard.js'
 
   import moduleBookManagement from '@/store/admin/book/moduleBookManagement.js'
   import moduleCompanyManagement from '@/store/admin/company/moduleCompanyManagement.js'
@@ -270,7 +266,7 @@
           language: 'Português',
           observations: '',
           edition: '',
-          publication_date: null,
+          publication_year: null,
           color: '',
           cdd: '',
           company_id: null,
@@ -304,7 +300,6 @@
         ],
 
         activeTab: 0,
-        language: lang['ptBR'],
         textarea: ['', ''],
         counterDanger: [false, false],
 
@@ -313,22 +308,15 @@
     },
     components: {
       vSelect,
-      Datepicker,
       CompanyCreateSidebar,
       AuthorCreateSidebar,
 
     },
     methods: {
       submitBook(book) {
-        const bookTreated = this.treatBook(book)
+        const bookFormatted = this.bookInFormData(book)
 
-        this.notifyBookStored(bookTreated)
-      },
-      treatBook(book) {
-        book['publication_date'] = ConvertDateToStandard(book['publication_date'])
-        book = this.bookInFormData(book)
-
-        return book
+        this.notifyBookStored(bookFormatted)
       },
       bookInFormData(book) {
         let data = new FormData()
@@ -392,15 +380,7 @@
           this.book.cape = input.target.files[0]
         }
       },
-      libraryTab(){
-          console.log(this.$refs.bookForm)
-        this.$refs.bookForm.childActive()
-          console.log(this.$refs.bookForm)
-
-      },
       resetData() {
-          console.log(this.$refs.bookForm)
-
         let startData = this.$options.data()
 
         delete startData['authors']

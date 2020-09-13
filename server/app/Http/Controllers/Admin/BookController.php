@@ -110,7 +110,7 @@ class BookController extends Controller
             $data['cape'] = $this->imageUpload($request->file('cape'), 'books');
         }
 
-        $data['publication_date'] = date('Y-m-d', strtotime($data['publication_date']));
+        $data['publication_year'] = date('Y-m-d', strtotime($data['publication_year']));
 
         $book->update($data);
 
@@ -178,7 +178,7 @@ class BookController extends Controller
             'language'         => ['required', 'string', 'max:190'],
             'observations'     => ['nullable', 'string', 'max:190'],
             'edition'          => ['required', 'string', 'max:3'],
-            'publication_date' => ['required', 'date_format:Y-m-d'],
+            'publication_year' => ['required', 'size:4', 'date_format:Y'],
             'color'            => ['required', 'string'],
             'cdd'              => ['required'],
             'cape'             => ['nullable', 'image', 'mimes:jpeg,jpg,png'],
@@ -198,6 +198,7 @@ class BookController extends Controller
             'in'                => 'Selecione um dos valores pré-informados.',
             'company_id.exists' => 'Essa editora ainda não foi cadastrada.',
             'date_format'       => 'Essa não é uma data válida.',
+            'size'              => 'Campo deve ter exatamente :size números.',
             'image'             => 'A capa deve ser uma imagem.',
             'mimes'             => 'A imagem deve se do tipo: jpeg, jpg ou png.',
             'array'             => 'Preencha novamente.'

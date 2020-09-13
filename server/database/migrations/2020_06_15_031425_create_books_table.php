@@ -25,7 +25,7 @@ class CreateBooksTable extends Migration
             $table->string('language');
             $table->string('observations')->nullable();
             $table->string('edition');
-            $table->date('publication_date');
+            $table->year('publication_year');
             $table->string('color');
             $table->string('cdd');
             $table->string('cape')->nullable();

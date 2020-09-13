@@ -109,9 +109,9 @@
           <div class="vx-col sm:w-1/4 w-full">
             <label>Publicação</label>
             <datepicker class="w-full" placeholder="Dia Mês Ano" :language="language" format="d MMMM yyyy"
-              v-model="book.publication_date"></datepicker>
-            <div class="text-danger text-sm" v-if="validations.publication_date">
-              <span v-show="validations.publication_date">{{ validations.publication_date[0] }}</span>
+              v-model="book.publication_year"></datepicker>
+            <div class="text-danger text-sm" v-if="validations.publication_year">
+              <span v-show="validations.publication_year">{{ validations.publication_year[0] }}</span>
             </div>
           </div>
         </div>
@@ -227,7 +227,7 @@ export default {
         language: '',
         observations: '',
         edition: '',
-        publication_date: null,
+        publication_year: null,
         color: '',
         cdd: '',
         cape: null,

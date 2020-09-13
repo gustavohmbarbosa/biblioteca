@@ -17,7 +17,7 @@ $factory->define(\App\Book::class, function (Faker $faker) {
         'language' => $faker->word,
         'observations' => $faker->sentence,
         'edition' => $faker->numberBetween(1, 20),
-        'publication_date' => $faker->date($format = 'Y-m-d', $max = 'now'),
+        'publication_year' => $faker->date($format = 'Y-m-d', $max = 'now'),
         'color' => $faker->word,
         'cdd' => $faker->numerify('###'),
         'cape' => $faker->slug,

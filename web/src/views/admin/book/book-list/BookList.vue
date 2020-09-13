@@ -180,7 +180,7 @@ export default {
       cellAutoWidth: true,
       selectedFormat: "xlsx",
       headerTitle: ["Id", "Título", "Subtítulo", "Origem", "Preço", "ISBN", "Páginas", "Língua", "Edição", "Data de Publicação", "Cor", "CDD"],
-      headerVal: ["id", "title", "subtitle", "origin", "price", "isbn", "pages", "language", "edition", "publication_date", "color", "cdd"],
+      headerVal: ["id", "title", "subtitle", "origin", "price", "isbn", "pages", "language", "edition", "publication_year", "color", "cdd"],
     }
   },
   watch: {
