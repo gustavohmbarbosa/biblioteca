@@ -27,10 +27,20 @@ export default {
           commit('ADD_COMPANY', Object.assign(company, {id: response.data.id}))
           resolve(response)
         })
-        .catch((error) => 
-        { 
-          reject(error) 
+        .catch((error) =>
+        {
+          reject(error)
         })
     })
   },
+  destroy({ commit }, companyId) {
+    return new Promise((resolve, reject) => {
+      axios.delete(`admin/companies/${companyId}`)
+        .then((response) => {
+          commit('REMOVE_RECORD', companyId)
+          resolve(response)
+        })
+        .catch((error) => { reject(error) })
+    })
+  }
 }

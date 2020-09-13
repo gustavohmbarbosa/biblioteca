@@ -98,6 +98,7 @@ const router = new Router({
                     rule: 'editor'
                 },
               },
+              // Users/>
 
               // Readers
               {
@@ -156,8 +157,9 @@ const router = new Router({
                     rule: 'editor'
                 },
               },
+              // Readers/>
 
-              // BOOKS
+              // Books
               {
                 path: '/livros',
                 name: 'admin-book-list',
@@ -172,6 +174,7 @@ const router = new Router({
                     rule: 'editor'
                 },
               },
+
               {
                 path: '/livros/cadastro',
                 name: 'admin-book-create',
@@ -214,8 +217,9 @@ const router = new Router({
                     rule: 'editor'
                 },
               },
+              // Books/>
 
-              // AUTHORS
+              // Authors
               {
                 path: '/autores',
                 name: 'admin-author-list',
@@ -230,6 +234,24 @@ const router = new Router({
                     rule: 'editor'
                 },
               },
+              // Authors/>
+
+              // Companies
+              {
+                path: '/editoras',
+                name: 'admin-company-list',
+                component: () => import('@/views/admin/company/company-list/CompanyList.vue'),
+                meta: {
+                    breadcrumb: [
+                        { title: 'Home', url: '/' },
+                        { title: 'Editoras' },
+                        { title: 'Listar', active: true },
+                    ],
+                    pageTitle: 'Lista de Editoras',
+                    rule: 'editor'
+                },
+              },
+              // Companies/>
             ],
         },
         /* Authentication and Miscellaneous */
