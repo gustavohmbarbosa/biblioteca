@@ -252,6 +252,23 @@ const router = new Router({
                 },
               },
               // Companies/>
+
+              // Courses
+              {
+                path: '/cursos',
+                name: 'admin-courses-list',
+                component: () => import('@/views/admin/course/course-list/CourseList.vue'),
+                meta: {
+                    breadcrumb: [
+                        { title: 'Home', url: '/' },
+                        { title: 'Cursos' },
+                        { title: 'Listar', active: true },
+                    ],
+                    pageTitle: 'Lista de Cursos',
+                    rule: 'editor'
+                },
+              },
+              // Courses/>
             ],
         },
         /* Authentication and Miscellaneous */
