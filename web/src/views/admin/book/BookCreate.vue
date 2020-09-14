@@ -161,7 +161,7 @@
           <!-- Synopsis -->
           <div class="w-full mb-6">
             <label>Sinopse</label>
-            <vs-textarea rows="5" counter="1000" :counter-danger.sync="counterDanger[0]" v-model="book.synopsis" />
+            <vs-textarea rows="5" counter="5000" :counter-danger.sync="counterDanger[0]" v-model="book.synopsis" />
             <div class="text-danger text-sm" v-if="validations.synopsis">
               <span v-show="validations.synopsis">{{ validations.synopsis[0] }}</span>
             </div>

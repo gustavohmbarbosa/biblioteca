@@ -173,7 +173,7 @@ class BookController extends Controller
             'origin'           => ['required', Rule::in(['Doado', 'Comprado'])],
             'price'            => ['nullable', 'max:7'],
             'isbn'             => ['required', 'string', 'max:13'],
-            'synopsis'         => ['nullable', 'string', 'max:1000'],
+            'synopsis'         => ['nullable', 'string', 'max:5000'],
             'pages'            => ['required', 'string', 'max:5'],
             'language'         => ['required', 'string', 'max:190'],
             'observations'     => ['nullable', 'string', 'max:190'],
