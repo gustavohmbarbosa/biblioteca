@@ -10,12 +10,16 @@ class BookReader extends Model
 
     protected $fillable = ['reader_id', 'book_id', 'estimated_date', 'return_date', 'status'];
 
+    protected $casts = [
+        'estimated_date' => 'date:d/m/Y'
+    ];
+
     public function books()
     {
         return $this->belongsToMany(Book::class)
             ->withPivot([
-                'estimated_date', 
-                'return_date', 
+                'estimated_date',
+                'return_date',
                 'status'])
             ->withTimestamps();
     }
@@ -24,8 +28,8 @@ class BookReader extends Model
     {
         return $this->belongsToMany(Reader::class)
             ->withPivot([
-                'estimated_date', 
-                'return_date', 
+                'estimated_date',
+                'return_date',
                 'status'])
             ->withTimestamps();
     }
