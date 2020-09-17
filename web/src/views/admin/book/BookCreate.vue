@@ -11,8 +11,26 @@
           <author-create-sidebar :isSidebarActive="addNewSidebarToAuthorCreate"
             @closeSidebar="toggleAuthorCreateSidebar" :data="authorCreateSidebar" />
 
+          <!-- ISBN -->
+          <div class="vx-col w-full  mb-6">
+            <label>ISBN</label>
+            <vx-input-group>
+              <vs-input class="w-full" icon-pack="feather" icon="icon-code" icon-no-border placeholder="ISBN"
+                v-model="book.isbn" maxlength="13" />
+              <template slot="append">
+                <div class="append-text btn-addon">
+                  <vs-button color="primary" icon-pack="feather" icon="icon-search" @click.prevent="searchBook(book.isbn)">
+                  </vs-button>
+                </div>
+              </template>
+            </vx-input-group>
+            <div class="text-danger text-sm" v-if="validations.isbn">
+              <span v-show="validations.isbn">{{ validations.isbn[0] }}</span>
+            </div>
+          </div>
+
           <!-- Title -->
-          <div class="vx-col  w-full mb-6">
+          <div class="vx-col w-full mb-6">
             <label>Título</label>
             <vs-input class="w-full" icon-pack="feather" icon="icon-book" icon-no-border placeholder="Título"
               v-model="book.title" />
@@ -74,16 +92,6 @@
               placeholder="Nº de Páginas" v-model="book.pages" />
             <div class="text-danger text-sm" v-if="validations.pages">
               <span v-show="validations.pages">{{ validations.pages[0] }}</span>
-            </div>
-          </div>
-
-          <!-- ISBN -->
-          <div class="vx-col w-full  mb-6">
-            <label>ISBN</label>
-            <vs-input class="w-full" icon-pack="feather" icon="icon-code" icon-no-border placeholder="ISBN"
-              v-model="book.isbn" />
-            <div class="text-danger text-sm" v-if="validations.isbn">
-              <span v-show="validations.isbn">{{ validations.isbn[0] }}</span>
             </div>
           </div>
 
@@ -152,7 +160,7 @@
           <div class="w-full mb-6">
             <label>Publicação</label>
             <vs-input class="w-full" icon-pack="feather" icon="icon-calendar" icon-no-border
-              placeholder="Ano de Matrícula" v-model="book.publication_year" />
+              placeholder="Ano de Publicação" v-model="book.publication_year" />
             <div class="text-danger text-sm" v-if="validations.publication_year">
               <span v-show="validations.publication_year">{{ validations.publication_year[0] }}</span>
             </div>
@@ -235,7 +243,7 @@
 
         </vs-tab>
       </vs-tabs>
-      
+
     </vx-card>
   </div>
 </template>
@@ -251,6 +259,8 @@
   import moduleCompanyManagement from '@/store/admin/company/moduleCompanyManagement.js'
   import moduleAuthorManagement from '@/store/admin/author/moduleAuthorManagement.js'
 
+  import axios from 'axios'
+
 
   export default {
     data() {
@@ -263,7 +273,7 @@
           isbn: '',
           synopsis: '',
           pages: '',
-          language: 'Português',
+          language: 'pt',
           observations: '',
           edition: '',
           publication_year: null,
@@ -403,6 +413,54 @@
       toggleAuthorCreateSidebar(val = false) {
         this.addNewSidebarToAuthorCreate = val
         this.setAuthorLabel = true
+      },
+      async searchBook(isbn) {
+        this.$vs.loading({
+          container: '#form-container',
+          scale: 0.6
+        })
+
+        try {
+          const response = await this.getBookByIsbn(isbn)
+          const requestedBook = await response.json()
+          const bookData = await requestedBook.items[0].volumeInfo
+
+          // this.resetData()
+
+          this.fillFormWithBookData(bookData)
+
+          this.$vs.loading.close("#form-container > .con-vs-loading")
+          this.$vs.notify({
+            title: "Livro Encontrado",
+            text: "Por favor verifique os campos.",
+            color: "success",
+            iconPack: 'feather',
+            icon: 'icon-check',
+          })
+        } catch (error) {
+          this.$vs.loading.close("#form-container > .con-vs-loading")
+          this.$vs.notify({
+            title: "Error :(",
+            text: "Desculpe, não foi possível encontrar o livro com o ISBN informado",
+            color: "danger",
+            iconPack: 'feather',
+            icon: 'icon-check',
+          })
+        }
+      },
+      getBookByIsbn(isbn) {
+        return fetch(`https://www.googleapis.com/books/v1/volumes?q=isbn:${isbn}`)
+      },
+      fillFormWithBookData(data) {
+        const book = this.book
+
+        book.title            = data.title
+        book.subtitle         = data.subtitle
+        book.pages            = data.pageCount
+        book.cape             = data.imageLinks.thumbnail
+        book.showCape         = data.imageLinks.thumbnail
+        book.publication_year = data.publishedDate
+        book.synopsis         = data.description
       }
     },
     watch: {
