@@ -11,6 +11,15 @@
 
   <div id="page-reader-list">
 
+    <vx-card ref="filterCard" title="Filtros" class="reader-list-filters mb-8" actionButtons @refresh="resetColFilters" @remove="resetColFilters">
+      <div class="vx-row">
+        <div class="vx-col w-full">
+          <label class="text-sm opacity-75">Status</label>
+          <v-select :options="statusOptions" :clearable="false" :dir="$vs.rtl ? 'rtl' : 'ltr'" v-model="statusFilter" class="mb-4 md:mb-0" />
+        </div>
+      </div>
+    </vx-card>
+
     <div class="vx-card p-6">
 
       <div class="flex flex-wrap items-center">
@@ -19,7 +28,7 @@
         <div class="flex-grow">
           <vs-dropdown vs-trigger-click class="cursor-pointer">
             <div class="p-4 border border-solid d-theme-border-grey-light rounded-full d-theme-dark-bg cursor-pointer flex items-center justify-between font-medium">
-              <span class="mr-2">{{ currentPage * paginationPageSize - (paginationPageSize - 1) }} - {{ booksData.length - currentPage * paginationPageSize > 0 ? currentPage * paginationPageSize : booksData.length }} de {{ booksData.length }}</span>
+              <span class="mr-2">{{ currentPage * paginationPageSize - (paginationPageSize - 1) }} - {{ loansData.length - currentPage * paginationPageSize > 0 ? currentPage * paginationPageSize : loansData.length }} de {{ loansData.length }}</span>
               <feather-icon icon="ChevronDownIcon" svgClasses="h-4 w-4" />
             </div>
             <!-- <vs-button class="btn-drop" type="line" color="primary" icon-pack="feather" icon="icon-chevron-down"></vs-button> -->
@@ -39,6 +48,8 @@
               </vs-dropdown-item>
             </vs-dropdown-menu>
           </vs-dropdown>
+
+
         </div>
 
         <!-- TABLE ACTION COL-2: SEARCH & EXPORT AS CSV -->
@@ -100,7 +111,7 @@
         class="ag-theme-material w-100 my-4 ag-grid-table"
         :columnDefs="columnDefs"
         :defaultColDef="defaultColDef"
-        :rowData="booksData"
+        :rowData="loansData"
         rowSelection="multiple"
         colResizeDefault="shift"
         :animateRows="true"
@@ -127,12 +138,15 @@ import '@/assets/scss/vuexy/extraComponents/agGridStyleOverride.scss'
 import vSelect from 'vue-select'
 
 // Store Module
-import moduleBookManagement from '@/store/admin/book/moduleBookManagement.js'
+import moduleLoanManagement from '@/store/admin/loan/moduleLoanManagement.js'
 
 // Cell Renderer
 import CellRendererActions from "./cell-renderer/CellRendererActions.vue"
-import CellRendererAuthors from "./cell-renderer/CellRendererAuthors.vue"
-
+import CellRendererReaderName from "./cell-renderer/CellRendererReaderName.vue"
+import CellRendererBookTitle from "./cell-renderer/CellRendererBookTitle.vue"
+import CellRendererClass from "./cell-renderer/CellRendererClass.vue"
+import CellRendererStatus from "./cell-renderer/CellRendererStatus.vue"
+import CellRendererReturnDate from './cell-renderer/CellRendererReturnDate.vue'
 
 export default {
   components: {
@@ -141,16 +155,22 @@ export default {
 
     // Cell Renderer
     CellRendererActions,
-    CellRendererAuthors
+    CellRendererReaderName,
+    CellRendererBookTitle,
+    CellRendererClass,
+    CellRendererStatus,
+    CellRendererReturnDate
   },
   data() {
     return {
 
       // Filter Options
-      roleOptions: [
+      statusFilter: { label: 'Todos', value: 'all' },
+      statusOptions: [
         { label: 'Todos', value: 'all' },
-        { label: 'Nome', value: 'name' },
-        { label: 'Email', value: 'email' },
+        { label: 'Ativado', value: 'Ativo' },
+        { label: 'Desativado', value: 'Inativo' },
+        { label: 'Pendente', value: 'Pendente' },
       ],
 
       searchQuery: "",
@@ -173,23 +193,30 @@ export default {
           headerCheckboxSelection: true,
         },
         {
-          headerName: 'Título',
-          field: 'title',
+          headerName: 'Leitor',
+          field: 'reader_name',
           filter: true,
-          width: 275
+          width: 250,
+          cellRendererFramework: 'CellRendererReaderName'
         },
         {
-          headerName: 'Autor',
-          field: 'authors',
+          headerName: 'Livro',
+          field: 'book_title',
           filter: true,
-          width: 245,
-          cellRendererFramework: 'CellRendererAuthors',
+          width: 225,
+          cellRendererFramework: 'CellRendererBookTitle',
         },
         {
-          headerName: 'Compania',
-          field: 'company.name',
-          filter: true,
-          width: 230
+          headerName: 'Status',
+          field: 'status',
+          width: 125,
+          cellRendererFramework: 'CellRendererStatus',
+        },
+        {
+          headerName: 'Entrega',
+          field: 'return_date',
+          width: 150,
+          cellRendererFramework: 'CellRendererReturnDate'
         },
         {
           headerName: 'Ações',
@@ -202,7 +229,10 @@ export default {
       // Cell Renderer Components
       components: {
         CellRendererActions,
-        CellRendererAuthors
+        CellRendererReaderName,
+        CellRendererBookTitle,
+        CellRendererClass,
+        CellRendererReturnDate
       },
 
       // For Excel Export
@@ -211,11 +241,14 @@ export default {
       formats:["xlsx", "csv", "txt"] ,
       cellAutoWidth: true,
       selectedFormat: "xlsx",
-      headerTitle: ["Id", "Título", "Subtítulo", "Origem", "Preço", "ISBN", "Páginas", "Língua", "Edição", "Data de Publicação", "Cor", "CDD"],
-      headerVal: ["id", "title", "subtitle", "origin", "price", "isbn", "pages", "language", "edition", "publication_year", "color", "cdd"],
+      headerTitle: ["Id", "Nome do Leitor", "Título do Livro", "Status", "Data de Entrega Estimada", "Data de Devolução"],
+      headerVal: ["id", "reader_name", "book_title", "status", "estimated_date", "return_date"],
     }
   },
   watch: {
+    statusFilter(obj) {
+      this.setColumnFilter("status", obj.value)
+    },
     isVerifiedFilter(obj) {
       let val = obj.value === "all" ? "all" : obj.value == "yes" ? "true" : "false"
       this.setColumnFilter("is_verified", val)
@@ -225,8 +258,8 @@ export default {
     },
   },
   computed: {
-    booksData() {
-      return this.$store.state.bookManagement.books
+    loansData() {
+      return this.$store.state.loanManagement.loans
     },
     paginationPageSize() {
       if(this.gridApi) return this.gridApi.paginationGetPageSize()
@@ -258,6 +291,16 @@ export default {
       filter.setModel(modelObj)
       this.gridApi.onFilterChanged()
     },
+    resetColFilters() {
+      // Reset Grid Filter
+      this.gridApi.setFilterModel(null)
+      this.gridApi.onFilterChanged()
+
+      // Reset Filter Options
+      this.roleFilter = this.statusFilter = this.isVerifiedFilter = this.departmentFilter = { label: 'Todos', value: 'all' }
+
+      this.$refs.filterCard.removeRefreshAnimation()
+    },
     updateSearchQuery(val) {
       this.gridApi.setQuickFilter(val)
     },
@@ -268,7 +311,7 @@ export default {
     // For Excel Export
     exportToExcel() {
       import('@/vendor/Export2Excel').then(excel => {
-        const list = this.$store.state.bookManagement.books
+        const list = this.$store.state.loanManagement.loans
         const data = this.formatJson(this.headerVal, list)
         excel.export_json_to_excel({
           header: this.headerTitle,
@@ -293,6 +336,11 @@ export default {
   },
   mounted() {
     this.gridApi = this.gridOptions.api
+    // this.gridOptions.getRowStyle = (params) => {
+    //   if (params.data.status === 'Pendente'){
+    //     return { background: 'rgba(234, 84, 85, .15)' };
+    //   }
+    // }
 
     /* =================================================================
       NOTE:
@@ -304,19 +352,19 @@ export default {
       header.style.left = "-" + String(Number(header.style.transform.slice(11,-3)) + 9) + "px"
     }
 
-    // Loading for Books Request
+    // Loading for Loans Request
     this.$vs.loading({
       container: '#datatable-list',
       scale: 0.6
     })
   },
   created() {
-    if(!moduleBookManagement.isRegistered) {
-      this.$store.registerModule('bookManagement', moduleBookManagement)
-      moduleBookManagement.isRegistered = true
+    if(!moduleLoanManagement.isRegistered) {
+      this.$store.registerModule('loanManagement', moduleLoanManagement)
+      moduleLoanManagement.isRegistered = true
     }
 
-    this.$store.dispatch("bookManagement/index")
+    this.$store.dispatch("loanManagement/index")
     .then(() => {
       this.$vs.loading.close("#datatable-list > .con-vs-loading")
     })
@@ -358,6 +406,11 @@ export default {
       top: 50%;
       transform: translateY(-58%);
     }
+  }
+  .danger-row {
+    background: rgba(var(--vs-danger),.15);
+    color: rgba(var(--vs-danger),1) !important;
+    font-weight: 500;
   }
 }
 </style>

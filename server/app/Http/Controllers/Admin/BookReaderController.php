@@ -37,15 +37,18 @@ class BookReaderController extends Controller
         ->join('readers', 'readers.id', '=', 'book_reader.reader_id')
         ->join('courses', 'courses.id', '=', 'readers.course_id')
         ->select(
-            'books.title',
-            'books.subtitle',
-            'readers.name AS name',
-            'readers.grade',
-            'readers.class',
-            'readers.course_id',
-            'courses.name AS course_name',
+            'books.title AS book_title',
+            'readers.name AS reader_name',
+            'readers.image AS reader_image',
             'book_reader.*',
-        )->paginate(10);
+        )->get();
+
+        foreach($loans as $loan) {
+            if (!is_null($loan->reader_image))
+                $loan->reader_image = asset('storage/' . $loan->reader_image);
+
+            $loan->estimated_date = date('d/m/Y', strtotime($loan->estimated_date));
+        }
 
         return response()->json($loans);
     }

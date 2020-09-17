@@ -219,6 +219,23 @@ const router = new Router({
               },
               // Books/>
 
+              // Loans
+              {
+                path: '/emprestimos',
+                name: 'admin-loan-list',
+                component: () => import('@/views/admin/loan/loan-list/LoanList.vue'),
+                meta: {
+                    breadcrumb: [
+                        { title: 'Home', url: '/' },
+                        { title: 'Empréstimos' },
+                        { title: 'Listar', active: true },
+                    ],
+                    pageTitle: 'Lista de Empréstimos',
+                    rule: 'editor'
+                },
+              },
+              // Loans />
+
               // Authors
               {
                 path: '/autores',
