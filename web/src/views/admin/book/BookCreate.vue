@@ -19,7 +19,7 @@
                 v-model="book.isbn" maxlength="13" />
               <template slot="append">
                 <div class="append-text btn-addon">
-                  <vs-button color="primary" icon-pack="feather" icon="icon-search" @click.prevent="searchBook(book.isbn)">
+                  <vs-button color="primary" icon-pack="feather" icon="icon-search" @click.prevent="searchBookByIsbn(book.isbn);resetData()">
                   </vs-button>
                 </div>
               </template>
@@ -341,16 +341,6 @@
 
         return data
       },
-      storeBook(book) {
-        const config = {
-          headers: {
-            'content-type': 'multipart/form-data',
-            'Access-Control-Allow-Origin': '*'
-          }
-        }
-
-        return this.$store.dispatch('bookManagement/store', book, config)
-      },
       async notifyBookStored(book) {
         this.$vs.loading({
           container: '#form-container',
@@ -379,6 +369,16 @@
           })
           this.validations = error.response.data.errors
         }
+      },
+      storeBook(book) {
+        const config = {
+          headers: {
+            'content-type': 'multipart/form-data',
+            'Access-Control-Allow-Origin': '*'
+          }
+        }
+
+        return this.$store.dispatch('bookManagement/store', book, config)
       },
       updateImg(input) {
         if (input.target.files && input.target.files[0]) {
@@ -414,20 +414,20 @@
         this.addNewSidebarToAuthorCreate = val
         this.setAuthorLabel = true
       },
-      async searchBook(isbn) {
+      async searchBookByIsbn(isbn) {
         this.$vs.loading({
           container: '#form-container',
           scale: 0.6
         })
 
         try {
-          const response = await this.getBookByIsbn(isbn)
-          const requestedBook = await response.json()
-          const bookData = await requestedBook.items[0].volumeInfo
+          const response     = await this.getBookByIsbn(isbn)
+          const obtainedBook = await response.json()
+          let   bookData     = await obtainedBook.items[0].volumeInfo
 
-          // this.resetData()
+          bookData.isbn = isbn
 
-          this.fillFormWithBookData(bookData)
+          this.fillFormWithDataFromTheBookObtained(bookData)
 
           this.$vs.loading.close("#form-container > .con-vs-loading")
           this.$vs.notify({
@@ -440,8 +440,8 @@
         } catch (error) {
           this.$vs.loading.close("#form-container > .con-vs-loading")
           this.$vs.notify({
-            title: "Error :(",
-            text: "Desculpe, não foi possível encontrar o livro com o ISBN informado",
+            title: "Desculpe, algo deu errado",
+            text: "Por favor verifique o ISBN ou preencha manualmente",
             color: "danger",
             iconPack: 'feather',
             icon: 'icon-check',
@@ -451,9 +451,10 @@
       getBookByIsbn(isbn) {
         return fetch(`https://www.googleapis.com/books/v1/volumes?q=isbn:${isbn}`)
       },
-      fillFormWithBookData(data) {
+      fillFormWithDataFromTheBookObtained(data) {
         const book = this.book
 
+        book.isbn             = data.isbn
         book.title            = data.title
         book.subtitle         = data.subtitle
         book.pages            = data.pageCount
@@ -461,7 +462,55 @@
         book.showCape         = data.imageLinks.thumbnail
         book.publication_year = data.publishedDate
         book.synopsis         = data.description
-      }
+        book.language         = data.language
+
+        this.sendAuthorsToCheck(data.authors)
+      
+      },
+      sendAuthorsToCheck(authors) {
+        authors.forEach((authorName) => {
+          this.checkAuthorToSet(authorName)
+        }) 
+      },
+      checkAuthorToSet(authorName) {
+        try {
+          const authors = this.authors
+          
+          const checkedAuthor = authors.filter((author) => {
+            if (author.name == authorName)
+              return author
+          })[0]
+
+          this.setAuthorInBook(checkedAuthor)
+        
+        } catch (error) {
+          this.setStoredAuthor(authorName)
+        }
+      },
+      async setStoredAuthor(authorName) {
+        try {
+          const authorStored     = await this.storeAuthor(authorName)
+          const authorStoredData = await authorStored.data
+          
+          this.setAuthorInBook(authorStoredData)
+        } catch (error) {
+          this.$vs.notify({
+            title: "Não foi possível cadastrar o autor",
+            text: "Cadastre o autor manualmente",
+            color: "danger",
+            iconPack: 'feather',
+            icon: 'icon-check',
+          })
+        }
+      },
+      storeAuthor(authorName) {
+        const author = { name: authorName }
+
+        return this.$store.dispatch('authorManagement/store', author)
+      },
+      setAuthorInBook(author) {
+        this.book.author_id.push(author.id)
+      },
     },
     watch: {
       'book.origin': function (origin) {
@@ -471,7 +520,7 @@
       },
       'authors': function (authors) {
         if (this.setAuthorLabel) {
-          this.book.author_id.push(authors[authors.length - 1].id)
+          this.setAuthorInBook(authors[authors.length - 1])
         }
       },
       'companies': function (companies) {
