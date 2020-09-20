@@ -11,16 +11,6 @@ import axios from "@/axios.js"
 import storage from "./storage.js"
 
 export default {
-  // addItem({ commit }, item) {
-  //   return new Promise((resolve, reject) => {
-  //     axios.post("/api/data-list/products/", {item: item})
-  //       .then((response) => {
-  //         commit('ADD_ITEM', Object.assign(item, {id: response.data.id}))
-  //         resolve(response)
-  //       })
-  //       .catch((error) => { reject(error) })
-  //   })
-  // },
   doLogin({ dispatch }, payload) {
     return new Promise((resolve, reject) => {
       axios.post("admin/login", payload)

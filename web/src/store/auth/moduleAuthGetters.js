@@ -15,5 +15,8 @@ export default {
     } else {
       return false
     }
+  },
+  getUser({ user }) {
+    return user
   }
 }

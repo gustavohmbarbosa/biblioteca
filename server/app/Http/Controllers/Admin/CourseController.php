@@ -97,6 +97,8 @@ class CourseController extends Controller
             return $this->errorMessage("Curso não encontrado.");
         }
 
+        $course->readers()->detach();
+
         $course->delete();
 
         return $this->message('Curso de ' . $course->name . ' deletado com sucesso!', $course->id);

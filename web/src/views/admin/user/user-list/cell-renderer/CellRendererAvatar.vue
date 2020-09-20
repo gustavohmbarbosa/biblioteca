@@ -6,7 +6,7 @@
 </template>
 
 <script>
-    export default {
-      name: 'CellRendererAvatar'
-    }
+  export default {
+    name: 'CellRendererAvatar'
+  }
 </script>

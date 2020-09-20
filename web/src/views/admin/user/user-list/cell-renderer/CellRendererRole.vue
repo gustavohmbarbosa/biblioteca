@@ -1,26 +1,27 @@
 <template>
-    <vs-chip class="ag-grid-cell-chip" :color="chipColor(params.value)">
-      <span>{{ params.value }}</span>
-    </vs-chip>
+  <vs-chip class="ag-grid-cell-chip" :color="chipColor(params.value)">
+    <span>{{ params.value }}</span>
+  </vs-chip>
 </template>
 
 <script>
-    export default {
-        name: 'CellRendererRole',
-        computed: {
-          chipColor() {
-            return (value) => {
-              if(value === "Master") return "success"
-              else if(value === "Comum") return "primary"
-              else if(value === "Staff") return "warning"
-              else "danger"
-            }
-          }
+  export default {
+    name: 'CellRendererRole',
+    computed: {
+      chipColor() {
+        return (value) => {
+          if(value === "Master") return "success"
+          else if(value === "Comum") return "primary"
+          else if(value === "Staff") return "warning"
+          else "danger"
         }
+      }
     }
+  }
 </script>
 
 <style lang="scss" scoped>
+
 .ag-grid-cell-chip {
   &.vs-chip-success {
     background: rgba(var(--vs-success),.15);
@@ -38,4 +39,5 @@
     font-weight: 500;
   }
 }
+
 </style>
