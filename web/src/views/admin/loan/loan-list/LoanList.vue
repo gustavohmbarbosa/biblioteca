@@ -1,16 +1,5 @@
-<!-- =========================================================================================
-  File Name: UserList.vue
-  Description: User List page
-  ----------------------------------------------------------------------------------------
-  Item Name: Vuexy - Vuejs, HTML & Laravel Admin Dashboard Template
-  Author: Pixinvent
-  Author URL: http://www.themeforest.net/user/pixinvent
-========================================================================================== -->
-
 <template>
-
   <div id="page-reader-list">
-
     <vx-card ref="filterCard" title="Filtros" class="reader-list-filters mb-8" actionButtons @refresh="resetColFilters" @remove="resetColFilters">
       <div class="vx-row">
         <div class="vx-col w-full">
@@ -21,7 +10,6 @@
     </vx-card>
 
     <div class="vx-card p-6">
-
       <div class="flex flex-wrap items-center">
 
         <!-- ITEMS PER PAGE -->
@@ -31,9 +19,8 @@
               <span class="mr-2">{{ currentPage * paginationPageSize - (paginationPageSize - 1) }} - {{ loansData.length - currentPage * paginationPageSize > 0 ? currentPage * paginationPageSize : loansData.length }} de {{ loansData.length }}</span>
               <feather-icon icon="ChevronDownIcon" svgClasses="h-4 w-4" />
             </div>
-            <!-- <vs-button class="btn-drop" type="line" color="primary" icon-pack="feather" icon="icon-chevron-down"></vs-button> -->
-            <vs-dropdown-menu>
 
+            <vs-dropdown-menu>
               <vs-dropdown-item @click="gridApi.paginationSetPageSize(10)">
                 <span>10</span>
               </vs-dropdown-item>
@@ -48,59 +35,53 @@
               </vs-dropdown-item>
             </vs-dropdown-menu>
           </vs-dropdown>
-
-
         </div>
 
-        <!-- TABLE ACTION COL-2: SEARCH & EXPORT AS CSV -->
-          <vs-input class="sm:mr-4 mr-0 sm:w-auto w-full sm:order-normal order-3 sm:mt-0 mt-4" v-model="searchQuery" @input="updateSearchQuery" placeholder="Buscar..." />
-          <!-- <vs-button class="mb-4 md:mb-0" @click="gridApi.exportDataAsCsv()">Export as CSV</vs-button> -->
+        <!-- SEARCH INPUT -->
+        <vs-input class="sm:mr-4 mr-0 sm:w-auto w-full sm:order-normal order-3 sm:mt-0 mt-4" v-model="searchQuery" @input="updateSearchQuery" placeholder="Buscar..." />
 
-          <!-- EXPORT PROMPT-->
-          <vs-prompt title="Exportar para Excel" class="export-options" @cancle="clearFields" @accept="exportToExcel" accept-text="Baixar" @close="clearFields" :active.sync="activePrompt">
-            <vs-input v-model="fileName" placeholder="Digite o nome do arquivo.." class="w-full" />
-            <v-select v-model="selectedFormat" :options="formats" class="my-4" />
-            <div class="flex">
-              <span class="mr-4">Células com Tamanho Responsivo:</span>
-              <vs-switch v-model="cellAutoWidth">Tamanho Responsivo</vs-switch>
-            </div>
-          </vs-prompt>
+        <!-- EXPORT PROMPT-->
+        <vs-prompt title="Exportar para Excel" class="export-options" @cancle="clearFields" @accept="exportToExcel" accept-text="Baixar" @close="clearFields" :active.sync="activePrompt">
+          <vs-input v-model="fileName" placeholder="Digite o nome do arquivo.." class="w-full" />
+          <v-select v-model="selectedFormat" :options="formats" class="my-4" />
+          <div class="flex">
+            <span class="mr-4">Células com Tamanho Responsivo:</span>
+            <vs-switch v-model="cellAutoWidth">Tamanho Responsivo</vs-switch>
+          </div>
+        </vs-prompt>
 
-          <vs-button @click="activePrompt=true" class="sm:mr-4">Exportar</vs-button>
+        <vs-button @click="activePrompt=true" class="sm:mr-4">Exportar</vs-button>
 
-          <vs-dropdown vs-trigger-click class="cursor-pointer">
+        <vs-dropdown vs-trigger-click class="cursor-pointer">
+          <div class="p-3 shadow-drop rounded-lg d-theme-dark-light-bg cursor-pointer flex items-end justify-center text-lg font-small w-32">
+            <span class="mr-2 leading-none">Ações</span>
+            <feather-icon icon="ChevronDownIcon" svgClasses="h-4 w-4" />
+          </div>
 
-            <div class="p-3 shadow-drop rounded-lg d-theme-dark-light-bg cursor-pointer flex items-end justify-center text-lg font-small w-32">
-              <span class="mr-2 leading-none">Ações</span>
-              <feather-icon icon="ChevronDownIcon" svgClasses="h-4 w-4" />
-            </div>
+          <vs-dropdown-menu>
+            <vs-dropdown-item>
+              <span class="flex items-center">
+                <feather-icon icon="TrashIcon" svgClasses="h-4 w-4" class="mr-2" />
+                <span>Deletar</span>
+              </span>
+            </vs-dropdown-item>
 
-            <vs-dropdown-menu>
+            <vs-dropdown-item>
+              <span class="flex items-center">
+                <feather-icon icon="ArchiveIcon" svgClasses="h-4 w-4" class="mr-2" />
+                <span>Arquivar</span>
+              </span>
+            </vs-dropdown-item>
 
-              <vs-dropdown-item>
-                <span class="flex items-center">
-                  <feather-icon icon="TrashIcon" svgClasses="h-4 w-4" class="mr-2" />
-                  <span>Deletar</span>
-                </span>
-              </vs-dropdown-item>
-
-              <vs-dropdown-item>
-                <span class="flex items-center">
-                  <feather-icon icon="ArchiveIcon" svgClasses="h-4 w-4" class="mr-2" />
-                  <span>Arquivar</span>
-                </span>
-              </vs-dropdown-item>
-
-              <vs-dropdown-item>
-                <span class="flex items-center">
-                  <feather-icon icon="FileIcon" svgClasses="h-4 w-4" class="mr-2" />
-                  <span>Imprimir</span>
-                </span>
-              </vs-dropdown-item>
-            </vs-dropdown-menu>
-          </vs-dropdown>
+            <vs-dropdown-item>
+              <span class="flex items-center">
+                <feather-icon icon="FileIcon" svgClasses="h-4 w-4" class="mr-2" />
+                <span>Imprimir</span>
+              </span>
+            </vs-dropdown-item>
+          </vs-dropdown-menu>
+        </vs-dropdown>
       </div>
-
 
       <!-- AgGrid Table -->
       <ag-grid-vue
@@ -129,7 +110,6 @@
 
     </div>
   </div>
-
 </template>
 
 <script>

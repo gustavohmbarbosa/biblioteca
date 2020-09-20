@@ -1,15 +1,15 @@
 <template>
-  <div class="the-navbar__user-meta flex items-center" v-if="activeUserInfo.displayName">
+  <div class="the-navbar__user-meta flex items-center" v-if="activeUserInfo.name">
 
     <div class="text-right leading-tight hidden sm:block">
-      <p class="font-semibold">{{ activeUserInfo.displayName }}</p>
-      <small>{{ activeUserInfo.userRole }}</small>
+      <p class="font-semibold">{{ activeUserInfo.name }}</p>
+      <small>{{ activeUserInfo.role }}</small>
     </div>
 
     <vs-dropdown vs-custom-content vs-trigger-click class="cursor-pointer">
 
       <div class="con-img ml-3">
-        <img v-if="activeUserInfo.photoURL" key="onlineImg" :src="activeUserInfo.photoURL" alt="user-img" width="40" height="40" class="rounded-full shadow-md cursor-pointer block" />
+        <vs-avatar :src="activeUserInfo.image" key="onlineImg" class="rounded-full shadow-md cursor-pointer block" size="40px"/>
       </div>
 
       <vs-dropdown-menu class="vx-navbar-dropdown">
@@ -52,7 +52,7 @@ export default {
   },
   computed: {
     activeUserInfo() {
-      return this.$store.state.AppActiveUser
+      return this.$store.state.auth.user
     }
   },
   methods: {

@@ -1,26 +1,27 @@
 <template>
-    <vs-chip class="ag-grid-cell-chip" :color="chipColor(params.value)">
-      <span>{{ params.value }}</span>
-    </vs-chip>
+  <vs-chip class="ag-grid-cell-chip" :color="chipColor(params.value)">
+    <span>{{ params.value }}</span>
+  </vs-chip>
 </template>
 
 <script>
-    export default {
-        name: 'CellRendererStatus',
-        computed: {
-          chipColor() {
-            return (value) => {
-              if(value === "Ativo") return "success"
-              else if(value === "Inativo") return "danger"
-              else if(value === "Bloqueado") return "warning"
-              else "primary"
-            }
-          }
+  export default {
+    name: 'CellRendererStatus',
+    computed: {
+      chipColor() {
+        return (value) => {
+          if(value === "Ativo") return "success"
+          else if(value === "Inativo") return "danger"
+          else if(value === "Bloqueado") return "warning"
+          else "primary"
         }
+      }
     }
+  }
 </script>
 
 <style lang="scss" scoped>
+
 .ag-grid-cell-chip {
   &.vs-chip-success {
     background: rgba(var(--vs-success),.15);
@@ -38,4 +39,5 @@
     font-weight: 500;
   }
 }
+
 </style>

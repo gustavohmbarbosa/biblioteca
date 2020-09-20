@@ -1,16 +1,5 @@
-<!-- =========================================================================================
-  File Name: UserList.vue
-  Description: User List page
-  ----------------------------------------------------------------------------------------
-  Item Name: Vuexy - Vuejs, HTML & Laravel Admin Dashboard Template
-  Author: Pixinvent
-  Author URL: http://www.themeforest.net/user/pixinvent
-========================================================================================== -->
-
 <template>
-
   <div id="page-reader-list">
-
     <vx-card ref="filterCard" title="Filtros" class="reader-list-filters mb-8" actionButtons @refresh="resetColFilters" @remove="resetColFilters">
       <div class="vx-row">
         <div class="vx-col w-full">
@@ -21,7 +10,6 @@
     </vx-card>
 
     <div class="vx-card p-6">
-
       <div class="flex flex-wrap items-center">
 
         <!-- ITEMS PER PAGE -->
@@ -31,9 +19,8 @@
               <span class="mr-2">{{ currentPage * paginationPageSize - (paginationPageSize - 1) }} - {{ usersData.length - currentPage * paginationPageSize > 0 ? currentPage * paginationPageSize : usersData.length }} de {{ usersData.length }}</span>
               <feather-icon icon="ChevronDownIcon" svgClasses="h-4 w-4" />
             </div>
-            <!-- <vs-button class="btn-drop" type="line" color="primary" icon-pack="feather" icon="icon-chevron-down"></vs-button> -->
-            <vs-dropdown-menu>
 
+            <vs-dropdown-menu>
               <vs-dropdown-item @click="gridApi.paginationSetPageSize(10)">
                 <span>10</span>
               </vs-dropdown-item>
@@ -50,55 +37,52 @@
           </vs-dropdown>
         </div>
 
-        <!-- TABLE ACTION COL-2: SEARCH & EXPORT AS CSV -->
-          <vs-input class="sm:mr-4 mr-0 sm:w-auto w-full sm:order-normal order-3 sm:mt-0 mt-4" v-model="searchQuery" @input="updateSearchQuery" placeholder="Buscar..." />
-          <!-- <vs-button class="mb-4 md:mb-0" @click="gridApi.exportDataAsCsv()">Export as CSV</vs-button> -->
+        <!-- SEARCH INPUT -->
+        <vs-input class="sm:mr-4 mr-0 sm:w-auto w-full sm:order-normal order-3 sm:mt-0 mt-4" v-model="searchQuery" @input="updateSearchQuery" placeholder="Buscar..." />
 
-          <!-- EXPORT PROMPT-->
-          <vs-prompt title="Exportar para Excel" class="export-options" @cancle="clearFields" @accept="exportToExcel" accept-text="Baixar" @close="clearFields" :active.sync="activePrompt">
-            <vs-input v-model="fileName" placeholder="Digite o nome do arquivo.." class="w-full" />
-            <v-select v-model="selectedFormat" :options="formats" class="my-4" />
-            <div class="flex">
-              <span class="mr-4">Células com Tamanho Responsivo:</span>
-              <vs-switch v-model="cellAutoWidth">Tamanho Responsivo</vs-switch>
-            </div>
-          </vs-prompt>
+        <!-- EXPORT PROMPT-->
+        <vs-prompt title="Exportar para Excel" class="export-options" @cancle="clearFields" @accept="exportToExcel" accept-text="Baixar" @close="clearFields" :active.sync="activePrompt">
+          <vs-input v-model="fileName" placeholder="Digite o nome do arquivo.." class="w-full" />
+          <v-select v-model="selectedFormat" :options="formats" class="my-4" />
+          <div class="flex">
+            <span class="mr-4">Células com Tamanho Responsivo:</span>
+            <vs-switch v-model="cellAutoWidth">Tamanho Responsivo</vs-switch>
+          </div>
+        </vs-prompt>
 
-          <vs-button @click="activePrompt=true" class="sm:mr-4">Exportar</vs-button>
+        <vs-button @click="activePrompt=true" class="sm:mr-4">Exportar</vs-button>
 
-          <vs-dropdown vs-trigger-click class="cursor-pointer">
+        <!-- ACTIONS DROPDOWN -->
+        <vs-dropdown vs-trigger-click class="cursor-pointer">
+          <div class="p-3 shadow-drop rounded-lg d-theme-dark-light-bg cursor-pointer flex items-end justify-center text-lg font-small w-32">
+            <span class="mr-2 leading-none">Ações</span>
+            <feather-icon icon="ChevronDownIcon" svgClasses="h-4 w-4" />
+          </div>
 
-            <div class="p-3 shadow-drop rounded-lg d-theme-dark-light-bg cursor-pointer flex items-end justify-center text-lg font-small w-32">
-              <span class="mr-2 leading-none">Ações</span>
-              <feather-icon icon="ChevronDownIcon" svgClasses="h-4 w-4" />
-            </div>
+          <vs-dropdown-menu>
+            <vs-dropdown-item>
+              <span class="flex items-center">
+                <feather-icon icon="TrashIcon" svgClasses="h-4 w-4" class="mr-2" />
+                <span>Deletar</span>
+              </span>
+            </vs-dropdown-item>
 
-            <vs-dropdown-menu>
+            <vs-dropdown-item>
+              <span class="flex items-center">
+                <feather-icon icon="ArchiveIcon" svgClasses="h-4 w-4" class="mr-2" />
+                <span>Arquivar</span>
+              </span>
+            </vs-dropdown-item>
 
-              <vs-dropdown-item>
-                <span class="flex items-center">
-                  <feather-icon icon="TrashIcon" svgClasses="h-4 w-4" class="mr-2" />
-                  <span>Deletar</span>
-                </span>
-              </vs-dropdown-item>
-
-              <vs-dropdown-item>
-                <span class="flex items-center">
-                  <feather-icon icon="ArchiveIcon" svgClasses="h-4 w-4" class="mr-2" />
-                  <span>Arquivar</span>
-                </span>
-              </vs-dropdown-item>
-
-              <vs-dropdown-item>
-                <span class="flex items-center">
-                  <feather-icon icon="FileIcon" svgClasses="h-4 w-4" class="mr-2" />
-                  <span>Imprimir</span>
-                </span>
-              </vs-dropdown-item>
-            </vs-dropdown-menu>
-          </vs-dropdown>
+            <vs-dropdown-item>
+              <span class="flex items-center">
+                <feather-icon icon="FileIcon" svgClasses="h-4 w-4" class="mr-2" />
+                <span>Imprimir</span>
+              </span>
+            </vs-dropdown-item>
+          </vs-dropdown-menu>
+        </vs-dropdown>
       </div>
-
 
       <!-- AgGrid Table -->
       <ag-grid-vue
@@ -127,10 +111,10 @@
 
     </div>
   </div>
-
 </template>
 
 <script>
+// Components
 import { AgGridVue } from "ag-grid-vue"
 import '@/assets/scss/vuexy/extraComponents/agGridStyleOverride.scss'
 import vSelect from 'vue-select'
@@ -142,7 +126,6 @@ import moduleUserManagement from '@/store/admin/user/moduleUserManagement.js'
 import CellRendererRole from "./cell-renderer/CellRendererRole.vue"
 import CellRendererActions from "./cell-renderer/CellRendererActions.vue"
 import CellRendererAvatar from "./cell-renderer/CellRendererAvatar.vue"
-
 
 export default {
   components: {
@@ -165,7 +148,6 @@ export default {
         { label: 'Comum', value: 'Comum' },
         { label: 'Staff', value: 'Staff' },
       ],
-
       searchQuery: "",
 
       // AgGrid
@@ -220,7 +202,7 @@ export default {
         CellRendererAvatar,
       },
 
-      // For Excel Export
+      // Excel Exportation
       activePrompt: false,
       fileName: "",
       formats:["xlsx", "csv", "txt"] ,
@@ -290,7 +272,7 @@ export default {
       card.removeRefreshAnimation(3000);
     },
 
-    // For Excel Export
+    // Excel Exportation
     exportToExcel() {
       import('@/vendor/Export2Excel').then(excel => {
         const list = this.$store.state.userManagement.users
@@ -319,11 +301,6 @@ export default {
   mounted() {
     this.gridApi = this.gridOptions.api
 
-    /* =================================================================
-      NOTE:
-      Header is not aligned properly in RTL version of agGrid table.
-      However, we given fix to this issue. If you want more robust solution please contact them at gitHub
-    ================================================================= */
     if(this.$vs.rtl) {
       const header = this.$refs.agGridTable.$el.querySelector(".ag-header-container")
       header.style.left = "-" + String(Number(header.style.transform.slice(11,-3)) + 9) + "px"
@@ -360,19 +337,6 @@ export default {
   }
 }
 </script>
-
-<style lang="scss">
-#page-user-list {
-  .user-list-filters {
-    .vs__actions {
-      position: absolute;
-      right: 0;
-      top: 50%;
-      transform: translateY(-58%);
-    }
-  }
-}
-</style>
 
 <style lang="scss">
 #page-user-list {
