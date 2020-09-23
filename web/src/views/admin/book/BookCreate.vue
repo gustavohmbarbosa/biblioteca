@@ -465,6 +465,7 @@
         book.language         = data.language
 
         this.sendAuthorsToCheck(data.authors)
+        this.checkCompanyToSet(data.publisher)
       
       },
       sendAuthorsToCheck(authors) {
@@ -484,32 +485,29 @@
           this.setAuthorInBook(checkedAuthor)
         
         } catch (error) {
-          this.setStoredAuthor(authorName)
-        }
-      },
-      async setStoredAuthor(authorName) {
-        try {
-          const authorStored     = await this.storeAuthor(authorName)
-          const authorStoredData = await authorStored.data
-          
-          this.setAuthorInBook(authorStoredData)
-        } catch (error) {
-          this.$vs.notify({
-            title: "Não foi possível cadastrar o autor",
-            text: "Cadastre o autor manualmente",
-            color: "danger",
-            iconPack: 'feather',
-            icon: 'icon-check',
-          })
-        }
-      },
-      storeAuthor(authorName) {
-        const author = { name: authorName }
 
-        return this.$store.dispatch('authorManagement/store', author)
+        }
       },
       setAuthorInBook(author) {
         this.book.author_id.push(author.id)
+      },
+      checkCompanyToSet(companyName) {
+        try {
+          const companies = this.companies
+          
+          const checkedCompany = companies.filter((company) => {
+            if (company.name == companyName)
+              return company
+          })[0]
+
+          this.setCompanyInBook(checkedCompany)
+        
+        } catch (error) {
+
+        }
+      },
+      setCompanyInBook(company) {
+        this.book.company_id = company.id
       },
     },
     watch: {
@@ -525,7 +523,7 @@
       },
       'companies': function (companies) {
         if (this.setCompanyLabel) {
-          this.book.company_id = companies[companies.length - 1].id
+          this.setCompanyInBook(companies[companies.length - 1])
         }
       }
     },
