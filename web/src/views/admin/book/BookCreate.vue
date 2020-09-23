@@ -16,7 +16,7 @@
             <label>ISBN</label>
             <vx-input-group>
               <vs-input class="w-full" icon-pack="feather" icon="icon-code" icon-no-border placeholder="ISBN"
-                v-model="book.isbn" maxlength="13" />
+                v-model="book.isbn" v-mask="maskIsbn" />
               <template slot="append">
                 <div class="append-text btn-addon">
                   <vs-button color="primary" icon-pack="feather" icon="icon-search" @click.prevent="searchBookByIsbn(book.isbn);resetData()">
@@ -89,7 +89,7 @@
           <div class="vx-col w-full  mb-6">
             <label>Páginas</label>
             <vs-input class="w-full" icon-pack="feather" icon="icon-book-open" icon-no-border
-              placeholder="Nº de Páginas" v-model="book.pages" />
+              placeholder="Nº de Páginas" v-model="book.pages" v-mask="maskPages" />
             <div class="text-danger text-sm" v-if="validations.pages">
               <span v-show="validations.pages">{{ validations.pages[0] }}</span>
             </div>
@@ -99,7 +99,7 @@
           <div class="vx-col w-full  mb-6">
             <label>Edição</label>
             <vs-input class="w-full" icon-pack="feather" icon="icon-edit" icon-no-border placeholder="Edição"
-              v-model="book.edition" />
+              v-model="book.edition" v-mask="maskEdition" />
             <div class="text-danger text-sm" v-if="validations.edition">
               <span v-show="validations.edition">{{ validations.edition[0] }}</span>
             </div>
@@ -160,9 +160,9 @@
           <div class="w-full mb-6">
             <label>Publicação</label>
             <vs-input class="w-full" icon-pack="feather" icon="icon-calendar" icon-no-border
-              placeholder="Ano de Publicação" v-model="book.publication_year" />
-            <div class="text-danger text-sm" v-if="validations.publication_year">
-              <span v-show="validations.publication_year">{{ validations.publication_year[0] }}</span>
+              placeholder="Ano de Publicação" v-model="book.publicationYear" v-mask="maskPublicationYear" />
+            <div class="text-danger text-sm" v-if="validations.publicationYear">
+              <span v-show="validations.publicationYear">{{ validations.publicationYear[0] }}</span>
             </div>
           </div>
 
@@ -219,7 +219,7 @@
             <div class="vx-col w-full mb-6 sm:w-1/2">
               <label>Preço</label>
               <vs-input class="w-full" icon-pack="feather" icon="icon-dollar-sign" icon-no-border placeholder="Preço"
-                v-model="book.price" :disabled="book.origin != 'Comprado'" />
+                v-model.lazy="book.price" :disabled="book.origin != 'Comprado'" v-money="money" maxlength="7" />
               <div class="text-danger text-sm" v-if="validations.price">
                 <span v-show="validations.price">{{ validations.price[0] }}</span>
               </div>
@@ -251,6 +251,7 @@
 
 <script>
   import vSelect from 'vue-select'
+  import {VMoney} from 'v-money'
 
   import AuthorCreateSidebar from '@/views/admin/author/AuthorCreateSidebar.vue'
   import CompanyCreateSidebar from '@/views/admin/company/CompanyCreateSidebar.vue'
@@ -269,20 +270,29 @@
           title: '',
           subtitle: '',
           origin: 'Doado',
-          price: '',
+          price: null,
           isbn: '',
           synopsis: '',
           pages: '',
           language: 'pt',
           observations: '',
           edition: '',
-          publication_year: null,
+          publicationYear: null,
           color: '',
           cdd: '',
           company_id: null,
           author_id: [],
           cape: null,
           showCape: null,
+        },
+
+        money: {
+          decimal: ',',
+          thousands: '.',
+          prefix: '',
+          suffix: '',
+          precision: 2,
+          masked: true /* doesn't work with directive */
         },
 
         companies: [],
@@ -313,7 +323,12 @@
         textarea: ['', ''],
         counterDanger: [false, false],
 
-        validations: {}
+        validations: {},
+
+        maskIsbn: "#############",
+        maskPages: "#####",
+        maskEdition: "###",
+        maskPublicationYear: "####",
       }
     },
     components: {
@@ -321,6 +336,9 @@
       CompanyCreateSidebar,
       AuthorCreateSidebar,
 
+    },
+    directives: {
+      money: VMoney
     },
     methods: {
       submitBook(book) {
@@ -330,13 +348,24 @@
       },
       bookInFormData(book) {
         let data = new FormData()
-        Object.entries(book).forEach(([key, value]) => {
-          if (key == 'author_id')
-            value.forEach((value, key) => {
-              data.append('author_id[' + key + ']', value)
-            })
-          else
-            data.append(key, value)
+
+        data.append('cape', book.cape)
+        data.append('title', book.title)
+        data.append('subtitle', book.subtitle) 
+        data.append('origin', book.origin) 
+        data.append('price', this.formatPrice(book.price))
+        data.append('isbn', book.isbn)
+        data.append('synopsis', book.synopsis) 
+        data.append('pages', book.pages) 
+        data.append('language', book.language) 
+        data.append('observations', book.observations) 
+        data.append('edition', book.edition) 
+        data.append('publication_year', book.publicationYear) 
+        data.append('color', book.color) 
+        data.append('cdd', book.cdd)
+        data.append('company_id', book.company_id)
+        book.author_id.forEach((value, key) => {
+          data.append('author_id[' + key + ']', value)
         })
 
         return data
@@ -379,6 +408,12 @@
         }
 
         return this.$store.dispatch('bookManagement/store', book, config)
+      },
+      formatPrice(price) {
+        price = price.split(".").join("")
+        price = price.split(",").join(".")
+
+        return price
       },
       updateImg(input) {
         if (input.target.files && input.target.files[0]) {
@@ -460,7 +495,7 @@
         book.pages            = data.pageCount
         book.cape             = data.imageLinks.thumbnail
         book.showCape         = data.imageLinks.thumbnail
-        book.publication_year = data.publishedDate
+        book.publicationYear = data.publishedDate
         book.synopsis         = data.description
         book.language         = data.language
 

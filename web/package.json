@@ -27,6 +27,7 @@
     "postcss-rtl": "^1.5.0",
     "prismjs": "^1.16.0",
     "v-mask": "^2.2.3",
+    "v-money": "^0.8.1",
     "vee-validate": "^2.2.8",
     "vue": "^2.6.10",
     "vue-acl": "4.0.7",
