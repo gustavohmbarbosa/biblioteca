@@ -6,7 +6,9 @@ use Illuminate\Database\Eloquent\Model;
 
 class Company extends Model
 {
-    protected $fillable = ['name'];
+    protected $fillable = [
+        'name', 'created_at', 'updated_at'
+    ];
 
     protected $casts = [
         'created_at' => 'datetime:d/m/Y H:i:s',

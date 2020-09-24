@@ -46,8 +46,6 @@ class BookReaderController extends Controller
         foreach($loans as $loan) {
             if (!is_null($loan->reader_image))
                 $loan->reader_image = asset('storage/' . $loan->reader_image);
-
-            $loan->estimated_date = date('d/m/Y', strtotime($loan->estimated_date));
         }
 
         return response()->json($loans);
@@ -89,6 +87,7 @@ class BookReaderController extends Controller
         'readers.name',
         'readers.grade',
         'readers.class',
+        'readers.image',
         'courses.name as course_name'
         )->get()->first();
 

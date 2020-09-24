@@ -33,6 +33,15 @@ export default {
         })
     })
   },
+  show(context, companyId) {
+    return new Promise((resolve, reject) => {
+      axios.get(`admin/companies/${companyId}`)
+        .then((response) => {
+          resolve(response)
+        })
+        .catch((error) => { reject(error) })
+    })
+  },
   destroy({ commit }, companyId) {
     return new Promise((resolve, reject) => {
       axios.delete(`admin/companies/${companyId}`)
