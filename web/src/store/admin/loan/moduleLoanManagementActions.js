@@ -39,9 +39,9 @@ export default {
       .catch((error) => { reject(error) })
     })
   },
-  show(context, readerId) {
+  show(context, loanId) {
     return new Promise((resolve, reject) => {
-      axios.get(`admin/readers/${readerId}`)
+      axios.get(`admin/loans/${loanId}`)
         .then((response) => {
           resolve(response)
         })

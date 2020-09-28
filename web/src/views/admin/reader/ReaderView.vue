@@ -3,12 +3,10 @@
 
     <vs-alert color="danger" title="Leitor Não Encontrado" :active.sync="reader_not_found">
       <span>O leitor com id {{ $route.params.readerId }} não foi encontrado. </span>
-      <span>
-        <span>Verificar </span><router-link :to="{name:'admin-reader-list'}" class="text-inherit underline">Todos Os Leitores</router-link>
-      </span>
+      <span>Verificar </span><router-link :to="{name:'admin-reader-list'}" class="text-inherit underline">Todos Os Leitores</router-link>
     </vs-alert>
 
-    <div id="user-data" v-if="reader">
+    <div id="user-data">
 
       <vx-card title="Registro" class="mb-base" id="data-show">
 
@@ -140,10 +138,10 @@ export default {
   },
   mounted() {
     // Loading for Readers Request
-    this.$vs.loading({
-      container: '#data-show',
-      scale: 0.6
-    })
+    // this.$vs.loading({
+    //   container: '#data-show',
+    //   scale: 0.6
+    // })
   },
   created() {
     // Register Module ReaderManagement Module
@@ -157,11 +155,16 @@ export default {
     this.$store.dispatch("readerManagement/show", readerId)
       .then(res => {
         this.reader = res.data
-        this.$vs.loading.close("#data-show > .con-vs-loading")
+        // this.$vs.loading.close("#data-show > .con-vs-loading")
       })
       .catch(err => {
+        if(err.response.status === 404) {
+          this.reader_not_found = true
+          return
+        }
+        console.error(err)
         this.showDeleteFailed(err.data.message)
-        this.$vs.loading.close("#data-show > .con-vs-loading")
+        // this.$vs.loading.close("#data-show > .con-vs-loading")
       })
   }
 }
@@ -192,33 +195,11 @@ export default {
   }
 }
 
-// #account-info-col-1 {
-//   // flex-grow: 1;
-//   width: 30rem !important;
-//   @media screen and (min-width:1200px) {
-//     & {
-//       flex-grow: unset !important;
-//     }
-//   }
-// }
-
-
 @media screen and (min-width:1201px) and (max-width:1211px),
 only screen and (min-width:636px) and (max-width:991px) {
   #account-info-col-1 {
     width: calc(100% - 12rem) !important;
   }
-
-  // #account-manage-buttons {
-  //   width: 12rem !important;
-  //   flex-direction: column;
-
-  //   > button {
-  //     margin-right: 0 !important;
-  //     margin-bottom: 1rem;
-  //   }
-  // }
-
 }
 
 </style>

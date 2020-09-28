@@ -1,76 +1,60 @@
-<!-- =========================================================================================
-  File Name: UserView.vue
-  Description: User View page
-  ----------------------------------------------------------------------------------------
-  Item Name: Vuexy - Vuejs, HTML & Laravel Admin Dashboard Template
-  Author: Pixinvent
-  Author URL: http://www.themeforest.net/user/pixinvent
-========================================================================================== -->
-
 <template>
   <div id="page-user-view">
 
-    <vs-alert color="danger" title="User Not Found" :active.sync="user_not_found">
-      <span>User record with id: {{ $route.params.userId }} not found. </span>
+    <vs-alert color="danger" title="Empréstimo Não Encontrado" :active.sync="loan_not_found">
+      <span>O empréstimo com id {{ $route.params.loanId }} não foi encontrado. </span>
       <span>
-        <span>Check </span><router-link :to="{name:'page-user-list'}" class="text-inherit underline">All Users</router-link>
+        <span>Verificar </span><router-link :to="{name:'admin-loan-list'}" class="text-inherit underline">Todos Os Leitores</router-link>
       </span>
     </vs-alert>
 
-    <div id="user-data" v-if="user_data">
+    <div id="user-data" v-if="loan">
 
-      <vx-card title="Account" class="mb-base">
+      <vx-card :title="'Dados do Leitor #' + loan.reader_id" class="mb-base data-show">
 
-        <!-- Avatar -->
         <div class="vx-row">
 
-          <!-- Avatar Col -->
-          <div class="vx-col" id="avatar-col">
+          <!-- Reader image Col -->
+          <div class="vx-col" id="image-col">
             <div class="img-container mb-4">
-              <img :src="user_data.avatar" class="rounded w-full" />
+              <img v-if="loan.reader_image" :src="loan.reader_image" class="rounded w-full" />
+              <img v-else src="../../../assets/images/user-image.png" class="rounded w-full">
             </div>
           </div>
 
-          <!-- Information - Col 1 -->
+          <!-- Reader Datas -->
           <div class="vx-col flex-1" id="account-info-col-1">
             <table>
               <tr>
-                <td class="font-semibold">Username</td>
-                <td>{{ user_data.username }}</td>
-              </tr>
-              <tr>
-                <td class="font-semibold">Name</td>
-                <td>{{ user_data.name }}</td>
+                <td class="font-semibold">Nome</td>
+                <td>{{ loan.reader_name }}</td>
               </tr>
               <tr>
                 <td class="font-semibold">Email</td>
-                <td>{{ user_data.email }}</td>
+                <td>{{ loan.reader_email }}</td>
+              </tr>
+              <tr>
+                <td class="font-semibold">Telefone</td>
+                <td>{{ loan.reader_phone }}</td>
               </tr>
             </table>
           </div>
-          <!-- /Information - Col 1 -->
 
-          <!-- Information - Col 2 -->
-          <div class="vx-col flex-1" id="account-info-col-2">
+          <div class="vx-col flex-1" id="account-info-col-1">
             <table>
               <tr>
-                <td class="font-semibold">Status</td>
-                <td>{{ user_data.status }}</td>
+                <td class="font-semibold">Sala</td>
+                <td>{{ loan.reader_grade + 'º Ano "' + loan.reader_class + '"'}}</td>
               </tr>
               <tr>
-                <td class="font-semibold">Role</td>
-                <td>{{ user_data.role }}</td>
-              </tr>
-              <tr>
-                <td class="font-semibold">Company</td>
-                <td>{{ user_data.company }}</td>
+                <td class="font-semibold">Curso</td>
+                <td>{{ loan.course_name }}</td>
               </tr>
             </table>
           </div>
-          <!-- /Information - Col 2 -->
+
           <div class="vx-col w-full flex" id="account-manage-buttons">
-            <vs-button icon-pack="feather" icon="icon-edit" class="mr-4" :to="{name: 'app-user-edit', params: { userId: $route.params.userId }}">Edit</vs-button>
-            <vs-button type="border" color="danger" icon-pack="feather" icon="icon-trash" @click="confirmDeleteRecord">Delete</vs-button>
+            <vs-button icon-pack="feather" icon="icon-eye" type="border" class="mr-4" :to="{name: 'admin-reader-view', params: { readerId: loan.reader_id }}">Visualizar</vs-button>
           </div>
 
         </div>
@@ -78,124 +62,97 @@
       </vx-card>
 
       <div class="vx-row">
-        <div class="vx-col lg:w-1/2 w-full">
-          <vx-card title="Information" class="mb-base">
-            <table>
-              <tr>
-                <td class="font-semibold">Birth Date</td>
-                <td>{{ user_data.dob }}</td>
-              </tr>
-              <tr>
-                <td class="font-semibold">Mobile</td>
-                <td>{{ user_data.mobile }}</td>
-              </tr>
-              <tr>
-                <td class="font-semibold">Website</td>
-                <td>{{ user_data.website }}</td>
-              </tr>
-              <tr>
-                <td class="font-semibold">Languages</td>
-                <td>{{ user_data.languages_known.join(", ") }}</td>
-              </tr>
-              <tr>
-                <td class="font-semibold">Gender</td>
-                <td>{{ user_data.gender }}</td>
-              </tr>
-              <tr>
-                <td class="font-semibold">Contact</td>
-                <td>{{ user_data.contact_options.join(", ") }}</td>
-              </tr>
-            </table>
+        <div class="vx-col lg:w-6/12 w-full">
+          <vx-card :title="'Dados do Livro #' + loan.book_id " class="mb-base data-show">
+
+            <div class="vx-row">
+
+              <!-- Book image Col -->
+              <div class="vx-col" id="image-col">
+                <div class="img-container mb-4">
+                  <img v-if="loan.book_cape" :src="loan.book_cape" class="rounded w-full" />
+                  <img v-else src="../../../assets/images/image-not-founded.png" class="rounded w-full">
+                </div>
+              </div>
+
+              <!-- Book Datas -->
+              <div class="vx-col flex-1" id="account-info-col-1">
+                <table>
+                  <tr>
+                    <td class="font-semibold">Título</td>
+                    <td>{{ loan.book_title }}</td>
+                  </tr>
+                  <tr>
+                    <td class="font-semibold">Subtítulo</td>
+                    <td>{{ loan.book_subtitle }}</td>
+                  </tr>
+                  <tr>
+                    <td class="font-semibold">Cor</td>
+                    <td>{{ loan.book_color }}</td>
+                  </tr>
+                </table>
+              </div>
+
+              <div class="vx-col w-full flex" id="account-manage-buttons">
+                <vs-button icon-pack="feather" icon="icon-eye" type="border" class="mr-4" :to="{name: 'app-book-view', params: { loanId: loan.book_id }}">Visualizar</vs-button>
+              </div>
+            </div>
+
           </vx-card>
         </div>
 
-        <div class="vx-col lg:w-1/2 w-full">
-          <vx-card title="Social Links" class="mb-base">
-            <table>
-              <tr>
-                <td class="font-semibold">Twitter</td>
-                <td>{{ user_data.social_links.twitter }}</td>
-              </tr>
-              <tr>
-                <td class="font-semibold">Facebook</td>
-                <td>{{ user_data.social_links.facebook }}</td>
-              </tr>
-              <tr>
-                <td class="font-semibold">Instagram</td>
-                <td>{{ user_data.social_links.instagram }}</td>
-              </tr>
-              <tr>
-                <td class="font-semibold">Github</td>
-                <td>{{ user_data.social_links.github }}</td>
-              </tr>
-              <tr>
-                <td class="font-semibold">CodePen</td>
-                <td>{{ user_data.social_links.codepen }}</td>
-              </tr>
-              <tr>
-                <td class="font-semibold">Slack</td>
-                <td>{{ user_data.social_links.slack }}</td>
-              </tr>
-            </table>
+        <div class="vx-col lg:w-6/12 w-full">
+          <vx-card :title="'Dados do Empréstimo #' + loan.id " class="mb-base data-show">
+
+            <div class="vx-row">
+
+              <!-- Loan Datas -->
+              <div class="vx-col flex-1" id="account-info-col-1">
+                <table>
+                  <tr>
+                    <td class="font-semibold">Data Estimada</td>
+                    <td>{{ loan.estimated_date }}</td>
+                  </tr>
+                  <tr>
+                    <td class="font-semibold">Data de Entrega</td>
+                    <td v-if="return_date != undefined">{{ loan.return_date }}</td>
+                    <td v-else>Não Devolvido</td>
+                  </tr>
+                  <tr>
+                    <td class="font-semibold">Status</td>
+                    <td>
+                      <span :class="'status-color-' + statusColor(loan.status)">{{ loan.status }}</span>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="font-semibold">Criado Em</td>
+                    <td>{{ loan.created_at }}</td>
+                  </tr>
+                </table>
+              </div>
+
+              <div class="vx-col w-full flex" id="account-manage-buttons">
+                <vs-button icon-pack="feather" icon="icon-edit" class="mr-4" :to="{name: 'app-loan-edit', params: { loanId: $route.params.loanId }}">Editar</vs-button>
+                <vs-button type="border" color="danger" icon-pack="feather" icon="icon-trash" @click="confirmDeleteRecord">Deletar</vs-button>
+              </div>
+
+            </div>
+
           </vx-card>
         </div>
       </div>
-
-      <!-- Permissions -->
-      <vx-card>
-
-        <div class="vx-row">
-          <div class="vx-col w-full">
-            <div class="flex items-end px-3">
-              <feather-icon svgClasses="w-6 h-6" icon="LockIcon" class="mr-2" />
-              <span class="font-medium text-lg leading-none">Permissions</span>
-            </div>
-            <vs-divider />
-          </div>
-        </div>
-
-        <div class="block overflow-x-auto">
-          <table class="w-full permissions-table">
-            <tr>
-              <!--
-                You can also use `Object.keys(Object.values(data_local.permissions)[0])` this logic if you consider,
-                our data structure. You just have to loop over above variable to get table headers.
-                Below we made it simple. So, everyone can understand.
-               -->
-              <th class="font-semibold text-base text-left px-3 py-2" v-for="heading in ['Module', 'Read', 'Write', 'Create', 'Delete']" :key="heading">{{ heading }}</th>
-            </tr>
-
-            <tr v-for="(val, name) in user_data.permissions" :key="name">
-              <td class="px-3 py-2">{{ name }}</td>
-              <td v-for="(permission, name) in val" class="px-3 py-2" :key="name+permission">
-                <vs-checkbox v-model="val[name]" class="pointer-events-none" />
-              </td>
-            </tr>
-          </table>
-        </div>
-
-      </vx-card>
     </div>
   </div>
 </template>
 
 <script>
-import moduleUserManagement from '@/store/admin/user/moduleUserManagement.js'
+import moduleLoanManagement from '@/store/admin/loan/moduleLoanManagement.js'
 
 export default {
   data() {
     return {
-      user_data: null,
-      user_not_found: false,
-    }
-  },
-  computed: {
-    userAddress() {
-      let str = ""
-      for(var field in this.user_data.location) {
-        str += field + " "
-      }
-      return str
+      loan: {},
+      loan_not_found: false,
     }
   },
   methods: {
@@ -203,53 +160,79 @@ export default {
       this.$vs.dialog({
         type: 'confirm',
         color: 'danger',
-        title: `Confirm Delete`,
-        text: `You are about to delete "${this.user_data.username}"`,
+        title: `Confirmar Exclusão`,
+        text: `Você está prestes a excluir o empréstimo #"${this.loan.id}"`,
         accept: this.deleteRecord,
-        acceptText: "Delete"
+        acceptText: "Excluir",
+        cancelText: "Cancelar",
       })
     },
     deleteRecord() {
       /* Below two lines are just for demo purpose */
-      this.$router.push({name:'app-user-list'});
-      this.showDeleteSuccess()
-
-      /* UnComment below lines for enabling true flow if deleting user */
-      // this.$store.dispatch("userManagement/removeRecord", this.user_data.id)
-      //   .then(()   => { this.$router.push({name:'app-user-list'}); this.showDeleteSuccess() })
-      //   .catch(err => { console.error(err)       })
+      this.$store.dispatch('loanManagement/destroy', this.loan.id)
+        .then(res => {
+          this.$router.push({name:'admin-loan-list'})
+          this.$vs.notify({
+            title: 'Empréstimo Excluído',
+            text: res.data.message,
+            color: 'success',
+            iconPack: 'feather',
+            icon: 'icon-check',
+          })
+        })
+        .catch(err => {
+          this.$vs.notify({
+            title: 'Empréstimo Não Excluído',
+            text: err.message,
+            color: 'danger',
+            iconPack: 'feather',
+            icon: 'icon-alert-circle',
+          })
+        })
     },
-    showDeleteSuccess() {
-      this.$vs.notify({
-        color: 'success',
-        title: 'User Deleted',
-        text: 'The selected user was successfully deleted'
-      })
-    }
+  },
+  mounted() {
+    // Loading for Loans Request
+    this.$vs.loading({
+      container: '.data-show',
+      scale: 0.6
+    })
   },
   created() {
-    // Register Module UserManagement Module
-    if(!moduleUserManagement.isRegistered) {
-      this.$store.registerModule('userManagement', moduleUserManagement)
-      moduleUserManagement.isRegistered = true
+    // Register Module LoanManagement Module
+    if(!moduleLoanManagement.isRegistered) {
+      this.$store.registerModule('loanManagement', moduleLoanManagement)
+      moduleLoanManagement.isRegistered = true
     }
 
-    const userId = this.$route.params.userId
-    this.$store.dispatch("userManagement/fetchUser", userId)
-      .then(res => { this.user_data = res.data })
+    const loanId = this.$route.params.loanId
+
+    this.$store.dispatch("loanManagement/show", loanId)
+      .then(res => {
+        this.loan = res.data
+        this.$vs.loading.close(".data-show > .con-vs-loading")
+      })
       .catch(err => {
-        if(err.response.status === 404) {
-          this.user_not_found = true
-          return
+        this.showDeleteFailed(err.data.message)
+        this.$vs.loading.close(".data-show > .con-vs-loading")
+      })
+  },
+  computed: {
+    statusColor() {
+      return (value) => {
+          if(value === "Ativo") return "success"
+          else if(value === "Pendente") return "danger"
+          else if(value === "Inativo") return "warning"
+          else "primary"
         }
-        console.error(err) })
+    }
   }
 }
 
 </script>
 
 <style lang="scss">
-#avatar-col {
+#image-col {
   width: 10rem;
 }
 
@@ -272,33 +255,23 @@ export default {
   }
 }
 
-// #account-info-col-1 {
-//   // flex-grow: 1;
-//   width: 30rem !important;
-//   @media screen and (min-width:1200px) {
-//     & {
-//       flex-grow: unset !important;
-//     }
-//   }
-// }
-
-
 @media screen and (min-width:1201px) and (max-width:1211px),
 only screen and (min-width:636px) and (max-width:991px) {
   #account-info-col-1 {
     width: calc(100% - 12rem) !important;
   }
+}
 
-  // #account-manage-buttons {
-  //   width: 12rem !important;
-  //   flex-direction: column;
+// For Status Color
 
-  //   > button {
-  //     margin-right: 0 !important;
-  //     margin-bottom: 1rem;
-  //   }
-  // }
-
+.status-color-success {
+  color: rgba(var(--vs-success),1) !important;
+}
+.status-color-warning {
+  color: rgba(var(--vs-warning),1) !important;
+}
+.status-color-danger {
+  color: rgba(var(--vs-danger),1) !important;
 }
 
 </style>
