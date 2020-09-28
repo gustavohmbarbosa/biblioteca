@@ -46,8 +46,6 @@ class BookReaderController extends Controller
         foreach($loans as $loan) {
             if (!is_null($loan->reader_image))
                 $loan->reader_image = asset('storage/' . $loan->reader_image);
-
-            $loan->estimated_date = date('d/m/Y', strtotime($loan->estimated_date));
         }
 
         return response()->json($loans);
@@ -84,13 +82,26 @@ class BookReaderController extends Controller
         ->where('book_reader.id', '=', $id)
         ->select(
         'book_reader.*',
-        'books.title',
-        'books.subtitle',
-        'readers.name',
-        'readers.grade',
-        'readers.class',
-        'courses.name as course_name'
+        'books.title AS book_title',
+        'books.subtitle AS book_subtitle',
+        'books.cape AS book_cape',
+        'books.color AS book_color',
+        'readers.name AS reader_name',
+        'readers.email AS reader_email',
+        'readers.phone AS reader_phone',
+        'readers.grade AS reader_grade',
+        'readers.class AS reader_class',
+        'readers.image AS reader_image',
+        'courses.name AS course_name'
         )->get()->first();
+
+        if (!is_null($loan->reader_image)) {
+            $loan->reader_image = asset('storage/' . $loan->reader_image);
+        }
+
+        if (!is_null($loan->book_cape)) {
+            $loan->book_cape = asset('storage/' . $loan->book_cape);
+        }
 
         if (is_null($loan)) {
             return $this->errorMessage("Nenhum dado foi encontrado.");

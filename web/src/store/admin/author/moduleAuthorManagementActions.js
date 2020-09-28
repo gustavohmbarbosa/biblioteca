@@ -28,6 +28,15 @@ export default {
         })
     })
   },
+  show(context, authorId) {
+    return new Promise((resolve, reject) => {
+      axios.get(`admin/authors/${authorId}`)
+        .then((response) => {
+          resolve(response)
+        })
+        .catch((error) => { reject(error) })
+    })
+  },
   destroy({ commit }, authorId) {
     return new Promise((resolve, reject) => {
       axios.delete(`admin/authors/${authorId}`)

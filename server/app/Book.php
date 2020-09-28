@@ -14,7 +14,13 @@ class Book extends Model
         'title', 'subtitle', 'origin', 'price',
         'isbn', 'synopsis', 'pages', 'language',
         'observations', 'edition', 'publication_year',
-        'color', 'cdd', 'cape', 'company_id', 'slug'
+        'color', 'cdd', 'cape', 'company_id', 'slug',
+        'created_at', 'updated_at'
+    ];
+
+    protected $casts = [
+        'created_at' => 'datetime:d/m/Y H:i:s',
+        'updated_at' => 'datetime:d/m/Y H:i:s',
     ];
 
     /**

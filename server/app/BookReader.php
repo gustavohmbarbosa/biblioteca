@@ -8,9 +8,14 @@ class BookReader extends Model
 {
     protected $table = 'book_reader';
 
-    protected $fillable = ['reader_id', 'book_id', 'estimated_date', 'return_date', 'status'];
+    protected $fillable = [
+        'reader_id', 'book_id', 'estimated_date','return_date',
+        'status', 'created_at', 'updated_at'
+    ];
 
     protected $casts = [
+        'created_at'     => 'datetime:d/m/Y H:i:s',
+        'updated_at'     => 'datetime:d/m/Y H:i:s',
         'estimated_date' => 'date:d/m/Y'
     ];
 

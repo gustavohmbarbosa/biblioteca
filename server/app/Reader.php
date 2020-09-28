@@ -13,7 +13,15 @@ class Reader extends Authenticatable implements JWTSubject
     use HasSlug;
 
     protected $fillable = [
-        'name', 'email', 'password', 'phone', 'gender', 'grade', 'class', 'course_id', 'registration', 'entry_year', 'status', 'slug', 'image'
+        'name', 'email', 'password', 'phone',
+        'gender', 'grade', 'class', 'course_id',
+        'registration', 'entry_year', 'status',
+        'slug', 'image', 'created_at', 'updated_at'
+    ];
+
+    protected $casts = [
+        'created_at' => 'datetime:d/m/Y H:i:s',
+        'updated_at' => 'datetime:d/m/Y H:i:s'
     ];
 
     /**

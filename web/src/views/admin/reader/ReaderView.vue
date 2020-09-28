@@ -3,12 +3,10 @@
 
     <vs-alert color="danger" title="Leitor Não Encontrado" :active.sync="reader_not_found">
       <span>O leitor com id {{ $route.params.readerId }} não foi encontrado. </span>
-      <span>
-        <span>Verificar </span><router-link :to="{name:'admin-reader-list'}" class="text-inherit underline">Todos Os Usuários</router-link>
-      </span>
+      <span>Verificar </span><router-link :to="{name:'admin-reader-list'}" class="text-inherit underline">Todos Os Leitores</router-link>
     </vs-alert>
 
-    <div id="user-data" v-if="reader">
+    <div id="user-data">
 
       <vx-card title="Registro" class="mb-base" id="data-show">
 
@@ -18,7 +16,8 @@
           <!-- image Col -->
           <div class="vx-col" id="image-col">
             <div class="img-container mb-4">
-              <img :src="reader.image" class="rounded w-full" />
+              <img v-if="reader.image" :src="reader.image" class="rounded w-full" />
+              <img v-else src="../../../assets/images/user-image.png" class="rounded w-full">
             </div>
           </div>
 
@@ -42,8 +41,12 @@
                 <td>{{ reader.status }}</td>
               </tr>
               <tr>
-                <td class="font-semibold">Gênero</td>
-                <td>{{ reader.gender }}</td>
+                <td class="font-semibold">Criado Em</td>
+                <td>{{ reader.created_at }}</td>
+              </tr>
+              <tr>
+                <td class="font-semibold">Atualizado Em</td>
+                <td>{{ reader.updated_at }}</td>
               </tr>
             </table>
           </div>
@@ -52,6 +55,10 @@
           <!-- Information - Col 2 -->
           <div class="vx-col flex-1" id="account-info-col-2">
             <table>
+              <tr>
+                <td class="font-semibold">Gênero</td>
+                <td>{{ reader.gender }}</td>
+              </tr>
               <tr>
                 <td class="font-semibold">Curso</td>
                 <td>{{ reader.course.name }}</td>
@@ -71,13 +78,13 @@
             </table>
           </div>
           <!-- /Information - Col 2 -->
+
           <div class="vx-col w-full flex" id="account-manage-buttons">
             <vs-button icon-pack="feather" icon="icon-edit" class="mr-4" :to="{name: 'admin-reader-edit', params: { readerId: $route.params.readerId }}">Editar</vs-button>
             <vs-button type="border" color="danger" icon-pack="feather" icon="icon-trash" @click="confirmDeleteRecord">Excluir</vs-button>
           </div>
 
         </div>
-
       </vx-card>
     </div>
   </div>
@@ -131,10 +138,10 @@ export default {
   },
   mounted() {
     // Loading for Readers Request
-    this.$vs.loading({
-      container: '#data-show',
-      scale: 0.6
-    })
+    // this.$vs.loading({
+    //   container: '#data-show',
+    //   scale: 0.6
+    // })
   },
   created() {
     // Register Module ReaderManagement Module
@@ -144,15 +151,20 @@ export default {
     }
 
     const readerId = this.$route.params.readerId
+
     this.$store.dispatch("readerManagement/show", readerId)
       .then(res => {
         this.reader = res.data
-        console.log(this.reader)
-        this.$vs.loading.close("#data-show > .con-vs-loading")
+        // this.$vs.loading.close("#data-show > .con-vs-loading")
       })
       .catch(err => {
+        if(err.response.status === 404) {
+          this.reader_not_found = true
+          return
+        }
+        console.error(err)
         this.showDeleteFailed(err.data.message)
-        this.$vs.loading.close("#data-show > .con-vs-loading")
+        // this.$vs.loading.close("#data-show > .con-vs-loading")
       })
   }
 }
@@ -183,33 +195,11 @@ export default {
   }
 }
 
-// #account-info-col-1 {
-//   // flex-grow: 1;
-//   width: 30rem !important;
-//   @media screen and (min-width:1200px) {
-//     & {
-//       flex-grow: unset !important;
-//     }
-//   }
-// }
-
-
 @media screen and (min-width:1201px) and (max-width:1211px),
 only screen and (min-width:636px) and (max-width:991px) {
   #account-info-col-1 {
     width: calc(100% - 12rem) !important;
   }
-
-  // #account-manage-buttons {
-  //   width: 12rem !important;
-  //   flex-direction: column;
-
-  //   > button {
-  //     margin-right: 0 !important;
-  //     margin-bottom: 1rem;
-  //   }
-  // }
-
 }
 
 </style>
