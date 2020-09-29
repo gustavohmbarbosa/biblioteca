@@ -24,7 +24,7 @@
         <!-- Biography -->
         <div class="w-full mb-6">
           <label class="">Biografia</label>
-          <vs-textarea v-model="author.biography" class="w-full" rows="5" />
+          <vs-textarea v-model="author.biography" rows="5" counter="5000" :counter-danger.sync="counterDanger" />
           <div class="text-danger text-sm" v-if="validations.biography">
             <span class="text-danger text-sm" v-show="validations.biography">{{ validations.biography[0] }}</span>
           </div>
@@ -37,7 +37,7 @@
         </div>
 
         <!-- Author Image -->
-        <template v-if="author.image">
+        <template v-if="author.showImage">
 
           <!-- Image Container -->
           <div class="img-container w-64 mx-auto flex items-center justify-center">
@@ -48,7 +48,7 @@
           <input type="file" class="hidden" ref="updateImgInput" @change="updateCurrImg" accept="image/*">
           <div class="btn-group mt-6 text-center">
             <vs-button type="flat" color="success" @click="$refs.updateImgInput.click()">Atualizar</vs-button>
-            <vs-button type="flat" color="#999" @click="author.image = null">Remover</vs-button>
+            <vs-button type="flat" color="#999" @click="author.showImage = null; author.image = null">Remover</vs-button>
           </div>
         </template>
         <div class="text-danger text-sm" v-if="validations.image">
@@ -59,7 +59,7 @@
     </VuePerfectScrollbar>
 
     <div class="flex flex-wrap items-center p-6" slot="footer">
-      <vs-button class="mr-6" @click="storeAuthor(author)">Cadastrar</vs-button>
+      <vs-button class="mr-6" @click="submitAuthor(author)">Cadastrar</vs-button>
       <vs-button type="border" color="danger" @click="isSidebarActiveLocal = false">Cancelar</vs-button>
     </div>
   </vs-sidebar>
@@ -86,14 +86,18 @@
         author: {
           name: "",
           biography: "",
-          image: null,
+          image: '',
           showImage: null
         },
+
         settings: {
           maxScrollbarLength: 60,
           wheelSpeed: .60,
         },
-        validations: {}
+
+        validations: {},
+
+        counterDanger: false
       }
     },
     computed: {
@@ -109,29 +113,34 @@
       },
     },
     methods: {
-      storeAuthor(author) {
-        author = this.hasImage(author)
+      submitAuthor(author) {
+        const authorFormatted = this.authorInFormData(author)
 
-        const config = {
-          headers: {
-            'content-type': 'multipart/form-data',
-            'Access-Control-Allow-Origin': '*'
-          }
-        }
+        this.notifyAuthorStored(authorFormatted)
+      },
+      authorInFormData(author) {
+        let data = new FormData()
 
-        this.$store.dispatch('authorManagement/store', author, config)
-          .then(response => {
+        Object.entries(author).forEach(([key, value]) => {
+            data.append(key, value)
+        })
+console.log(data)
+        return data
+      },
+      async notifyAuthorStored(author) {
+          try { 
+            const AuthorStored = await this.storeAuthor(author)
+
             this.isSidebarActiveLocal = false
             this.$vs.notify({
               title: "Author Cadastrado",
-              text: response.data.message,
+              text: AuthorStored.data.message,
               color: "success",
               iconPack: 'feather',
               icon: 'icon-check',
             })
             this.resetData()
-          })
-          .catch(error => {
+          } catch (error) {
             this.$vs.notify({
               title: "Erro no Cadastro",
               text: "Verifique os campos e os preencha corretamente",
@@ -140,7 +149,20 @@
               icon: 'icon-alert-circle'
             })
             this.validations = error.response.data.errors
-          })
+          }
+      },
+      storeAuthor(author) {
+        const config = {
+          headers: {
+            'content-type': 'multipart/form-data',
+            'Access-Control-Allow-Origin': '*'
+          }
+        }
+
+        return this.$store.dispatch('authorManagement/store', author, config)
+      },
+      resetData() {
+        Object.assign(this.$data, this.$options.data())
       },
       updateCurrImg(input) {
         if (input.target.files && input.target.files[0]) {
@@ -152,23 +174,6 @@
           this.author.image = input.target.files[0]
         }
       },
-      resetData() {
-        Object.assign(this.$data, this.$options.data())
-      },
-      hasImage(author) {
-        if (author.image != null) {
-
-          let data = new FormData()
-
-          Object.entries(author).forEach(([key, value]) => {
-              data.append(key, value)
-          })
-
-          return data
-        }
-
-        return author
-      }
     },
     components: {
       VuePerfectScrollbar,

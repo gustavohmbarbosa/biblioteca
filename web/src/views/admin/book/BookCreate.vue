@@ -306,7 +306,7 @@
           cdd: '',
           company_id: null,
           author_id: [],
-          cape: null,
+          cape: '',
           showCape: null,
           linkCape: null
         },
