@@ -20,12 +20,23 @@
     <VuePerfectScrollbar class="scroll-area--data-list-add-new" :settings="settings" :key="$vs.rtl">
 
       <div class="p-6">
-        <!-- NAME -->
-        <label>Nome</label>
-        <vs-input icon-pack="feather" icon="icon-globe" icon-no-border v-model="company.name" class="w-full"
-          placeholder="Nome da Editora" />
-        <div class="text-danger text-sm" v-if="validations.name">
-          <span class="text-danger text-sm" v-show="validations.name">{{ validations.name[0] }}</span>
+        <!-- Name -->
+        <div class="w-full mb-6">
+          <label>Nome</label>
+          <vs-input icon-pack="feather" icon="icon-globe" icon-no-border v-model="company.name" class="w-full"
+            placeholder="Nome da Editora" />
+          <div class="text-danger text-sm" v-if="validations.name">
+            <span class="text-danger text-sm" v-show="validations.name">{{ validations.name[0] }}</span>
+          </div>
+        </div>
+
+        <!-- About -->
+        <div class="w-full mb-6">
+          <label>Sobre a editora</label>
+          <vs-textarea rows="5" counter="5000" :counter-danger.sync="counterDanger" v-model="company.about" />
+          <div class="text-danger text-sm" v-if="validations.about">
+            <span v-show="validations.about">{{ validations.about[0] }}</span>
+          </div>
         </div>
       </div>
 
@@ -58,12 +69,17 @@
       return {
         company: {
           name: "",
+          about: "",
         },
+
         settings: {
           maxScrollbarLength: 60,
           wheelSpeed: .60,
         },
-        validations: {}
+
+        validations: {},
+
+        counterDanger: false
       }
     },
     computed: {
@@ -98,7 +114,7 @@
               text: "Verifique os campos e os preencha corretamente",
               color: "danger",
               iconPack: 'feather',
-              icon:'icon-alert-circle'
+              icon: 'icon-alert-circle'
             })
             this.validations = error.response.data.errors
           })
