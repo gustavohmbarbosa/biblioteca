@@ -1,4 +1,3 @@
-// axios
 import axios from 'axios'
 import interceptors from '@/store/auth/interceptors'
 const domain = ""
