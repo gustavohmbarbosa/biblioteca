@@ -23,7 +23,7 @@
             "require": {
                 "php": "^7.0",
                 "symfony/http-foundation": "~2.7|~3.0|~4.0|~5.0",
-                "symfony/http-kernel": "4.4.13"
+                "symfony/http-kernel": "~2.7|~3.0|~4.0|~5.0"
             },
             "require-dev": {
                 "phpunit/phpunit": "^6|^7|^8|^9",
@@ -444,7 +444,7 @@
                 "illuminate/support": "^5.6|^6.0|^7.0|^8.0",
                 "php": ">=7.1",
                 "symfony/http-foundation": "^4.0|^5.0",
-                "symfony/http-kernel": "4.4.13"
+                "symfony/http-kernel": "^4.0|^5.0"
             },
             "require-dev": {
                 "laravel/framework": "^5.5|^6.0|^7.0|^8.0",
@@ -535,7 +535,7 @@
                 "symfony/debug": "^4.3.4",
                 "symfony/finder": "^4.3.4",
                 "symfony/http-foundation": "^4.3.4",
-                "symfony/http-kernel": "4.4.13",
+                "symfony/http-kernel": "^4.3.4",
                 "symfony/polyfill-php73": "^1.17",
                 "symfony/process": "^4.3.4",
                 "symfony/routing": "^4.3.4",
@@ -2070,7 +2070,7 @@
                 "symfony/http-kernel": "<3.4"
             },
             "require-dev": {
-                "symfony/http-kernel": "4.4.13"
+                "symfony/http-kernel": "^3.4|^4.0|^5.0"
             },
             "type": "library",
             "extra": {
@@ -2140,7 +2140,7 @@
                 "symfony/var-dumper": "^4.4|^5.0"
             },
             "require-dev": {
-                "symfony/http-kernel": "4.4.13",
+                "symfony/http-kernel": "^4.4|^5.0",
                 "symfony/serializer": "^4.4|^5.0"
             },
             "type": "library",
@@ -3764,7 +3764,7 @@
                 "symfony/console": "^3.4|^4.0|^5.0",
                 "symfony/dependency-injection": "^3.4|^4.0|^5.0",
                 "symfony/finder": "~2.8|~3.0|~4.0|^5.0",
-                "symfony/http-kernel": "4.4.13",
+                "symfony/http-kernel": "^4.4",
                 "symfony/intl": "^3.4|^4.0|^5.0",
                 "symfony/service-contracts": "^1.1.2|^2",
                 "symfony/yaml": "^3.4|^4.0|^5.0"
@@ -6301,5 +6301,8 @@
         "php": "^7.2"
     },
     "platform-dev": [],
-    "plugin-api-version": "1.1.0"
+    "plugin-api-version": "1.1.0",
+    "require": {
+      "symfony/http-kernel": "4.4.13"
+    }
 }
