@@ -1,6 +1,5 @@
 <template>
-  <div class="vx-row mb-base" id="form-container">
-    <vx-card title="Formulário de Cadastro" class="card-form">
+  <registration-form title="Formulário de Registro">
 
       <vs-tabs alignment="fixed" ref="bookForm" v-model="activeTab">
         <!-- To Books -->
@@ -270,14 +269,15 @@
         </vs-tab>
       </vs-tabs>
 
-    </vx-card>
-  </div>
+  </registration-form>
 </template>
 
 
 <script>
   import vSelect from 'vue-select'
   import { VMoney } from 'v-money'
+
+  import RegistrationForm from '@/components/RegistrationForm'
 
   import AuthorCreateSidebar from '@/views/admin/author/AuthorCreateSidebar.vue'
   import CompanyCreateSidebar from '@/views/admin/company/CompanyCreateSidebar.vue'
@@ -358,6 +358,7 @@
     },
     components: {
       vSelect,
+      RegistrationForm,
       CompanyCreateSidebar,
       AuthorCreateSidebar,
 
