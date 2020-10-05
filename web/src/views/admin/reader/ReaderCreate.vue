@@ -6,7 +6,7 @@
       <vs-tab label="Informações" icon-pack="feather" icon="icon-info" class="mt-4">
 
         <!-- Name -->
-        <div class=" w-full mb-6">
+        <div class="w-full mb-6">
           <label>Nome</label>
           <vs-input class="w-full" icon-pack="feather" icon="icon-user" icon-no-border placeholder="Nome"
             v-model="reader.name" />
@@ -207,7 +207,7 @@
           },
           {
             value: 'Não Informado',
-            option: 'Não Informado'
+            option: 'Prefiro não informar'
           },
         ],
 
