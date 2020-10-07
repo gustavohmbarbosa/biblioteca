@@ -156,7 +156,8 @@ class CompanyController extends Controller
    protected function validator($data)
    {
         $fields = [
-            'name' => ['required', 'string', 'max:190'],
+            'name'  => ['required', 'string', 'max:190'],
+            'about' => ['nullable', 'string', 'max:5000'],
         ];
 
         $messages = [

@@ -139,7 +139,7 @@ class AuthorController extends Controller
    {
         $fields = [
             'name'      => ['required', 'string', 'max:190'],
-            'biography' => ['nullable', 'string'],
+            'biography' => ['nullable', 'string', 'max:5000'],
             'image'     => ['nullable', 'image', 'mimes:jpeg,jpg,png']
         ];
 

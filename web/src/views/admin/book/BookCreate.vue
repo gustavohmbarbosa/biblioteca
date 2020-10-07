@@ -1,6 +1,5 @@
 <template>
-  <div class="vx-row mb-base" id="form-container">
-    <vx-card title="Formulário de Cadastro" class="card-form">
+  <registration-form title="Formulário de Registro">
 
       <vs-tabs alignment="fixed" ref="bookForm" v-model="activeTab">
         <!-- To Books -->
@@ -19,8 +18,11 @@
                 v-model="book.isbn" v-mask="maskIsbn" />
               <template slot="append">
                 <div class="append-text btn-addon">
-                  <vs-button color="primary" icon-pack="feather" icon="icon-search" @click.prevent="searchBookByIsbn(book.isbn);resetData()">
-                  </vs-button>
+                  <vx-tooltip delay=".5s" position="right" text="Busque as informações do livro pelo ISBN">
+                    <vs-button color="primary" icon-pack="feather" icon="icon-search"
+                      @click.prevent="searchBookByIsbn(book.isbn);resetData()">
+                    </vs-button>
+                  </vx-tooltip>
                 </div>
               </template>
             </vx-input-group>
@@ -54,9 +56,11 @@
             <label>Autor</label>
             <vx-input-group>
               <template slot="prepend">
-                <div class="prepend-text btn-addon">
-                  <vs-button color="primary" icon-pack="feather" icon="icon-plus" @click="addNewAuthor"></vs-button>
-                </div>
+                <vx-tooltip delay=".5s" position="left" text="Cadastre um novo author">
+                  <div class="prepend-text btn-addon">
+                    <vs-button color="primary" icon-pack="feather" icon="icon-plus" @click="addNewAuthor"></vs-button>
+                  </div>
+                </vx-tooltip>
               </template>
 
               <v-select multiple class="w-full vs-justify" label="name" :options="authors" :reduce="name => name.id"
@@ -72,9 +76,11 @@
             <label>Editora</label>
             <vx-input-group>
               <template slot="prepend">
-                <div class="prepend-text btn-addon">
-                  <vs-button color="primary" icon-pack="feather" icon="icon-plus" @click="addNewCompany"></vs-button>
-                </div>
+                <vx-tooltip delay=".5s" position="left" text="Cadastre uma nova editora">
+                  <div class="prepend-text btn-addon">
+                    <vs-button color="primary" icon-pack="feather" icon="icon-plus" @click="addNewCompany"></vs-button>
+                  </div>
+                </vx-tooltip>
               </template>
 
               <v-select label="name" :options="companies" :reduce="name => name.id" :dir="$vs.rtl ? 'rtl' : 'ltr'"
@@ -129,6 +135,21 @@
           <!-- Cape -->
           <div class="vx-col w-full mb-6 cape-container">
             <label>Capa</label>
+
+            <vx-tooltip
+              title="Link para capa do livro"
+              color=""
+              text="Se você fez a busca do livro pelo ISBN talvez a imagem da capa esteja disponível para download aqui."
+              position="right"
+              class="float-right"
+            >
+
+              <a :href="book.linkCape" target="_blank" rel="Link da capa">
+                <feather-icon icon="InfoIcon" svgClasses="h-5 w-5"/>
+              </a>
+
+            </vx-tooltip>
+
             <template v-if="!book.cape">
               <input type="file" class="hidden" ref="uploadImgInput" @change="updateImg" accept="image/*">
               <vs-button color="success" class="w-full" @click="$refs.uploadImgInput.click()">Selecionar Capa
@@ -154,6 +175,10 @@
                 </vs-button>
               </div>
             </template>
+
+            <div class="text-danger text-sm" v-if="validations.cape">
+              <span v-show="validations.cape">{{ validations.cape[0] }}</span>
+            </div>
           </div>
 
           <!-- Publication Year -->
@@ -244,14 +269,15 @@
         </vs-tab>
       </vs-tabs>
 
-    </vx-card>
-  </div>
+  </registration-form>
 </template>
 
 
 <script>
   import vSelect from 'vue-select'
-  import {VMoney} from 'v-money'
+  import { VMoney } from 'v-money'
+
+  import RegistrationForm from '@/components/RegistrationForm'
 
   import AuthorCreateSidebar from '@/views/admin/author/AuthorCreateSidebar.vue'
   import CompanyCreateSidebar from '@/views/admin/company/CompanyCreateSidebar.vue'
@@ -259,8 +285,6 @@
   import moduleBookManagement from '@/store/admin/book/moduleBookManagement.js'
   import moduleCompanyManagement from '@/store/admin/company/moduleCompanyManagement.js'
   import moduleAuthorManagement from '@/store/admin/author/moduleAuthorManagement.js'
-
-  import axios from 'axios'
 
 
   export default {
@@ -282,8 +306,9 @@
           cdd: '',
           company_id: null,
           author_id: [],
-          cape: null,
+          cape: '',
           showCape: null,
+          linkCape: null
         },
 
         money: {
@@ -292,7 +317,7 @@
           prefix: '',
           suffix: '',
           precision: 2,
-          masked: true /* doesn't work with directive */
+          masked: true
         },
 
         companies: [],
@@ -333,6 +358,7 @@
     },
     components: {
       vSelect,
+      RegistrationForm,
       CompanyCreateSidebar,
       AuthorCreateSidebar,
 
@@ -351,17 +377,17 @@
 
         data.append('cape', book.cape)
         data.append('title', book.title)
-        data.append('subtitle', book.subtitle) 
-        data.append('origin', book.origin) 
+        data.append('subtitle', book.subtitle)
+        data.append('origin', book.origin)
         data.append('price', this.formatPrice(book.price))
         data.append('isbn', book.isbn)
-        data.append('synopsis', book.synopsis) 
-        data.append('pages', book.pages) 
-        data.append('language', book.language) 
-        data.append('observations', book.observations) 
-        data.append('edition', book.edition) 
-        data.append('publication_year', book.publicationYear) 
-        data.append('color', book.color) 
+        data.append('synopsis', book.synopsis)
+        data.append('pages', book.pages)
+        data.append('language', book.language)
+        data.append('observations', book.observations)
+        data.append('edition', book.edition)
+        data.append('publication_year', book.publicationYear)
+        data.append('color', book.color)
         data.append('cdd', book.cdd)
         data.append('company_id', book.company_id)
         book.author_id.forEach((value, key) => {
@@ -456,9 +482,9 @@
         })
 
         try {
-          const response     = await this.getBookByIsbn(isbn)
+          const response = await this.getBookByIsbn(isbn)
           const obtainedBook = await response.json()
-          let   bookData     = await obtainedBook.items[0].volumeInfo
+          let bookData = await obtainedBook.items[0].volumeInfo
 
           bookData.isbn = isbn
 
@@ -489,38 +515,36 @@
       fillFormWithDataFromTheBookObtained(data) {
         const book = this.book
 
-        book.isbn             = data.isbn
-        book.title            = data.title
-        book.subtitle         = data.subtitle
-        book.pages            = data.pageCount
-        book.cape             = data.imageLinks.thumbnail
-        book.showCape         = data.imageLinks.thumbnail
+        book.isbn            = data.isbn
+        book.title           = data.title
+        book.subtitle        = data.subtitle
+        book.pages           = data.pageCount
+        book.linkCape        = data.imageLinks.thumbnail
         book.publicationYear = data.publishedDate
-        book.synopsis         = data.description
-        book.language         = data.language
+        book.synopsis        = data.description
+        book.language        = data.language
 
         this.sendAuthorsToCheck(data.authors)
         this.checkCompanyToSet(data.publisher)
-      
+
       },
       sendAuthorsToCheck(authors) {
         authors.forEach((authorName) => {
           this.checkAuthorToSet(authorName)
-        }) 
+        })
       },
       checkAuthorToSet(authorName) {
         try {
           const authors = this.authors
-          
+
           const checkedAuthor = authors.filter((author) => {
             if (author.name == authorName)
               return author
           })[0]
 
           this.setAuthorInBook(checkedAuthor)
-        
         } catch (error) {
-
+          this.validations.author_id = ["Verifique se o autor deste livro ja foi cadastrado."]
         }
       },
       setAuthorInBook(author) {
@@ -529,16 +553,15 @@
       checkCompanyToSet(companyName) {
         try {
           const companies = this.companies
-          
+
           const checkedCompany = companies.filter((company) => {
             if (company.name == companyName)
               return company
           })[0]
 
           this.setCompanyInBook(checkedCompany)
-        
         } catch (error) {
-
+          this.validations.company_id = ["Verifique se a editora deste livro ja foi cadastrada."]
         }
       },
       setCompanyInBook(company) {
@@ -546,20 +569,20 @@
       },
     },
     watch: {
-      'book.origin': function (origin) {
-        if (origin != 'Comprado') {
-          this.book.price = null
-        }
-      },
       'authors': function (authors) {
         if (this.setAuthorLabel) {
-          this.setAuthorInBook(authors[authors.length - 1])
+          let lastAuthor = authors[authors.length - 1]
+          this.setAuthorInBook(lastAuthor)
         }
       },
       'companies': function (companies) {
         if (this.setCompanyLabel) {
-          this.setCompanyInBook(companies[companies.length - 1])
+          let lastCompany = companies[companies.length - 1]
+          this.setCompanyInBook(lastCompany)
         }
+      },
+      'activeTab': function () {
+        scrollTo(0, 53)
       }
     },
     created() {
