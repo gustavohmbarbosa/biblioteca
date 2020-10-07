@@ -1,13 +1,3 @@
-/*=========================================================================================
-  File Name: router.js
-  Description: Routes for vue-router. Lazy loading is enabled.
-  ----------------------------------------------------------------------------------------
-  Item Name: Vuexy - Vuejs, HTML & Laravel Admin Dashboard Template
-  Author: Pixinvent
-  Author URL: http://www.themeforest.net/user/pixinvent
-==========================================================================================*/
-
-
 import Vue from 'vue'
 import Router from 'vue-router'
 import store from '@/store/store'
@@ -25,19 +15,22 @@ const router = new Router({
     {
       path: '',
       component: () => import('./layouts/main/Main.vue'),
+      meta: { requiresAuth: true },
       children: [
-
-        {
-          path: '/',
-          name: 'home',
-          component: () => import('./views/Home.vue')
-        },
 
         /* Administrative */
 
+        // Home
+        {
+          path: '/admin',
+          name: 'admin-home',
+          component: () => import('./views/Home.vue')
+        },
+        // Home/>
+
         // Users
         {
-          path: '/usuarios',
+          path: 'admin/usuarios',
           name: 'admin-user-list',
           component: () => import('@/views/admin/user/user-list/UserList.vue'),
           meta: {
@@ -51,7 +44,7 @@ const router = new Router({
           },
         },
         {
-          path: '/usuarios/visualizacao/:userId',
+          path: 'admin/usuarios/visualizacao/:userId',
           name: 'admin-user-view',
           component: () => import('@/views/admin/user/UserView.vue'),
           meta: {
@@ -65,7 +58,7 @@ const router = new Router({
           },
         },
         {
-          path: '/usuarios/cadastro',
+          path: 'admin/usuarios/cadastro',
           name: 'admin-user-create',
           component: () => import('@/views/admin/user/UserCreate.vue'),
           meta: {
@@ -79,7 +72,7 @@ const router = new Router({
         },
         },
         {
-          path: '/usuarios/edicao/:userId',
+          path: 'admin/usuarios/edicao/:userId',
           name: 'admin-user-edit',
           component: () => import('@/views/admin/user/user-edit/UserEdit.vue'),
           meta: {
@@ -96,7 +89,7 @@ const router = new Router({
 
         // Readers
         {
-          path: '/leitores',
+          path: 'admin/leitores',
           name: 'admin-reader-list',
           component: () => import('@/views/admin/reader/reader-list/ReaderList.vue'),
           meta: {
@@ -110,7 +103,7 @@ const router = new Router({
           },
         },
         {
-          path: '/leitores/cadastro',
+          path: 'admin/leitores/cadastro',
           name: 'admin-reader-create',
           component: () => import('@/views/admin/reader/ReaderCreate.vue'),
           meta: {
@@ -124,7 +117,7 @@ const router = new Router({
           },
         },
         {
-          path: '/leitores/visualizacao/:readerId',
+          path: 'admin/leitores/visualizacao/:readerId',
           name: 'admin-reader-view',
           component: () => import('@/views/admin/reader/ReaderView.vue'),
           meta: {
@@ -138,7 +131,7 @@ const router = new Router({
           },
         },
         {
-          path: '/leitores/edicao/:readerId',
+          path: 'admin/leitores/edicao/:readerId',
           name: 'admin-reader-edit',
           component: () => import('@/views/admin/reader/ReaderEdit.vue'),
           meta: {
@@ -155,7 +148,7 @@ const router = new Router({
 
         // Books
         {
-          path: '/livros',
+          path: 'admin/livros',
           name: 'admin-book-list',
           component: () => import('@/views/admin/book/book-list/BookList.vue'),
           meta: {
@@ -170,7 +163,7 @@ const router = new Router({
         },
 
         {
-          path: '/livros/cadastro',
+          path: 'admin/livros/cadastro',
           name: 'admin-book-create',
           component: () => import('@/views/admin/book/BookCreate.vue'),
           meta: {
@@ -184,7 +177,7 @@ const router = new Router({
           },
         },
         {
-          path: '/livros/visualizacao/:bookId',
+          path: 'admin/livros/visualizacao/:bookId',
           name: 'admin-book-view',
           component: () => import('@/views/admin/book/BookView.vue'),
           meta: {
@@ -198,7 +191,7 @@ const router = new Router({
           },
         },
         {
-          path: '/livros/edicao/:bookId',
+          path: 'admin/livros/edicao/:bookId',
           name: 'admin-book-edit',
           component: () => import('@/views/admin/book/BookEdit.vue'),
           meta: {
@@ -215,7 +208,7 @@ const router = new Router({
 
         // Loans
         {
-          path: '/emprestimos',
+          path: 'admin/emprestimos',
           name: 'admin-loan-list',
           component: () => import('@/views/admin/loan/loan-list/LoanList.vue'),
           meta: {
@@ -229,7 +222,7 @@ const router = new Router({
           },
         },
         {
-          path: '/emprestimos/visualizacao/:loanId',
+          path: 'admin/emprestimos/visualizacao/:loanId',
           name: 'admin-loan-view',
           component: () => import('@/views/admin/loan/LoanView.vue'),
           meta: {
@@ -246,7 +239,7 @@ const router = new Router({
 
         // Authors
         {
-          path: '/autores',
+          path: 'admin/autores',
           name: 'admin-author-list',
           component: () => import('@/views/admin/author/author-list/AuthorList.vue'),
           meta: {
@@ -260,7 +253,7 @@ const router = new Router({
           },
         },
         {
-          path: '/autores/visualizacao/:authorId',
+          path: 'admin/autores/visualizacao/:authorId',
           name: 'admin-author-view',
           component: () => import('@/views/admin/author/AuthorView.vue'),
           meta: {
@@ -277,7 +270,7 @@ const router = new Router({
 
         // Companies
         {
-          path: '/editoras',
+          path: 'admin/editoras',
           name: 'admin-company-list',
           component: () => import('@/views/admin/company/company-list/CompanyList.vue'),
           meta: {
@@ -291,7 +284,7 @@ const router = new Router({
           },
         },
         {
-          path: '/editoras/visualizacao/:companyId',
+          path: 'admin/editoras/visualizacao/:companyId',
           name: 'admin-company-view',
           component: () => import('@/views/admin/company/CompanyView.vue'),
           meta: {
@@ -308,7 +301,7 @@ const router = new Router({
 
         // Courses
         {
-          path: '/cursos',
+          path: 'admin/cursos',
           name: 'admin-courses-list',
           component: () => import('@/views/admin/course/course-list/CourseList.vue'),
           meta: {
@@ -364,11 +357,13 @@ router.afterEach(() => {
 
 router.beforeEach(async (to, from, next) => {
 
-  if(to.name !== 'page-login' && !store.getters['auth/hasToken']) {
+  if((to.name !== 'page-login' && to.name !== 'page-error-404' && to.name !== 'page-register' ) && !store.getters['auth/hasToken']) {
     try {
       await store.dispatch('auth/checkToken')
       next({ name: to.name })
     } catch (err) {
+      // Saving the route
+      // await store.dispatch('saveRouteThatWillBeAccessed', to.name)
       console.log(err)
       next({ name: 'page-login' })
     }

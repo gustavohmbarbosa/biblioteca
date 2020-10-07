@@ -119,7 +119,7 @@ export default{
         // Close Loading
         this.$vs.loading.close()
         this.showSignInSuccess(res.data.message)
-        this.$router.push('/')
+        this.$router.push({ name: 'admin-home' }) // $this.store.state.routeThatWillBeAccessed
       }).catch(() => {
         // Close Loading
         this.$vs.loading.close()

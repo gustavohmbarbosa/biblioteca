@@ -17,7 +17,7 @@
     name: 'CellRendererActions',
     methods: {
       editRecord() {
-        this.$router.push("/cursos/edicao/" + this.params.data.id).catch(() => {})
+        this.$router.push("/admin/cursos/edicao/" + this.params.data.id).catch(() => {})
       },
       confirmDeleteRecord() {
         this.$vs.dialog({

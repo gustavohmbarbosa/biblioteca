@@ -48,6 +48,7 @@ const state = {
     // Can be used to get current window with
     // Note: Above breakpoint state is for internal use of sidebar & navbar component
     windowWidth: null,
+    // routeThatWillBeAccessed: { name: 'admin-home' }
 }
 
 export default state

@@ -22,10 +22,10 @@
     name: 'CellRendererActions',
     methods: {
       viewRecord() {
-        this.$router.push('/leitores/visualizacao/' + this.params.data.id).catch(() => {})
+        this.$router.push('/admin/leitores/visualizacao/' + this.params.data.id).catch(() => {})
       },
       editRecord() {
-        this.$router.push("/leitores/edicao/" + this.params.data.id).catch(() => {})
+        this.$router.push("/admin/leitores/edicao/" + this.params.data.id).catch(() => {})
       },
       confirmDeleteRecord() {
         this.$vs.dialog({

@@ -10,7 +10,7 @@
 
 export default [
   {
-    url: "/",
+    url: "/admin",
     name: "Dashboard",
     slug: "dashboard",
     icon: "HomeIcon",
@@ -27,13 +27,13 @@ export default [
         i18n: "Leitores",
         submenu: [
           {
-            url: '/leitores/cadastro',
+            url: '/admin/leitores/cadastro',
             name: "Cadastro",
             slug: "leitores-cadastro",
             i18n: "Cadastro",
           },
           {
-            url: '/leitores',
+            url: '/admin/leitores',
             name: "Lista",
             slug: "leitores",
             i18n: "Lista",
@@ -47,13 +47,13 @@ export default [
         i18n: "Livros",
         submenu: [
           {
-            url: '/livros/cadastro',
+            url: '/admin/livros/cadastro',
             name: "Cadastro",
             slug: "livros-cadastro",
             i18n: "Cadastro",
           },
           {
-            url: '/livros',
+            url: '/admin/livros',
             name: "Acervo",
             slug: "livros",
             i18n: "Acervo",
@@ -61,17 +61,11 @@ export default [
         ]
       },
       {
-        url : 'emprestimos',
+        url : '/admin/emprestimos',
         name: 'Emprestimos',
         slug: 'emprestimos',
         icon: 'RepeatIcon'
       },
-      // {
-      //   url: "/page2",
-      //   name: "Page 2",
-      //   slug: "page2",
-      //   icon: "FileIcon",
-      // },
     ]
   },
   {
@@ -86,13 +80,13 @@ export default [
         i18n: "Autores",
         submenu: [
           {
-            url: '/autores/cadastro',
+            url: '/admin/autores/cadastro',
             name: "Cadastro",
             slug: "autores-cadastro",
             i18n: "Cadastro",
           },
           {
-            url: '/autores',
+            url: '/admin/autores',
             name: "Lista",
             slug: "autores",
             i18n: "Lista",
@@ -106,13 +100,13 @@ export default [
         i18n: "Editoras",
         submenu: [
           {
-            url: '/editoras/cadastro',
+            url: '/admin/editoras/cadastro',
             name: "Cadastro",
             slug: "editoras-cadastro",
             i18n: "Cadastro",
           },
           {
-            url: '/editoras',
+            url: '/admin/editoras',
             name: "Lista",
             slug: "editoras",
             i18n: "Lista",
@@ -126,13 +120,13 @@ export default [
         i18n: "Cursos",
         submenu: [
           {
-            url: '/cursos/cadastro',
+            url: '/admin/cursos/cadastro',
             name: "Cadastro",
             slug: "cursos-cadastro",
             i18n: "Cadastro",
           },
           {
-            url: '/cursos',
+            url: '/admin/cursos',
             name: "Lista",
             slug: "cursos",
             i18n: "Lista",
@@ -153,13 +147,13 @@ export default [
         i18n: "Usuários",
         submenu: [
           {
-            url: '/usuarios/cadastro',
+            url: '/admin/usuarios/cadastro',
             name: "Cadastro",
             slug: "usuarios-cadastro",
             i18n: "Cadastro",
           },
           {
-            url: '/usuarios',
+            url: '/admin/usuarios',
             name: "Lista",
             slug: "usuarios",
             i18n: "Lista",
@@ -167,7 +161,7 @@ export default [
         ]
       },
       {
-        url: "/configuracoes",
+        url: "/admin/configuracoes",
         name: "Sistema",
         slug: "configuracoes",
         icon: "SettingsIcon",
