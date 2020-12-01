@@ -82,15 +82,18 @@ class BookReaderController extends Controller
         ->where('book_reader.id', '=', $id)
         ->select(
         'book_reader.*',
+        'books.id AS book_id',
         'books.title AS book_title',
         'books.subtitle AS book_subtitle',
         'books.cape AS book_cape',
         'books.color AS book_color',
+        'readers.id AS reader_id',
         'readers.name AS reader_name',
         'readers.email AS reader_email',
         'readers.phone AS reader_phone',
         'readers.grade AS reader_grade',
         'readers.class AS reader_class',
+        'readers.status AS reader_status',
         'readers.image AS reader_image',
         'courses.name AS course_name'
         )->get()->first();

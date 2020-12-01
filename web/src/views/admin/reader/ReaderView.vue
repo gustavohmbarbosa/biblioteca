@@ -8,9 +8,8 @@
     </vs-alert>
 
     <div>
-      <vx-card :title="'Registro #' + reader.id " class="view-container">
+      <vx-card :title="'Registro #' + reader.id " class="view-container" id="reader-data">
 
-        <!-- image -->
         <div class="vx-row">
 
           <!-- image Col -->
@@ -27,7 +26,7 @@
             </div>
 
             <div class="vx-row actions">
-              
+
               <vx-tooltip class="vx-col"  position="top" text="Voltar">
                 <feather-icon
                 icon="ArrowLeftIcon"
@@ -149,7 +148,7 @@
         return color
       },
       editRecord() {
-        this.$router.push("/leitores/edicao/" + this.reader.id).catch(() => {})
+        this.$router.push({ name: "admin-reader-edit", params: { readerId: this.reader.id } }).catch(() => {})
       },
       confirmDeleteRecord() {
         this.$vs.dialog({
@@ -199,11 +198,16 @@
 
       const readerId = this.$route.params.readerId
 
+      this.$vs.loading("#reader-data")
+
       this.$store.dispatch("readerManagement/show", readerId)
         .then(res => {
+          this.$vs.loading.close(".con-vs-loading")
           this.reader = res.data
         })
         .catch(err => {
+          this.$vs.loading.close(".con-vs-loading")
+
           if (err.response.status === 404) {
             this.reader_not_found = true
             return

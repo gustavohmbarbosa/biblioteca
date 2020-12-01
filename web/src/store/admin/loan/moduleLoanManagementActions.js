@@ -18,19 +18,19 @@ export default {
         .catch((error) => { reject(error) })
     })
   },
-  store({ commit }, reader, config) {
+  store({ commit }, loan, config) {
     return new Promise((resolve, reject) => {
-      axios.post("admin/readers/", reader, { headers: config })
+      axios.post("admin/loans/", loan, { headers: config })
         .then((response) => {
-          commit('ADD_READERS', Object.assign(reader , {id: response.data.id}))
+          commit('ADD_LOANS', Object.assign(loan , {id: response.data.id}))
           resolve(response)
         })
         .catch((error) => { reject(error) })
     })
   },
-  update(context, { reader, readerId }, config) {
+  update(context, { loan, loanId }, config) {
     return new Promise((resolve, reject) => {
-      axios.put(`admin/readers/${readerId}`, reader, { headers: config })
+      axios.put(`admin/loans/${loanId}`, loan, { headers: config })
       .then((response) => {
         resolve(response)
       })
@@ -46,34 +46,14 @@ export default {
         .catch((error) => { reject(error) })
     })
   },
-  destroy({ commit }, readerId) {
+  destroy({ commit }, loanId) {
     return new Promise((resolve, reject) => {
-      axios.delete(`admin/readers/${readerId}`)
+      axios.delete(`admin/loans/${loanId}`)
         .then((response) => {
-          commit('REMOVE_RECORD', readerId)
+          commit('REMOVE_RECORD', loanId)
           resolve(response)
         })
         .catch((error) => { reject(error) })
     })
   },
-  showBooks(commit, readerId) {
-    return new Promise((resolve, reject) => {
-      axios.get(`admin/${readerId}/books`)
-      .then((response) => {
-        commit('SET_BOOKS', response.data)
-        resolve(response)
-      })
-      .catch((error) => { reject(error) })
-    })
-  },
-  showBook(commit, bookId) {
-    return new Promise((resolve, reject) => {
-      axios.get(`admin/books/${bookId}`)
-      .then((response) => {
-        commit('SET_BOOKS', response.data[0])
-        resolve(response)
-      })
-      .catch((error) => { reject(error) })
-    })
-  }
 }

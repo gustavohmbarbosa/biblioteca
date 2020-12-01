@@ -6,16 +6,16 @@
 ========================================================================================== -->
 
 <template>
-  <div id="page-user-view">
+  <div id="page-book-view">
 
-    <vs-alert color="danger" title="User Not Found" :active.sync="user_not_found">
-      <span>User record with id: {{ $route.params.userId }} not found. </span>
+    <vs-alert color="danger" title="Livro não encontrado" :active.sync="book_not_found">
+      <span>O livro com o ID: {{ $route.params.bookId }} not found. </span>
       <span>
-        <span>Check </span><router-link :to="{name:'page-user-list'}" class="text-inherit underline">All Users</router-link>
+        <span>Cheque </span><router-link :to="{name:'page-book-list'}" class="text-inherit underline">todos os livros</router-link>
       </span>
     </vs-alert>
 
-    <div id="user-data" v-if="user_data">
+    <div id="book-data">
 
       <vx-card title="Account" class="mb-base">
 
@@ -232,10 +232,22 @@ export default {
       moduleUserManagement.isRegistered = true
     }
 
+    // Loading for Book Request
+    this.$vs.loading({
+      container: '#book-data',
+      scale: 0.6
+    })
+
     const userId = this.$route.params.userId
     this.$store.dispatch("userManagement/fetchUser", userId)
-      .then(res => { this.user_data = res.data })
+      .then(res => {
+        this.user_data = res.data
+
+        this.$vs.loading.close("#book-data > .con-vs-loading")
+      })
       .catch(err => {
+        this.$vs.loading.close("#book-data > .con-vs-loading")
+
         if(err.response.status === 404) {
           this.user_not_found = true
           return

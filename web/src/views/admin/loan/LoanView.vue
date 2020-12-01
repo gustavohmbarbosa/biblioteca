@@ -15,15 +15,30 @@
         <div class="vx-row">
 
           <!-- Reader image Col -->
-          <div class="vx-col" id="image-col">
-            <div class="img-container mb-4">
-              <img v-if="loan.reader_image" :src="loan.reader_image" class="rounded w-full" />
-              <img v-else src="../../../assets/images/user-image.png" class="rounded w-full">
+          <div class="vx-col">
+            <div>
+              <vs-chip class="chip-status" :color="chipColor(loan.reader_status)">
+                <span>{{ loan.reader_status }}</span>
+              </vs-chip>
+            </div>
+
+            <div class="w-full reader-image">
+              <img v-if="loan.reader_image" :src="loan.reader_image" />
+              <img v-else src="../../../assets/images/user-image.png">
+            </div>
+
+            <div class="vx-row actions">
+              <vx-tooltip  position="top" text="Ver dados do leitor">
+                <feather-icon
+                icon="EyeIcon"
+                svgClasses="h-6 w-6 hover:text-dark cursor-pointer"
+                @click="viewReader" />
+              </vx-tooltip>
             </div>
           </div>
 
           <!-- Reader Datas -->
-          <div class="vx-col flex-1" id="account-info-col-1">
+          <div class="vx-col flex-1" id="reader-info-col-1">
             <table>
               <tr>
                 <td class="font-semibold">Nome</td>
@@ -40,7 +55,7 @@
             </table>
           </div>
 
-          <div class="vx-col flex-1" id="account-info-col-1">
+          <div class="vx-col flex-1" id="reader-info-col-2">
             <table>
               <tr>
                 <td class="font-semibold">Sala</td>
@@ -52,18 +67,13 @@
               </tr>
             </table>
           </div>
-
-          <div class="vx-col w-full flex" id="account-manage-buttons">
-            <vs-button icon-pack="feather" icon="icon-eye" type="border" class="mr-4" :to="{name: 'admin-reader-view', params: { readerId: loan.reader_id }}">Visualizar</vs-button>
-          </div>
-
         </div>
 
       </vx-card>
 
       <div class="vx-row">
         <div class="vx-col lg:w-6/12 w-full">
-          <vx-card :title="'Dados do Livro #' + loan.book_id " class="mb-base data-show">
+          <vx-card :title="'Dados do Livro #' + loan.book_id " class="mb-base data-show-book">
 
             <div class="vx-row">
 
@@ -72,6 +82,15 @@
                 <div class="img-container mb-4">
                   <img v-if="loan.book_cape" :src="loan.book_cape" class="rounded w-full" />
                   <img v-else src="../../../assets/images/image-not-founded.png" class="rounded w-full">
+                </div>
+
+                <div class="vx-row actions">
+                  <vx-tooltip position="top" text="Ver dados do livro">
+                    <feather-icon
+                    icon="EyeIcon"
+                    svgClasses="h-6 w-6 hover:text-dark cursor-pointer"
+                    @click="viewBook" />
+                  </vx-tooltip>
                 </div>
               </div>
 
@@ -92,17 +111,13 @@
                   </tr>
                 </table>
               </div>
-
-              <div class="vx-col w-full flex" id="account-manage-buttons">
-                <vs-button icon-pack="feather" icon="icon-eye" type="border" class="mr-4" :to="{name: 'app-book-view', params: { loanId: loan.book_id }}">Visualizar</vs-button>
-              </div>
             </div>
 
           </vx-card>
         </div>
 
         <div class="vx-col lg:w-6/12 w-full">
-          <vx-card :title="'Dados do Empréstimo #' + loan.id " class="mb-base data-show">
+          <vx-card :title="'Dados do Empréstimo #' + loan.id " class="mb-base data-show-loan">
 
             <div class="vx-row">
 
@@ -130,14 +145,24 @@
                   </tr>
                 </table>
               </div>
-
-              <div class="vx-col w-full flex" id="account-manage-buttons">
-                <vs-button icon-pack="feather" icon="icon-edit" class="mr-4" :to="{name: 'app-loan-edit', params: { loanId: $route.params.loanId }}">Editar</vs-button>
-                <vs-button type="border" color="danger" icon-pack="feather" icon="icon-trash" @click="confirmDeleteRecord">Deletar</vs-button>
-              </div>
-
             </div>
 
+
+            <div class="vx-row actions">
+              <vx-tooltip position="top" text="Editar dados do empréstimo">
+                <feather-icon
+                icon="Edit3Icon"
+                svgClasses="h-6 w-6 mr-3 hover:text-dark cursor-pointer"
+                @click="editLoan" />
+              </vx-tooltip>
+
+              <vx-tooltip position="top" text="Excluir empréstimo">
+                <feather-icon
+                icon="Trash2Icon"
+                svgClasses="h-6 w-6 hover:text-dark cursor-pointer"
+                @click="confirmDeleteRecord" />
+              </vx-tooltip>
+            </div>
           </vx-card>
         </div>
       </div>
@@ -156,6 +181,26 @@ export default {
     }
   },
   methods: {
+    chipColor(value) {
+      let color
+
+      switch (value) {
+        case "Ativo":
+          color = "success"
+          break
+        case "Inativo":
+          color = "danger"
+          break
+        case "Bloqueado":
+          color = "warning"
+          break
+        default:
+          color = "primary"
+          break
+      }
+
+      return color
+    },
     confirmDeleteRecord() {
       this.$vs.dialog({
         type: 'confirm',
@@ -189,6 +234,15 @@ export default {
             icon: 'icon-alert-circle',
           })
         })
+    },
+    viewReader() {
+      this.$router.push({ name: "admin-reader-view", params: { readerId: this.loan.reader_id } }).catch(() => {})
+    },
+    viewBook() {
+      this.$router.push({ name: "admin-book-view", params: { bookId: this.loan.book_id } }).catch(() => {})
+    },
+    editLoan() {
+      this.$router.push({ name: "admin-loan-edit", params: { loanId: this.loan.id } }).catch(() => {})
     },
   },
   mounted() {
@@ -232,8 +286,31 @@ export default {
 </script>
 
 <style lang="scss">
+.reader-image {
+    img {
+      width: 10rem;
+      border-radius: 50%;
+    }
+  }
+
+.actions {
+  margin: 0rem;
+  margin-top: 1rem;
+  display: flex;
+  justify-content: center;
+}
+
+.data-show-book, .data-show-loan {
+  height: 18rem;
+}
+
 #image-col {
   width: 10rem;
+}
+
+#reader-info-col-2, #reader-info-col-1 {
+  display: flex;
+  align-items: center;
 }
 
 #page-user-view {
@@ -264,14 +341,30 @@ only screen and (min-width:636px) and (max-width:991px) {
 
 // For Status Color
 
-.status-color-success {
-  color: rgba(var(--vs-success),1) !important;
-}
-.status-color-warning {
-  color: rgba(var(--vs-warning),1) !important;
-}
-.status-color-danger {
-  color: rgba(var(--vs-danger),1) !important;
-}
+.chip-status {
+    text-align: center;
+    margin-left: 17%;
+    margin-right: 83%;
+    margin-bottom: 1rem;
+    width: 8em;
+
+    &.vs-chip-success {
+      background: rgba(var(--vs-success), .15);
+      color: rgba(var(--vs-success), 1) !important;
+      font-weight: 500;
+    }
+
+    &.vs-chip-warning {
+      background: rgba(var(--vs-warning), .15);
+      color: rgba(var(--vs-warning), 1) !important;
+      font-weight: 500;
+    }
+
+    &.vs-chip-danger {
+      background: rgba(var(--vs-danger), .15);
+      color: rgba(var(--vs-danger), 1) !important;
+      font-weight: 500;
+    }
+  }
 
 </style>
