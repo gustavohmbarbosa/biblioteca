@@ -1,15 +1,15 @@
 <template>
-  <div class="the-navbar__user-meta flex items-center" v-if="activeUserInfo.name">
+  <div class="the-navbar__user-meta flex items-center" v-if="user.name">
 
     <div class="text-right leading-tight hidden sm:block">
-      <p class="font-semibold">{{ activeUserInfo.name }}</p>
-      <small>{{ activeUserInfo.role }}</small>
+      <p class="font-semibold">{{ user.name }}</p>
+      <small>{{ user.role }}</small>
     </div>
 
     <vs-dropdown vs-custom-content vs-trigger-click class="cursor-pointer">
 
       <div class="con-img ml-3">
-        <vs-avatar :src="activeUserInfo.image" key="onlineImg" class="rounded-full shadow-md cursor-pointer block" size="40px"/>
+        <vs-avatar :src="user.image" key="userImage" class="rounded-full shadow-md cursor-pointer block" size="40px"/>
       </div>
 
       <vs-dropdown-menu class="vx-navbar-dropdown">
@@ -33,9 +33,10 @@
 
           <li
             class="flex py-2 px-4 cursor-pointer hover:bg-primary hover:text-white"
-            @click="logout">
+            @click="logout"
+          >
             <feather-icon icon="LogOutIcon" svgClasses="w-4 h-4" />
-            <span class="ml-2" @click="logout()">Sair</span>
+            <span class="ml-2" @click="logout">Sair</span>
           </li>
         </ul>
       </vs-dropdown-menu>
@@ -46,27 +47,26 @@
 <script>
 export default {
   data() {
-    return {
-
-    }
+    return {};
   },
   computed: {
-    activeUserInfo() {
+    user() {
       return this.$store.state.auth.user
-    }
+    },
   },
   methods: {
-    logout() {
-      // This is just for demo Purpose. If user clicks on logout -> redirect
-      // Loading
-      this.$vs.loading()
+    async logout() {
+      try {
+        this.$vs.loading();
 
-      this.$store.dispatch('auth/signOut')
-        .then(res => {
-          this.$vs.loading.close()
-          this.showSignInSuccess(res.data.message)
-          this.$router.push('/pages/login').catch(() => {})
-        })
+        const { data } = await this.$store.dispatch('auth/logout');
+
+        this.$vs.loading.close();
+        this.showSignInSuccess(data.message);
+        this.$router.push({ name: 'page-login' });
+      } catch (error) {
+        return;
+      }
     },
     showSignInSuccess(message) {
       this.$vs.notify({
@@ -75,8 +75,8 @@ export default {
           iconPack: 'feather',
           icon: 'icon-check',
           color: 'success'
-        })
-    }
-  }
+        });
+    },
+  },
 }
 </script>

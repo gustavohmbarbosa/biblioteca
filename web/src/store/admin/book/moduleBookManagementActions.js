@@ -5,7 +5,7 @@
 
 ==========================================================================================*/
 
-import axios from "@/axios.js"
+import axios from "@/services/axios"
 
 export default {
   index({ commit }) {
@@ -25,9 +25,9 @@ export default {
           commit('ADD_BOOK', Object.assign(book, {id: response.data.id}))
           resolve(response)
         })
-        .catch((error) => 
-        { 
-          reject(error) 
+        .catch((error) =>
+        {
+          reject(error)
         })
     })
   },

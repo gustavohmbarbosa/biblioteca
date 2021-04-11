@@ -1,17 +1,12 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import store from '@/store/store'
 
 Vue.use(Router)
 
 const router = new Router({
   mode: 'history',
   base: process.env.BASE_URL,
-  scrollBehavior () {
-    return { x: 0, y: 0 }
-  },
   routes: [
-
     {
       path: '',
       component: () => import('./layouts/main/Main.vue'),
@@ -24,7 +19,7 @@ const router = new Router({
         {
           path: '/admin',
           name: 'admin-home',
-          component: () => import('./views/Home.vue')
+          component: () => import('./views/Home.vue'),
         },
         // Home/>
 
@@ -40,7 +35,8 @@ const router = new Router({
                 { title: 'Lista', active: true },
             ],
             pageTitle: 'Lista de Usuários',
-            rule: 'editor'
+            rule: 'editor',
+            requiresAuth: true,
           },
         },
         {
@@ -54,7 +50,8 @@ const router = new Router({
               { title: 'Visualização', active: true },
             ],
             pageTitle: 'Visualização de Usuário',
-            rule: 'editor'
+            rule: 'editor',
+            requiresAuth: true,
           },
         },
         {
@@ -68,8 +65,9 @@ const router = new Router({
               { title: 'Cadastro', active: true },
             ],
             pageTitle: 'Cadastro de Usuário',
-            rule: 'editor'
-        },
+            rule: 'editor',
+            requiresAuth: true,
+          },
         },
         {
           path: 'admin/usuarios/edicao/:userId',
@@ -82,7 +80,8 @@ const router = new Router({
               { title: 'Edição', active: true },
             ],
             pageTitle: 'Edição de Usuário',
-            rule: 'editor'
+            rule: 'editor',
+            requiresAuth: true,
           },
         },
         // Users/>
@@ -99,7 +98,8 @@ const router = new Router({
               { title: 'Listar', active: true },
             ],
             pageTitle: 'Leitores',
-            rule: 'editor'
+            rule: 'editor',
+            requiresAuth: true,
           },
         },
         {
@@ -113,7 +113,8 @@ const router = new Router({
               { title: 'Cadastro', active: true },
             ],
             pageTitle: 'Cadastro de Leitor',
-            rule: 'editor'
+            rule: 'editor',
+            requiresAuth: true,
           },
         },
         {
@@ -127,7 +128,8 @@ const router = new Router({
               { title: 'View', active: true },
             ],
             pageTitle: 'Visualizar Leitor',
-            rule: 'editor'
+            rule: 'editor',
+            requiresAuth: true,
           },
         },
         {
@@ -141,7 +143,8 @@ const router = new Router({
               { title: 'Edição', active: true },
             ],
             pageTitle: 'Editar Leitor',
-            rule: 'editor'
+            rule: 'editor',
+            requiresAuth: true,
           },
         },
         // Readers/>
@@ -158,7 +161,8 @@ const router = new Router({
               { title: 'Lista', active: true },
             ],
             pageTitle: 'Lista de Livros',
-            rule: 'editor'
+            rule: 'editor',
+            requiresAuth: true,
           },
         },
 
@@ -173,7 +177,8 @@ const router = new Router({
               { title: 'Cadastro', active: true },
             ],
             pageTitle: 'Cadastro de Livro',
-            rule: 'editor'
+            rule: 'editor',
+            requiresAuth: true,
           },
         },
         {
@@ -187,7 +192,8 @@ const router = new Router({
               { title: 'Visualização', active: true },
             ],
             pageTitle: 'Visualização de Livro',
-            rule: 'editor'
+            rule: 'editor',
+            requiresAuth: true,
           },
         },
         {
@@ -201,7 +207,8 @@ const router = new Router({
               { title: 'Edição', active: true },
             ],
             pageTitle: 'Edição de Livro',
-            rule: 'editor'
+            rule: 'editor',
+            requiresAuth: true,
           },
         },
         // Books/>
@@ -218,7 +225,8 @@ const router = new Router({
               { title: 'Listar', active: true },
             ],
             pageTitle: 'Lista de Empréstimos',
-            rule: 'editor'
+            rule: 'editor',
+            requiresAuth: true,
           },
         },
         {
@@ -232,7 +240,8 @@ const router = new Router({
               { title: 'Visualização', active: true },
             ],
             pageTitle: 'Visualização de Empréstimo',
-            rule: 'editor'
+            rule: 'editor',
+            requiresAuth: true,
           },
         },
         // Loans />
@@ -249,7 +258,8 @@ const router = new Router({
               { title: 'Listar', active: true },
             ],
             pageTitle: 'Lista de Autores',
-            rule: 'editor'
+            rule: 'editor',
+            requiresAuth: true,
           },
         },
         {
@@ -263,7 +273,8 @@ const router = new Router({
               { title: 'Visualização', active: true },
             ],
             pageTitle: 'Visualização de Autor',
-            rule: 'editor'
+            rule: 'editor',
+            requiresAuth: true,
           },
         },
         // Authors/>
@@ -280,7 +291,8 @@ const router = new Router({
               { title: 'Listar', active: true },
             ],
             pageTitle: 'Lista de Editoras',
-            rule: 'editor'
+            rule: 'editor',
+            requiresAuth: true,
           },
         },
         {
@@ -294,7 +306,8 @@ const router = new Router({
               { title: 'Visualização', active: true },
             ],
             pageTitle: 'Visualização de Editora',
-            rule: 'editor'
+            rule: 'editor',
+            requiresAuth: true,
           },
         },
         // Companies/>
@@ -311,7 +324,8 @@ const router = new Router({
               { title: 'Listar', active: true },
             ],
             pageTitle: 'Lista de Cursos',
-            rule: 'editor'
+            rule: 'editor',
+            requiresAuth: true,
           },
         },
         // Courses/>
@@ -345,6 +359,9 @@ const router = new Router({
       redirect: '/pages/error-404'
     }
   ],
+  scrollBehavior () {
+    return { x: 0, y: 0 }
+  },
 })
 
 router.afterEach(() => {
@@ -355,25 +372,21 @@ router.afterEach(() => {
     }
 })
 
-router.beforeEach(async (to, from, next) => {
-
-  if((to.name !== 'page-login' && to.name !== 'page-error-404' && to.name !== 'page-register' ) && !store.getters['auth/hasToken']) {
-    try {
-      await store.dispatch('auth/checkToken')
-      next({ name: to.name })
-    } catch (err) {
-      // Saving the route
-      // await store.dispatch('saveRouteThatWillBeAccessed', to.name)
-      console.log(err)
-      next({ name: 'page-login' })
-    }
-  } else {
-    if(to.name === 'page-login' && store.getters['auth/hasToken']) {
-      next({ name: 'home' })
-    } else {
-      next()
-    }
+router.beforeEach((to, from, next) => {
+  if (!to.meta.requiresAuth) {
+    // console.log(`Passou para ${to.path}`);
+    next();
+    return;
   }
-})
+
+  if (localStorage.getItem('token')) {
+    // console.log(`Passou para ${to.path}`);
+    next();
+    return;
+  }
+
+  // console.log(`Não passou para ${to.path}`);
+  next({ name: 'page-login' });
+});
 
 export default router

@@ -9,8 +9,8 @@ Vue.use(Vuesax)
 
 
 // axios
-import axios from "./axios.js"
-Vue.prototype.$http = axios
+// import axios from "./axios.js"
+// Vue.prototype.$http = axios
 
 // Theme Configurations
 import '../themeConfig.js'
@@ -59,7 +59,7 @@ Vue.directive("mask", VueMaskDirective)
 
 Vue.config.productionTip = false
 
-window._Vue = new Vue({
+new Vue({
     router,
     store,
     render: h => h(App)

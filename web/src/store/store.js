@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+import createPersistedState from "vuex-persistedstate";
 
 import state from "./state"
 import getters from "./getters"
@@ -18,11 +19,10 @@ export default new Vuex.Store({
     state,
     actions,
     modules: {
-      // todo: moduleTodo,
-      // calendar: moduleCalendar,
-      // chat: moduleChat,
-      // email: moduleEmail,
       auth: moduleAuth,
     },
-    strict: process.env.NODE_ENV !== 'production'
+    strict: process.env.NODE_ENV !== 'production',
+    plugins: [createPersistedState({
+      paths: ['auth'],
+    })],
 })

@@ -1,8 +1,11 @@
 export default {
   SET_USER(state, user) {
-    state.user = user
+    state.user = user;
   },
   SET_TOKEN(state, token) {
-    state.token = token
-  }
-}
+    localStorage.setItem('token', token);
+  },
+  REMOVE_TOKEN() {
+    localStorage.removeItem('token');
+  },
+};

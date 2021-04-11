@@ -1,71 +1,29 @@
-/*=========================================================================================
-  File Name: moduleCalendarActions.js
-  Description: Calendar Module Actions
-  ----------------------------------------------------------------------------------------
-
-==========================================================================================*/
-
-import axios from "@/axios.js"
-import storage from "./storage.js"
+import axios from "@/services/axios"
 
 export default {
-  doLogin({ dispatch }, payload) {
-    return new Promise((resolve, reject) => {
-      axios.post("admin/login", payload)
-        .then((response) => {
-          dispatch('setUser', response.data.user)
-          dispatch('setToken', response.data.access_token)
-          resolve(response)
-        })
-        .catch((error) => { reject(error) })
-      })
-  },
-  checkToken({ dispatch, state }) {
-    if(state.token) {
-      return new Promise.resolve(state.token)
+  async login({ commit }, payload) {
+    try {
+      const { data } = await axios.post("admin/login", payload);
+      const { user, access_token } = data;
+
+      commit("SET_USER", user);
+      commit("SET_TOKEN", access_token);
+
+      return Promise.resolve(data);
+    } catch (error) {
+      return Promise.reject(error);
     }
+  },
+  async logout({ commit }) {
+    try {
+      const response = await axios.post("admin/logout")
 
-    const token = storage.getLocalToken()
+      commit('SET_USER', {});
+      commit('REMOVE_TOKEN');
 
-    if(!token) {
-      return Promise.reject(new Error("Token Inválido"))
+      return Promise.resolve(response);
+    } catch (error) {
+      return Promise.reject(error);
     }
-
-    dispatch('setToken', token)
-    return dispatch('loadSession')
-  },
-  loadSession({ dispatch }) {
-    return new Promise(async (resolve, reject) => {
-      try {
-        const user = await storage.getLocalUser()
-        dispatch('setUser', user)
-        resolve()
-      } catch (err) {
-        dispatch('signOut')
-        reject(err)
-      }
-    })
-  },
-  setUser({ commit }, payload) {
-    storage.setLocalUser(payload)
-    commit("SET_USER", payload)
-  },
-  setToken({ commit }, payload) {
-    storage.setLocalToken(payload)
-    storage.setHeaderToken(payload)
-    commit("SET_TOKEN", payload)
-  },
-  signOut({ dispatch }) {
-    return new Promise((resolve, reject) => {
-      axios.post("admin/logout")
-        .then((response) => {
-          storage.setHeaderToken('')
-          storage.deleteLocalToken()
-          dispatch('setUser', {})
-          dispatch('setToken', '')
-          resolve(response)
-        })
-        .catch((error) => { reject(error) })
-      })
   }
 }
