@@ -55,25 +55,7 @@ Crie o banco de dados com o seguinte comando:
 CREATE DATABASE biblioteca CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 ```
 
-Copie o arquivo .env do .env.exemple:
-
-```bash
-# Vá para a pasta server
-$ cd server
-
-# Copiando o arquivo .env
-$ copy .env.example .env
-```
-
-ou
-
-```bash
-# Vá para a pasta server
-$ cd server
-
-# Copiando o arquivo .env
-$ cp .env.example .env
-```
+Copie ou renomeie o arquivo .env.exemple para .env.
 
 Coloque os detalhes do banco de dados no .env:
 
