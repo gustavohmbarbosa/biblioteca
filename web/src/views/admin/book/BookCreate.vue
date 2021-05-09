@@ -422,6 +422,7 @@
             iconPack: 'feather',
             icon: 'icon-alert-circle'
           })
+          console.log(error.response)
           this.validations = error.response.data.errors
         }
       },

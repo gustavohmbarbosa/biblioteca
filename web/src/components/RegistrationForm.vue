@@ -30,8 +30,8 @@
 
   @media (min-width: 1024px) {
     #form-container {
-      width: 50%;
-      margin-left: 25%;
+      width: 65%;
+      margin: auto;
     }
   }
 

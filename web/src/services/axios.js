@@ -12,12 +12,14 @@ api.interceptors.request.use(config => {
 });
 
 api.interceptors.response.use(response => response, error => {
-  if (error.status !== 401) {
+  if (error.status === 401) {
     localStorage.removeItem('token');
     axios.defaults.headers.common.Authorization = '';
 
     location.href = 'http://localhost:8080/pages/login';
   }
+
+  return Promise.reject(error);
 });
 
 export default api

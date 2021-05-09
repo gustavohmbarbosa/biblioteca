@@ -49,9 +49,6 @@
         </div>
 
         <!-- TABLE ACTION COL-2: SEARCH & EXPORT AS CSV -->
-          <vs-input class="sm:mr-4 mr-0 sm:w-auto w-full sm:order-normal order-3 sm:mt-0 mt-4" v-model="searchQuery" @input="updateSearchQuery" placeholder="Buscar..." />
-          <!-- <vs-button class="mb-4 md:mb-0" @click="gridApi.exportDataAsCsv()">Export as CSV</vs-button> -->
-
           <!-- EXPORT PROMPT-->
           <vs-prompt title="Exportar para Excel" class="export-options" @cancle="clearFields" @accept="exportToExcel" accept-text="Baixar" @close="clearFields" :active.sync="activePrompt">
             <vs-input v-model="fileName" placeholder="Digite o nome do arquivo.." class="w-full" />
@@ -62,7 +59,14 @@
             </div>
           </vs-prompt>
 
-          <vs-button @click="activePrompt=true" class="sm:mr-4">Exportar</vs-button>
+          <vs-button class="sm:mr-4" @click="$router.push({ name: 'admin-reader-create' })" type="border">
+            <feather-icon icon="PlusIcon" svgClasses="h-4 w-4" />
+            Novo Leitor
+          </vs-button>
+
+          <!-- SEARCH INPUT -->
+          <vs-input class="sm:mr-4 mr-0 sm:w-auto w-full sm:order-normal order-3 sm:mt-0 mt-4" v-model="searchQuery" @input="updateSearchQuery" placeholder="Buscar..." />
+          <!-- <vs-button class="mb-4 md:mb-0" @click="gridApi.exportDataAsCsv()">Export as CSV</vs-button> -->
 
           <vs-dropdown vs-trigger-click class="cursor-pointer">
 
@@ -81,9 +85,9 @@
               </vs-dropdown-item>
 
               <vs-dropdown-item>
-                <span class="flex items-center">
-                  <feather-icon icon="ArchiveIcon" svgClasses="h-4 w-4" class="mr-2" />
-                  <span>Arquivar</span>
+                <span class="flex items-center" @click="activePrompt=true">
+                  <feather-icon icon="DownloadIcon" svgClasses="h-4 w-4" class="mr-2" />
+                  <span>Exportar</span>
                 </span>
               </vs-dropdown-item>
 

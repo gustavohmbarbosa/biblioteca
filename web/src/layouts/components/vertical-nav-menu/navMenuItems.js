@@ -19,44 +19,16 @@ export default [
     i18n: "Principal",
     items: [
       {
-        url: null,
+        url: '/admin/leitores',
         name: "Leitores",
+        slug: 'leitores',
         icon: "UsersIcon",
-        i18n: "Leitores",
-        submenu: [
-          {
-            url: '/admin/leitores/cadastro',
-            name: "Cadastro",
-            slug: "leitores-cadastro",
-            i18n: "Cadastro",
-          },
-          {
-            url: '/admin/leitores',
-            name: "Lista",
-            slug: "leitores",
-            i18n: "Lista",
-          },
-        ]
       },
       {
-        url: null,
+        url: '/admin/livros',
         name: "Livros",
+        slug: "livros",
         icon: "BookIcon",
-        i18n: "Livros",
-        submenu: [
-          {
-            url: '/admin/livros/cadastro',
-            name: "Cadastro",
-            slug: "livros-cadastro",
-            i18n: "Cadastro",
-          },
-          {
-            url: '/admin/livros',
-            name: "Acervo",
-            slug: "livros",
-            i18n: "Acervo",
-          },
-        ]
       },
       {
         url : '/admin/emprestimos',
@@ -72,64 +44,22 @@ export default [
     i18n: "Secundário",
     items: [
       {
-        url: null,
+        url: '/admin/autores',
         name: "Autores",
+        slug: "autores",
         icon: "UsersIcon",
-        i18n: "Autores",
-        submenu: [
-          {
-            url: '/admin/autores/cadastro',
-            name: "Cadastro",
-            slug: "autores-cadastro",
-            i18n: "Cadastro",
-          },
-          {
-            url: '/admin/autores',
-            name: "Lista",
-            slug: "autores",
-            i18n: "Lista",
-          },
-        ]
       },
       {
-        url: null,
+        url: '/admin/editoras',
         name: "Editoras",
+        slug: "editoras",
         icon: "GlobeIcon",
-        i18n: "Editoras",
-        submenu: [
-          {
-            url: '/admin/editoras/cadastro',
-            name: "Cadastro",
-            slug: "editoras-cadastro",
-            i18n: "Cadastro",
-          },
-          {
-            url: '/admin/editoras',
-            name: "Lista",
-            slug: "editoras",
-            i18n: "Lista",
-          },
-        ]
       },
       {
-        url: null,
+        url: '/admin/cursos',
         name: "Cursos",
+        slug: "cursos",
         icon: "ListIcon",
-        i18n: "Cursos",
-        submenu: [
-          {
-            url: '/admin/cursos/cadastro',
-            name: "Cadastro",
-            slug: "cursos-cadastro",
-            i18n: "Cadastro",
-          },
-          {
-            url: '/admin/cursos',
-            name: "Lista",
-            slug: "cursos",
-            i18n: "Lista",
-          },
-        ]
       },
     ]
   },
@@ -139,24 +69,10 @@ export default [
     i18n: "Outros",
     items: [
       {
-        url: null,
+        url: '/admin/usuarios',
         name: "Usuários",
+        slug: "usuarios",
         icon: "UsersIcon",
-        i18n: "Usuários",
-        submenu: [
-          {
-            url: '/admin/usuarios/cadastro',
-            name: "Cadastro",
-            slug: "usuarios-cadastro",
-            i18n: "Cadastro",
-          },
-          {
-            url: '/admin/usuarios',
-            name: "Lista",
-            slug: "usuarios",
-            i18n: "Lista",
-          },
-        ]
       },
       {
         url: "/admin/configuracoes",

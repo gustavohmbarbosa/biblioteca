@@ -28,6 +28,12 @@
           </vs-dropdown>
         </div>
 
+        <!-- CREATE A NEW BOOK -->
+        <vs-button @click="$router.push({ name: 'admin-book-create' })" class="sm:mr-4" type="border">
+          <feather-icon icon="PlusIcon" svgClasses="h-4 w-4" />
+          Novo Livro
+        </vs-button>
+
         <!-- SEARCH INPUT -->
         <vs-input class="sm:mr-4 mr-0 sm:w-auto w-full sm:order-normal order-3 sm:mt-0 mt-4" v-model="searchQuery" @input="updateSearchQuery" placeholder="Buscar..." />
 
@@ -40,8 +46,6 @@
             <vs-switch v-model="cellAutoWidth">Tamanho Responsivo</vs-switch>
           </div>
         </vs-prompt>
-
-        <vs-button @click="activePrompt=true" class="sm:mr-4">Exportar</vs-button>
 
         <!-- ACTIONS DROPDOWN -->
         <vs-dropdown vs-trigger-click class="cursor-pointer">
@@ -60,9 +64,9 @@
             </vs-dropdown-item>
 
             <vs-dropdown-item>
-              <span class="flex items-center">
-                <feather-icon icon="ArchiveIcon" svgClasses="h-4 w-4" class="mr-2" />
-                <span>Arquivar</span>
+              <span class="flex items-center" @click="activePrompt=true">
+                <feather-icon icon="DownloadIcon" svgClasses="h-4 w-4" class="mr-2" />
+                <span>Exportar</span>
               </span>
             </vs-dropdown-item>
 

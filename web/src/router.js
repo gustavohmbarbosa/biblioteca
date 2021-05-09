@@ -31,7 +31,7 @@ const router = new Router({
           meta: {
             breadcrumb: [
                 { title: 'Home', url: '/' },
-                { title: 'Usuários' },
+                { title: 'Usuários', url: '/admin/usuarios' },
                 { title: 'Lista', active: true },
             ],
             pageTitle: 'Lista de Usuários',
@@ -46,7 +46,7 @@ const router = new Router({
           meta: {
             breadcrumb: [
               { title: 'Home', url: '/' },
-              { title: 'Usuários ' },
+              { title: 'Usuários', url: '/admin/usuarios' },
               { title: 'Visualização', active: true },
             ],
             pageTitle: 'Visualização de Usuário',
@@ -61,7 +61,7 @@ const router = new Router({
           meta: {
             breadcrumb: [
               { title: 'Home', url: '/' },
-              { title: 'Usuários' },
+              { title: 'Usuários', url: '/admin/usuarios' },
               { title: 'Cadastro', active: true },
             ],
             pageTitle: 'Cadastro de Usuário',
@@ -76,7 +76,7 @@ const router = new Router({
           meta: {
             breadcrumb: [
               { title: 'Home', url: '/' },
-              { title: 'Usuários' },
+              { title: 'Usuários', url: '/admin/usuarios' },
               { title: 'Edição', active: true },
             ],
             pageTitle: 'Edição de Usuário',
@@ -94,7 +94,7 @@ const router = new Router({
           meta: {
             breadcrumb: [
               { title: 'Home', url: '/' },
-              { title: 'Leitores' },
+              { title: 'Leitores', url: '/admin/leitores' },
               { title: 'Listar', active: true },
             ],
             pageTitle: 'Leitores',
@@ -109,7 +109,7 @@ const router = new Router({
           meta: {
             breadcrumb: [
               { title: 'Home', url: '/' },
-              { title: 'Leitores' },
+              { title: 'Leitores', url: '/admin/leitores' },
               { title: 'Cadastro', active: true },
             ],
             pageTitle: 'Cadastro de Leitor',
@@ -124,7 +124,7 @@ const router = new Router({
           meta: {
             breadcrumb: [
               { title: 'Home', url: '/' },
-              { title: 'Leitores' },
+              { title: 'Leitores', url: '/admin/leitores' },
               { title: 'View', active: true },
             ],
             pageTitle: 'Visualizar Leitor',
@@ -139,7 +139,7 @@ const router = new Router({
           meta: {
             breadcrumb: [
               { title: 'Home', url: '/' },
-              { title: 'Leitores' },
+              { title: 'Leitores', url: '/admin/leitores' },
               { title: 'Edição', active: true },
             ],
             pageTitle: 'Editar Leitor',
@@ -157,7 +157,7 @@ const router = new Router({
           meta: {
             breadcrumb: [
               { title: 'Home', url: '/' },
-              { title: 'Livros' },
+              { title: 'Livros', url: '/admin/livros' },
               { title: 'Lista', active: true },
             ],
             pageTitle: 'Lista de Livros',
@@ -173,7 +173,7 @@ const router = new Router({
           meta: {
             breadcrumb: [
               { title: 'Home', url: '/' },
-              { title: 'Livros' },
+              { title: 'Livros', url: '/admin/livros' },
               { title: 'Cadastro', active: true },
             ],
             pageTitle: 'Cadastro de Livro',
@@ -188,7 +188,7 @@ const router = new Router({
           meta: {
             breadcrumb: [
               { title: 'Home', url: '/' },
-              { title: 'Livros ' },
+              { title: 'Livros', url: '/admin/livros' },
               { title: 'Visualização', active: true },
             ],
             pageTitle: 'Visualização de Livro',
@@ -203,7 +203,7 @@ const router = new Router({
           meta: {
             breadcrumb: [
               { title: 'Home', url: '/' },
-              { title: 'Livros' },
+              { title: 'Livros', url: '/admin/livros' },
               { title: 'Edição', active: true },
             ],
             pageTitle: 'Edição de Livro',
@@ -221,7 +221,7 @@ const router = new Router({
           meta: {
             breadcrumb: [
               { title: 'Home', url: '/' },
-              { title: 'Empréstimos' },
+              { title: 'Empréstimos', url: '/admin/emprestimos' },
               { title: 'Listar', active: true },
             ],
             pageTitle: 'Lista de Empréstimos',
@@ -236,7 +236,7 @@ const router = new Router({
           meta: {
             breadcrumb: [
               { title: 'Home', url: '/' },
-              { title: 'Empréstimos' },
+              { title: 'Empréstimos', url: '/admin/emprestimos' },
               { title: 'Visualização', active: true },
             ],
             pageTitle: 'Visualização de Empréstimo',
@@ -254,7 +254,7 @@ const router = new Router({
           meta: {
             breadcrumb: [
               { title: 'Home', url: '/' },
-              { title: 'Autores' },
+              { title: 'Autores', url: '/admin/autores' },
               { title: 'Listar', active: true },
             ],
             pageTitle: 'Lista de Autores',
@@ -269,7 +269,7 @@ const router = new Router({
           meta: {
             breadcrumb: [
               { title: 'Home', url: '/' },
-              { title: 'Autores ' },
+              { title: 'Autores', url: '/admin/autores' },
               { title: 'Visualização', active: true },
             ],
             pageTitle: 'Visualização de Autor',
@@ -287,7 +287,7 @@ const router = new Router({
           meta: {
             breadcrumb: [
               { title: 'Home', url: '/' },
-              { title: 'Editoras' },
+              { title: 'Editoras', url: '/admin/editoras' },
               { title: 'Listar', active: true },
             ],
             pageTitle: 'Lista de Editoras',
@@ -302,7 +302,7 @@ const router = new Router({
           meta: {
             breadcrumb: [
               { title: 'Home', url: '/' },
-              { title: 'Editoras ' },
+              { title: 'Editoras', url: '/admin/editoras' },
               { title: 'Visualização', active: true },
             ],
             pageTitle: 'Visualização de Editora',
@@ -320,7 +320,7 @@ const router = new Router({
           meta: {
             breadcrumb: [
               { title: 'Home', url: '/' },
-              { title: 'Cursos' },
+              { title: 'Cursos', url: '/admin/cursos' },
               { title: 'Listar', active: true },
             ],
             pageTitle: 'Lista de Cursos',
