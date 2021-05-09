@@ -42,7 +42,7 @@
 
     <div class="flex flex-wrap items-center p-6" slot="footer">
       <vs-button class="mr-6" @click="storeCompany(company)">Cadastrar</vs-button>
-      <vs-button type="border" color="danger" @click="isSidebarActiveLocal = false">Cancelar</vs-button>
+      <vs-button type="flat" color="#999" @click="isSidebarActiveLocal = false">Cancelar</vs-button>
     </div>
   </vs-sidebar>
 </template>

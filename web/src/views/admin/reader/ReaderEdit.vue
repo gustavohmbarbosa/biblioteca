@@ -173,8 +173,8 @@
 
       <div class="vx-row">
         <div class="vx-col w-full">
-          <vs-button class="mr-3 mb-2" @click="updateReader(reader)">Atualizar</vs-button>
-          <vs-button color="danger" type="border" class="mb-2" :to="{name:'admin-reader-list'}">Voltar</vs-button>
+          <vs-button color="#999" type="flat" class="mb-2" :to="{name:'admin-reader-list'}">Voltar</vs-button>
+          <vs-button class="mr-3 mb-2 float-right" @click="updateReader(reader)" >Atualizar</vs-button>
         </div>
       </div>
     </vx-card>

@@ -1,5 +1,11 @@
 <template>
   <div id="page-reader-list">
+    <author-create-sidebar
+      :isSidebarActive="addNewSidebarToAuthorCreate"
+      @closeSidebar="toggleAuthorCreateSidebar"
+      :data="authorCreateSidebar"
+    />
+
     <div class="vx-card p-6">
       <div class="flex flex-wrap items-center">
 
@@ -28,6 +34,12 @@
           </vs-dropdown>
         </div>
 
+        <!-- CREATE A NEW AUTHOR -->
+        <vs-button class="sm:mr-4" @click='addNewAuthor' type="border">
+          <feather-icon icon="PlusIcon" svgClasses="h-4 w-4" />
+          Novo Autor
+        </vs-button>
+
         <!-- SEARCH INPUT -->
         <vs-input class="sm:mr-4 mr-0 sm:w-auto w-full sm:order-normal order-3 sm:mt-0 mt-4" v-model="searchQuery" @input="updateSearchQuery" placeholder="Buscar..." />
 
@@ -40,8 +52,6 @@
             <vs-switch v-model="cellAutoWidth">Tamanho Responsivo</vs-switch>
           </div>
         </vs-prompt>
-
-        <vs-button @click="activePrompt=true" class="sm:mr-4">Exportar</vs-button>
 
         <!-- ACTIONS DROPDOWN -->
         <vs-dropdown vs-trigger-click class="cursor-pointer">
@@ -61,9 +71,9 @@
             </vs-dropdown-item>
 
             <vs-dropdown-item>
-              <span class="flex items-center">
-                <feather-icon icon="ArchiveIcon" svgClasses="h-4 w-4" class="mr-2" />
-                <span>Arquivar</span>
+              <span class="flex items-center" @click="activePrompt=true">
+                <feather-icon icon="DownloadIcon" svgClasses="h-4 w-4" class="mr-2" />
+                <span>Exportar</span>
               </span>
             </vs-dropdown-item>
 
@@ -120,6 +130,8 @@ import moduleAuthorManagement from '@/store/admin/author/moduleAuthorManagement.
 import CellRendererActions from "./cell-renderer/CellRendererActions.vue"
 import CellRendererAvatar from "./cell-renderer/CellRendererAvatar.vue"
 
+// Components
+import AuthorCreateSidebar from '@/views/admin/author/AuthorCreateSidebar.vue'
 
 export default {
   components: {
@@ -129,6 +141,7 @@ export default {
     // Cell Renderer
     CellRendererActions,
     CellRendererAvatar,
+    AuthorCreateSidebar,
   },
   data() {
     return {
@@ -179,6 +192,9 @@ export default {
           cellRendererFramework: 'CellRendererActions',
         },
       ],
+
+      addNewSidebarToAuthorCreate: false,
+      authorCreateSidebar: {},
 
       // Cell Renderer Components
       components: {
@@ -250,7 +266,15 @@ export default {
       this.filename = "",
       this.cellAutoWidth = true,
       this.selectedFormat = "xlsx"
-    }
+    },
+    addNewAuthor() {
+      this.authorCreateSidebar = {}
+      this.toggleAuthorCreateSidebar(true)
+    },
+    toggleAuthorCreateSidebar(val = false) {
+      this.addNewSidebarToAuthorCreate = val
+      this.setAuthorLabel = true
+    },
   },
   mounted() {
     this.gridApi = this.gridOptions.api

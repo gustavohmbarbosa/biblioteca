@@ -1,5 +1,11 @@
 <template>
   <div id="page-reader-list">
+    <company-create-sidebar
+      :isSidebarActive="addNewSidebarToCompanyCreate"
+      @closeSidebar="toggleCompanyCreateSidebar"
+      :data="companyCreateSidebar"
+    />
+
     <div class="vx-card p-6">
       <div class="flex flex-wrap items-center">
 
@@ -28,6 +34,12 @@
           </vs-dropdown>
         </div>
 
+        <!-- CREATE A NEW COMPANY -->
+        <vs-button @click="addNewCompany" class="sm:mr-4" type="border">
+          <feather-icon icon="PlusIcon" svgClasses="h-4 w-4" class="mr-2" />
+          Novo Editora
+        </vs-button>
+
         <!-- SEARCH INPUT -->
         <vs-input class="sm:mr-4 mr-0 sm:w-auto w-full sm:order-normal order-3 sm:mt-0 mt-4" v-model="searchQuery" @input="updateSearchQuery" placeholder="Buscar..." />
 
@@ -40,8 +52,6 @@
             <vs-switch v-model="cellAutoWidth">Tamanho Responsivo</vs-switch>
           </div>
         </vs-prompt>
-
-        <vs-button @click="activePrompt=true" class="sm:mr-4">Exportar</vs-button>
 
         <!-- ACTIONS DROPDOWN -->
         <vs-dropdown vs-trigger-click class="cursor-pointer">
@@ -61,8 +71,8 @@
 
             <vs-dropdown-item>
               <span class="flex items-center">
-                <feather-icon icon="ArchiveIcon" svgClasses="h-4 w-4" class="mr-2" />
-                <span>Arquivar</span>
+                <feather-icon @click="activePrompt=true" icon="DownloadIcon" svgClasses="h-4 w-4" class="mr-2" />
+                <span>Exportar</span>
               </span>
             </vs-dropdown-item>
 
@@ -119,6 +129,8 @@ import moduleCompanyManagement from '@/store/admin/company/moduleCompanyManageme
 // Cell Renderer
 import CellRendererActions from "./cell-renderer/CellRendererActions.vue"
 
+// Components
+import CompanyCreateSidebar from '@/views/admin/company/CompanyCreateSidebar.vue'
 
 export default {
   components: {
@@ -126,11 +138,11 @@ export default {
     vSelect,
 
     // Cell Renderer
-    CellRendererActions
+    CellRendererActions,
+    CompanyCreateSidebar,
   },
   data() {
     return {
-
       // Filter Options
       searchQuery: "",
 
@@ -176,6 +188,9 @@ export default {
           cellRendererFramework: 'CellRendererActions',
         },
       ],
+
+      addNewSidebarToCompanyCreate: false,
+      companyCreateSidebar: {},
 
       // Cell Renderer Components
       components: {
@@ -243,7 +258,15 @@ export default {
       this.filename = "",
       this.cellAutoWidth = true,
       this.selectedFormat = "xlsx"
-    }
+    },
+    addNewCompany() {
+      this.companyCreateSidebar = {}
+      this.toggleCompanyCreateSidebar(true)
+    },
+    toggleCompanyCreateSidebar(val = false) {
+      this.addNewSidebarToCompanyCreate = val
+      this.setCompanyLabel = true
+    },
   },
   mounted() {
     this.gridApi = this.gridOptions.api
