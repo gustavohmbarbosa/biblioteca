@@ -1,11 +1,18 @@
 <template>
-  <div class="h-screen flex w-full bg-img vx-row no-gutter items-center justify-center" id="page-login">
+  <div
+    class="h-screen flex w-full bg-img vx-row no-gutter items-center justify-center"
+    id="page-login"
+  >
     <div class="vx-col sm:w-1/2 md:w-1/2 lg:w-3/4 xl:w-3/5 sm:m-0 m-4">
       <vx-card>
         <div slot="no-body" class="full-page-bg-color">
           <div class="vx-row no-gutter justify-center items-center">
             <div class="vx-col hidden lg:block lg:w-1/2">
-              <img src="@/assets/images/pages/login.png" alt="login" class="mx-auto">
+              <img
+                src="@/assets/images/pages/login.png"
+                alt="login"
+                class="mx-auto"
+              />
             </div>
 
             <div class="vx-col sm:w-full md:w-full lg:w-1/2 d-theme-dark-bg">
@@ -40,10 +47,13 @@
                   <div class="flex flex-wrap justify-between my-5">
                     <router-link to="">Esqueceu sua senha?</router-link>
                   </div>
-                  <vs-button type="border" to="/pages/register">Criar Conta</vs-button>
-                  <vs-button class="float-right" @click.prevent="login()">Entrar</vs-button>
+                  <vs-button type="border" to="/pages/register"
+                    >Criar Conta</vs-button
+                  >
+                  <vs-button class="float-right" @click.prevent="login()"
+                    >Entrar</vs-button
+                  >
                 </div>
-
               </div>
             </div>
           </div>
@@ -59,47 +69,47 @@ export default {
     return {
       user: {
         email: "volkman.karelle@example.com",
-        password: "12345678",
-      },
-    }
+        password: "password"
+      }
+    };
   },
   methods: {
     async login() {
       try {
-        this.$vs.loading()
+        this.$vs.loading();
 
-        const data = await this.$store.dispatch('auth/login', this.user)
+        const data = await this.$store.dispatch("auth/login", this.user);
 
-        this.$vs.loading.close()
+        this.$vs.loading.close();
 
-        this.showLoginSuccess(data.message)
+        this.showLoginSuccess(data.message);
 
-        this.$router.push({ name: 'admin-home' }) // $this.store.state.routeThatWillBeAccessed
-      } catch(error) {
-        console.log(error)
-        this.$vs.loading.close()
+        this.$router.push({ name: "admin-home" }); // $this.store.state.routeThatWillBeAccessed
+      } catch (error) {
+        console.log(error);
+        this.$vs.loading.close();
 
-        this.showLoginFailed('Erro ao realizar o login!')
+        this.showLoginFailed("Erro ao realizar o login!");
       }
     },
     showLoginSuccess(message) {
       this.$vs.notify({
-        title: 'Sucesso!',
+        title: "Sucesso!",
         text: message,
-        iconPack: 'feather',
-        icon: 'icon-check',
-        color: 'success'
-      })
+        iconPack: "feather",
+        icon: "icon-check",
+        color: "success"
+      });
     },
     showLoginFailed(message) {
       this.$vs.notify({
-        title: 'Erro!',
+        title: "Erro!",
         text: message,
-        iconPack: 'feather',
-        icon: 'icon-alert-circle',
-        color: 'danger'
-      })
-    },
+        iconPack: "feather",
+        icon: "icon-alert-circle",
+        color: "danger"
+      });
+    }
   }
-}
+};
 </script>

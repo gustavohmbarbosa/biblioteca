@@ -337,7 +337,7 @@ const router = new Router({
       component: () => import('@/layouts/full-page/FullPage.vue'),
       children: [
         {
-          path: '/pages/login',
+          path: '/admin/login',
           name: 'page-login',
           component: () => import('@/views/pages/Login.vue')
         },

@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 
 class AuthController extends Controller
@@ -18,14 +17,15 @@ class AuthController extends Controller
         // $credentials = $this->validator($request->only(['email', 'password']));
         $credentials = $request->all();
 
-        if (! $token = auth('api')->attempt($credentials)) {
+        if (!$token = auth('api')->attempt($credentials)) {
             return response()->json(['error' => 'Não autorizado'], 401);
         }
 
         $userDatas = auth('api')->user();
 
-        if (!is_null($userDatas->image))
+        if (!is_null($userDatas->image)) {
             $userDatas->image = asset('storage/' . $userDatas->image);
+        }
 
         return $this->respondWithTokenAndDatas($token, $userDatas);
     }
@@ -47,7 +47,8 @@ class AuthController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function refresh() {
+    public function refresh()
+    {
         return response()->json([
             'refresh_token' => auth()->refresh(),
         ]);
@@ -63,37 +64,37 @@ class AuthController extends Controller
     protected function respondWithTokenAndDatas($token, $userDatas)
     {
         return response()->json([
-            'user'         => $userDatas,
+            'user' => $userDatas,
             'access_token' => $token,
-            'token_type'   => 'bearer',
-            'expires_in'   => auth('api')->factory()->getTTL() * 60,
-            'message'      => "Logado com sucesso!"
+            'token_type' => 'bearer',
+            'expires_in' => auth('api')->factory()->getTTL() * 60,
+            'message' => "Logado com sucesso!",
         ]);
     }
 
     /**
-    * Get a validator.
-    *
-    * @param  array  $data
-    * @return \Illuminate\Contracts\Validation\Validator
-    */
-   protected function validator($data, $id = null)
-   {
+     * Get a validator.
+     *
+     * @param  array  $data
+     * @return \Illuminate\Contracts\Validation\Validator
+     */
+    protected function validator($data, $id = null)
+    {
         $fields = [
-            'name'         => ['required', 'string', 'max:190'],
-            'email'        => ['required', 'string', 'email', 'max:190'],
-            'password'     => ['required', 'string', 'min:8'],
+            'name' => ['required', 'string', 'max:190'],
+            'email' => ['required', 'string', 'email', 'max:190'],
+            'password' => ['required', 'string', 'min:8'],
 
         ];
 
         $messages = [
-            'required'    => 'Preencha esse campo.',
-            'min'         => 'Campo deve ter no mínimo :min caracteres.',
-            'max'         => 'Campo deve ter no máximo :max caracteres.',
-            'email'       => 'Insira um endereço de e-mail válido!',
-            'string'      => 'Insira caracteres válidos.',
+            'required' => 'Preencha esse campo.',
+            'min' => 'Campo deve ter no mínimo :min caracteres.',
+            'max' => 'Campo deve ter no máximo :max caracteres.',
+            'email' => 'Insira um endereço de e-mail válido!',
+            'string' => 'Insira caracteres válidos.',
         ];
 
         return $data->validate($fields, $messages);
-   }
+    }
 }
