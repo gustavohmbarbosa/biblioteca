@@ -355,13 +355,13 @@
       },
       async notifyBookStored(book) {
         this.$vs.loading({
-          container: '#form-container',
+          container: '.form-container',
           scale: 0.6
         })
 
         try {
           const bookStored = await this.storeBook(book)
-          this.$vs.loading.close("#form-container > .con-vs-loading")
+          this.$vs.loading.close(".form-container > .con-vs-loading")
           this.$vs.notify({
             title: "Livro Cadastrado",
             text: bookStored.data.message,
@@ -371,7 +371,7 @@
           })
           this.resetData()
         } catch (error) {
-          this.$vs.loading.close("#form-container > .con-vs-loading")
+          this.$vs.loading.close(".form-container > .con-vs-loading")
           this.$vs.notify({
             title: "Erro no Cadastro",
             text: "Preencha os campos corretamente",

@@ -8,7 +8,7 @@
     methods: {
       treatAuthors(authors) {
         if (typeof authors !== 'undefined' && authors.length > 0)
-          return authors[0].name
+          return (authors.map(author => author.name)).join(", ");
         else
           return "Autor não informado"
       }

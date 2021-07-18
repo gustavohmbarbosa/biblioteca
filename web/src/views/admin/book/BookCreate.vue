@@ -66,9 +66,7 @@
             v-model="book.title"
           />
           <div class="text-danger text-sm" v-if="validations.title">
-            <span class="text-danger text-sm" v-show="validations.title">{{
-              validations.title[0]
-            }}</span>
+            <span class="text-danger text-sm" v-show="validations.title">{{ validations.title[0] }}</span>
           </div>
         </div>
 
@@ -84,15 +82,13 @@
             v-model="book.subtitle"
           />
           <div class="text-danger text-sm" v-if="validations.subtitle">
-            <span v-show="validations.subtitle">{{
-              validations.subtitle[0]
-            }}</span>
+            <span v-show="validations.subtitle">{{ validations.subtitle[0] }}</span>
           </div>
         </div>
 
         <!-- Author -->
         <div class="w-full mb-6">
-          <label>Autor</label>
+          <label>Autor(es)</label>
           <vx-input-group>
             <template slot="prepend">
               <vx-tooltip
@@ -118,14 +114,12 @@
               :options="authors"
               :reduce="name => name.id"
               :dir="$vs.rtl ? 'rtl' : 'ltr'"
-              placeholder="Autor"
-              v-model="book.author_id"
+              placeholder="Selecione o(s) autor(es)"
+              v-model="book.authors_id"
             />
           </vx-input-group>
-          <div class="text-danger text-sm" v-if="validations.author_id">
-            <span v-show="validations.author_id">{{
-              validations.author_id[0]
-            }}</span>
+          <div class="text-danger text-sm" v-if="validations.authors_id">
+            <span v-show="validations.authors_id">{{ validations.authors_id[0] }}</span>
           </div>
         </div>
 
@@ -155,14 +149,12 @@
               :options="companies"
               :reduce="name => name.id"
               :dir="$vs.rtl ? 'rtl' : 'ltr'"
-              placeholder="Editora"
+              placeholder="Selecione a editora"
               v-model="book.company_id"
             />
           </vx-input-group>
           <div class="text-danger text-sm" v-if="validations.company_id">
-            <span v-show="validations.company_id">{{
-              validations.company_id[0]
-            }}</span>
+            <span v-show="validations.company_id">{{ validations.company_id[0] }}</span>
           </div>
         </div>
 
@@ -196,9 +188,7 @@
             v-mask="maskEdition"
           />
           <div class="text-danger text-sm" v-if="validations.edition">
-            <span v-show="validations.edition">{{
-              validations.edition[0]
-            }}</span>
+            <span v-show="validations.edition">{{ validations.edition[0] }}</span>
           </div>
         </div>
 
@@ -230,9 +220,7 @@
             v-model="book.language"
           />
           <div class="text-danger text-sm" v-if="validations.language">
-            <span v-show="validations.language">{{
-              validations.language[0]
-            }}</span>
+            <span v-show="validations.language">{{ validations.language[0] }}</span>
           </div>
         </div>
 
@@ -337,9 +325,7 @@
             v-mask="maskPublicationYear"
           />
           <div class="text-danger text-sm" v-if="validations.publicationYear">
-            <span v-show="validations.publicationYear">{{
-              validations.publicationYear[0]
-            }}</span>
+            <span v-show="validations.publicationYear">{{ validations.publicationYear[0] }}</span>
           </div>
         </div>
 
@@ -353,9 +339,7 @@
             v-model="book.synopsis"
           />
           <div class="text-danger text-sm" v-if="validations.synopsis">
-            <span v-show="validations.synopsis">{{
-              validations.synopsis[0]
-            }}</span>
+            <span v-show="validations.synopsis">{{ validations.synopsis[0] }}</span>
           </div>
         </div>
 
@@ -418,9 +402,7 @@
               </li>
             </ul>
             <div class="text-danger text-sm" v-if="validations.origin">
-              <span v-show="validations.origin">{{
-                validations.origin[0]
-              }}</span>
+              <span v-show="validations.origin">{{ validations.origin[0]   }}</span>
             </div>
           </div>
 
@@ -454,9 +436,7 @@
             v-model="book.observations"
           />
           <div class="text-danger text-sm" v-if="validations.observations">
-            <span v-show="validations.observations">{{
-              validations.observations[0]
-            }}</span>
+            <span v-show="validations.observations">{{ validations.observations[0] }}</span>
           </div>
         </div>
 
@@ -472,7 +452,7 @@
           <vs-button
             class="float-right"
             type="filled"
-            @click.prevent="submitBook(book)"
+            @click.prevent="submitBook()"
             >Cadastrar</vs-button
           >
         </div>
@@ -505,14 +485,14 @@ export default {
         isbn: "",
         synopsis: "",
         pages: "",
-        language: "pt",
+        language: "pt-br",
         observations: "",
         edition: "",
         publicationYear: null,
         color: "",
         cdd: "",
         company_id: null,
-        author_id: [],
+        authors_id: [],
         cape: "",
         showCape: null,
         linkCape: null
@@ -574,10 +554,9 @@ export default {
     money: VMoney
   },
   methods: {
-    submitBook(book) {
-      const bookFormatted = this.bookInFormData(book);
-
-      this.notifyBookStored(bookFormatted);
+    submitBook() {
+      const bookFormatted = this.bookInFormData(this.book);
+      this.storeBook(bookFormatted);
     },
     bookInFormData(book) {
       let data = new FormData();
@@ -597,21 +576,25 @@ export default {
       data.append("color", book.color);
       data.append("cdd", book.cdd);
       data.append("company_id", book.company_id);
-      book.author_id.forEach((value, key) => {
-        data.append("author_id[" + key + "]", value);
+      book.authors_id.forEach((value, key) => {
+        data.append("authors_id[" + key + "]", value);
       });
-
+      
       return data;
     },
-    async notifyBookStored(book) {
+    async storeBook(book) {
       this.$vs.loading({
-        container: "#form-container",
+        container: ".form-container",
         scale: 0.6
       });
 
       try {
-        const bookStored = await this.storeBook(book);
-        this.$vs.loading.close("#form-container > .con-vs-loading");
+        const bookStored = await this.$store.dispatch(
+          "bookManagement/store",
+          book
+        );
+
+        this.$vs.loading.close(".form-container > .con-vs-loading");
         this.$vs.notify({
           title: "Livro Cadastrado",
           text: bookStored.data.message,
@@ -621,7 +604,7 @@ export default {
         });
         this.resetData();
       } catch (error) {
-        this.$vs.loading.close("#form-container > .con-vs-loading");
+        this.$vs.loading.close(".form-container > .con-vs-loading");
         this.$vs.notify({
           title: "Erro no Cadastro",
           text: "Verifique os campos e os preencha corretamente",
@@ -629,19 +612,8 @@ export default {
           iconPack: "feather",
           icon: "icon-alert-circle"
         });
-        console.log(error.response);
         this.validations = error.response.data.errors;
       }
-    },
-    storeBook(book) {
-      const config = {
-        headers: {
-          "content-type": "multipart/form-data",
-          "Access-Control-Allow-Origin": "*"
-        }
-      };
-
-      return this.$store.dispatch("bookManagement/store", book, config);
     },
     formatPrice(price) {
       price = price.split(".").join("");
@@ -685,7 +657,7 @@ export default {
     },
     async searchBookByIsbn(isbn) {
       this.$vs.loading({
-        container: "#form-container",
+        container: ".form-container",
         scale: 0.6
       });
 
@@ -698,19 +670,19 @@ export default {
 
         this.fillFormWithDataFromTheBookObtained(bookData);
 
-        this.$vs.loading.close("#form-container > .con-vs-loading");
+        this.$vs.loading.close(".form-container > .con-vs-loading");
         this.$vs.notify({
           title: "Livro Encontrado",
-          text: "Por favor verifique os campos.",
+          text: "Por favor, verifique os campos.",
           color: "success",
           iconPack: "feather",
           icon: "icon-check"
         });
       } catch (error) {
-        this.$vs.loading.close("#form-container > .con-vs-loading");
+        this.$vs.loading.close(".form-container > .con-vs-loading");
         this.$vs.notify({
           title: "Desculpe, algo deu errado",
-          text: "Por favor verifique o ISBN ou preencha manualmente",
+          text: "Verifique o ISBN informado ou preencha os dados manualmente",
           color: "danger",
           iconPack: "feather",
           icon: "icon-check"
@@ -747,25 +719,27 @@ export default {
         const authors = this.authors;
 
         const checkedAuthor = authors.filter(author => {
-          if (author.name == authorName) return author;
+          if (author.name.toUpperCase() == authorName.toUpperCase())
+            return author;
         })[0];
 
         this.setAuthorInBook(checkedAuthor);
       } catch (error) {
-        this.validations.author_id = [
+        this.validations.authors_id = [
           "Verifique se o autor deste livro ja foi cadastrado."
         ];
       }
     },
     setAuthorInBook(author) {
-      this.book.author_id.push(author.id);
+      this.book.authors_id.push(author.id);
     },
     checkCompanyToSet(companyName) {
       try {
         const companies = this.companies;
 
         const checkedCompany = companies.filter(company => {
-          if (company.name == companyName) return company;
+          if (company.name.toUpperCase() == companyName.toUpperCase())
+            return company;
         })[0];
 
         this.setCompanyInBook(checkedCompany);

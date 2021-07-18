@@ -87,7 +87,7 @@
         ref="agGridTable"
         :components="components"
         :gridOptions="gridOptions"
-        class="ag-theme-material w-100 my-4 ag-grid-table"
+        class="ag-theme-material w-full my-4 ag-grid-table"
         :columnDefs="columnDefs"
         :defaultColDef="defaultColDef"
         :rowData="booksData"

@@ -233,7 +233,7 @@
       },
       async notifyReaderStored(reader) {
         this.$vs.loading({
-          container: '#form-container',
+          container: '.form-container',
           scale: 0.6
         })
 
@@ -242,7 +242,7 @@
           // Tu usou...
           this.$vs.loading.close(".form-container > .con-vs-loading")
           // Ao inveés de
-          this.$vs.loading.close("#form-container > .con-vs-loading")
+          this.$vs.loading.close(".form-container > .con-vs-loading")
           this.$vs.notify({
             title: "Leitor Cadastrado!",
             text: readerStored.data.message,
@@ -252,7 +252,7 @@
           })
           this.resetData()
         } catch (error) {
-          this.$vs.loading.close("#form-container > .con-vs-loading")
+          this.$vs.loading.close(".form-container > .con-vs-loading")
           this.$vs.notify({
             title: "Erro no Cadastro",
             text: "Verifique os campos e os preencha corretamente",
