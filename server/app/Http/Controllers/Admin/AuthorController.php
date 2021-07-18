@@ -93,7 +93,7 @@ class AuthorController extends Controller
         if(is_null($author)){
             return $this->errorMessage("Autor não encontrado.");
         }
-
+        
         $data = $this->validator($request);
 
         if($request->hasFile('image')) {

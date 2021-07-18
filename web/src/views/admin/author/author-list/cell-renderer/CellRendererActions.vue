@@ -1,33 +1,58 @@
 <template>
   <div :style="{'direction': $vs.rtl ? 'rtl' : 'ltr'}">
+    <author-edit-sidebar
+      :isSidebarActive="editSidebarActive"
+      @closeSidebar="toggleEditSidebar"
+      :data="editSidebarData"
+      :id="params.data.id"
+    />
+
     <feather-icon
      icon="EyeIcon"
      svgClasses="h-5 w-5 mr-4 hover:text-primary cursor-pointer"
-     @click="viewRecord" />
+     @click="view" />
 
     <feather-icon
      icon="Edit3Icon"
      svgClasses="h-5 w-5 mr-4 hover:text-primary cursor-pointer"
-     @click="editRecord" />
+     @click="edit" />
 
     <feather-icon
      icon="Trash2Icon"
      svgClasses="h-5 w-5 hover:text-danger cursor-pointer"
-     @click="confirmDeleteRecord" />
+     @click="confirmDelete" />
   </div>
 </template>
 
 <script>
+import AuthorEditSidebar from "@/views/admin/author/AuthorSidebar.vue";
+
   export default {
     name: 'CellRendererActions',
+    components: {
+      AuthorEditSidebar
+    },
+    data() {
+      return {
+        // Edit author sidebar
+        editSidebarActive: false,
+        editSidebarData: {}
+      };
+    },
     methods: {
-      viewRecord() {
+      view() {
         this.$router.push('/admin/autores/visualizacao/' + this.params.data.id).catch(() => {})
       },
-      editRecord() {
-        this.$router.push("/admin/autores/edicao/" + this.params.data.id).catch(() => {})
+
+      edit() {
+        this.editSidebarData = {};
+        this.toggleEditSidebar(true);
       },
-      confirmDeleteRecord() {
+      toggleEditSidebar(state = false) {
+        this.editSidebarActive = state;
+      },
+
+      confirmDelete() {
         this.$vs.dialog({
           type: 'confirm',
           color: 'danger',

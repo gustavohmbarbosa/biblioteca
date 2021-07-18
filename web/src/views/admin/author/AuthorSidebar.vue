@@ -2,7 +2,7 @@
   <vs-sidebar click-not-close position-right parent="body" default-index="1" color="primary"
     class="add-new-data-sidebar items-no-padding" spacer v-model="isSidebarActiveLocal">
     <div class="mt-6 flex items-center justify-between px-6">
-      <h4>CADASTRAR AUTOR</h4>
+      <h4>{{ !id ? "CADASTRAR AUTOR" : `EDITAR AUTOR #${id}` }}</h4>
       <feather-icon icon="XIcon" @click.stop="isSidebarActiveLocal = false" class="cursor-pointer"></feather-icon>
     </div>
     <vs-divider class="mb-0"></vs-divider>
@@ -59,7 +59,14 @@
     </VuePerfectScrollbar>
 
     <div class="flex flex-wrap items-center p-6" slot="footer">
-      <vs-button class="mr-6" @click="submitAuthor(author)">Cadastrar</vs-button>
+      <vs-button v-if="!id" class="mr-6" @click="storeAuthor">
+        Cadastrar
+      </vs-button>
+
+      <vs-button v-else class="mr-6" @click="updateAuthor">
+        Salvar Alterações
+      </vs-button>
+
       <vs-button type="flat" color="#999" @click="isSidebarActiveLocal = false">Cancelar</vs-button>
     </div>
   </vs-sidebar>
@@ -72,6 +79,7 @@
 
   export default {
     props: {
+      id: Number,
       isSidebarActive: {
         type: Boolean,
         required: true
@@ -81,8 +89,17 @@
         default: () => {},
       }
     },
+    watch: {
+      isSidebarActiveLocal: function(value) {
+        if (value && this.id && !this.alreadyGotAuthor) { 
+          this.getAuthorById(this.id);
+        }
+      }
+    },
     data() {
       return {
+        alreadyGotAuthor: false,
+
         author: {
           name: "",
           biography: "",
@@ -113,23 +130,19 @@
       },
     },
     methods: {
-      submitAuthor(author) {
-        const authorFormatted = this.authorInFormData(author)
-
-        this.notifyAuthorStored(authorFormatted)
-      },
       authorInFormData(author) {
         let data = new FormData()
 
         Object.entries(author).forEach(([key, value]) => {
             data.append(key, value)
         })
-console.log(data)
+
         return data
       },
-      async notifyAuthorStored(author) {
+      async storeAuthor() {
           try {
-            const AuthorStored = await this.storeAuthor(author)
+            const authorFormatted = this.authorInFormData(this.author)
+            const AuthorStored = await this.$store.dispatch('authorManagement/store', authorFormatted)
 
             this.isSidebarActiveLocal = false
             this.$vs.notify({
@@ -151,16 +164,6 @@ console.log(data)
             this.validations = error.response.data.errors
           }
       },
-      storeAuthor(author) {
-        const config = {
-          headers: {
-            'content-type': 'multipart/form-data',
-            'Access-Control-Allow-Origin': '*'
-          }
-        }
-
-        return this.$store.dispatch('authorManagement/store', author, config)
-      },
       resetData() {
         Object.assign(this.$data, this.$options.data())
       },
@@ -174,6 +177,36 @@ console.log(data)
           this.author.image = input.target.files[0]
         }
       },
+      async getAuthorById(id) {
+        const { data } = await this.$store.dispatch('authorManagement/show', id);
+        this.author = data;
+        this.alreadyGotAuthor = true;
+      },
+      async updateAuthor() {
+        this.isSidebarActiveLocal = false;
+
+        try {
+          const authorFormatted = this.authorInFormData(this.author);
+          const AuthorUpdated = await this.$store.dispatch('authorManagement/update', authorFormatted);
+
+          this.$vs.notify({
+            title: "Author",
+            text: AuthorUpdated.data.message,
+            color: "success",
+            iconPack: 'feather',
+            icon: 'icon-check',
+          })
+        } catch (error) {
+          this.$vs.notify({
+            title: "Erro na Atualização",
+            text: "Verifique os campos e os preencha corretamente",
+            color: "danger",
+            iconPack: 'feather',
+            icon: 'icon-alert-circle'
+          })
+          this.validations = error.response.data.errors
+        }
+      }
     },
     components: {
       VuePerfectScrollbar,

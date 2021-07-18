@@ -246,7 +246,7 @@
   import Datepicker from 'vuejs-datepicker'
   import * as lang from 'vuejs-datepicker/src/locale'
 
-  import AuthorCreateSidebar from '@/views/admin/author/AuthorCreateSidebar.vue'
+  import AuthorCreateSidebar from '@/views/admin/author/AuthorSidebar.vue'
   import CompanyCreateSidebar from '@/views/admin/company/CompanyCreateSidebar.vue'
 
   import ConvertDateToStandard from '@/utils/ConvertDateToStandard.js'

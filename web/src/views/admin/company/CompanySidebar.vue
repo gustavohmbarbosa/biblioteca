@@ -122,6 +122,11 @@ export default {
       }
     }
   },
+  watch: {
+    isSidebarActiveLocal: function(value) {
+      if (value && this.id) this.getCompanyById(this.id);
+    }
+  },
   methods: {
     storeCompany() {
       this.$store
@@ -192,8 +197,6 @@ export default {
       this.$store.registerModule("companyManagement", moduleCompanyManagement);
       moduleCompanyManagement.isRegistered = true;
     }
-
-    if (this.id) this.getCompanyById(this.id);
   }
 };
 </script>

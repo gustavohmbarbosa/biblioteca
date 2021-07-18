@@ -467,7 +467,7 @@ import { VMoney } from "v-money";
 
 import RegistrationForm from "@/components/RegistrationForm";
 
-import AuthorCreateSidebar from "@/views/admin/author/AuthorCreateSidebar.vue";
+import AuthorCreateSidebar from "@/views/admin/author/AuthorSidebar.vue";
 import CompanyCreateSidebar from "@/views/admin/company/CompanySidebar.vue";
 
 import moduleBookManagement from "@/store/admin/book/moduleBookManagement.js";

@@ -48,6 +48,7 @@ export default {
         .push("/admin/editoras/visualizacao/" + this.params.data.id)
         .catch(() => {});
     },
+    
     edit() {
       this.editSidebarData = {};
       this.toggleEditSidebar(true);
@@ -55,6 +56,7 @@ export default {
     toggleEditSidebar(state = false) {
       this.editSidebarActive = state;
     },
+
     confirmDelete() {
       this.$vs.dialog({
         type: "confirm",

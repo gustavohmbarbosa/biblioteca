@@ -131,7 +131,7 @@ import CellRendererActions from "./cell-renderer/CellRendererActions.vue"
 import CellRendererAvatar from "./cell-renderer/CellRendererAvatar.vue"
 
 // Components
-import AuthorCreateSidebar from '@/views/admin/author/AuthorCreateSidebar.vue'
+import AuthorCreateSidebar from '@/views/admin/author/AuthorSidebar.vue'
 
 export default {
   components: {
