@@ -1,9 +1,11 @@
 import axios from "@/services/axios"
 
+const routePrefix = "/admin/authors";
+
 export default {
   index({ commit }) {
     return new Promise((resolve, reject) => {
-      axios.get("admin/authors")
+      axios.get(`${routePrefix}`)
         .then((response) => {
           commit('SET_AUTHORS', response.data)
           resolve(response)
@@ -13,7 +15,7 @@ export default {
   },
   store({ commit }, author) {
     return new Promise((resolve, reject) => {
-      axios.post("/admin/authors", author)
+      axios.post(`${routePrefix}`, author)
         .then((response) => {
           try { //Case the author be stored with image.
             commit('ADD_AUTHOR', Object.assign(author, {id: response.data.id, name: author.get('name')}))
@@ -24,27 +26,37 @@ export default {
         })
         .catch((error) =>
         {
-          reject(error)
+          reject(error);
         })
     })
   },
   show(context, authorId) {
     return new Promise((resolve, reject) => {
-      axios.get(`admin/authors/${authorId}`)
+      axios.get(`${routePrefix}/${authorId}`)
         .then((response) => {
-          resolve(response)
+          resolve(response);
         })
-        .catch((error) => { reject(error) })
+        .catch((error) => { reject(error) });
+    })
+  },
+  update({ commit }, author) {
+    return new Promise((resolve, reject) => {
+      axios.put(`${routePrefix}/${author.get('id')}`, author)
+        .then((response) => {
+          commit('UPDATE_AUTHOR', response.data.data);
+          resolve(response);
+        })
+        .catch((error) => { reject(error) });
     })
   },
   destroy({ commit }, authorId) {
     return new Promise((resolve, reject) => {
-      axios.delete(`admin/authors/${authorId}`)
+      axios.delete(`${routePrefix}/${authorId}`)
         .then((response) => {
-          commit('REMOVE_RECORD', authorId)
-          resolve(response)
+          commit('REMOVE_AUTHOR', authorId);
+          resolve(response);
         })
-        .catch((error) => { reject(error) })
+        .catch((error) => { reject(error) });
     })
   }
 }

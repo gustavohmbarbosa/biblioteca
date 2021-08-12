@@ -2,24 +2,24 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Http\Request;
-use App\Traits\Messages;
 use App\Company;
+use App\Http\Controllers\Controller;
+use App\Traits\Messages;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class CompanyController extends Controller
 {
     use Messages;
 
     /**
-	 * @var Company
-	 */
-	private $company;
+     * @var Company
+     */
+    private $company;
 
-	public function __construct(Company $company)
-	{
-		$this->company = $company;
+    public function __construct(Company $company)
+    {
+        $this->company = $company;
     }
 
     /**
@@ -45,7 +45,10 @@ class CompanyController extends Controller
         $data = $this->validator($request);
         $company = $this->company->create($data);
 
-        return $this->message("Editora criada com sucesso!", $company->id, 201);
+        return response()->json([
+            "message" => "Editora criada com sucesso!",
+            "data" => $company,
+        ], 201);
     }
 
     /**
@@ -63,9 +66,9 @@ class CompanyController extends Controller
         }
 
         $books = DB::table('books')
-        ->where('books.company_id', $id)
-        ->select('books.title as book_title', 'books.id as book_id')
-        ->get();
+            ->where('books.company_id', $id)
+            ->select('books.title as book_title', 'books.id as book_id')
+            ->get();
 
         $company['books'] = $books;
 
@@ -125,7 +128,10 @@ class CompanyController extends Controller
         $data = $this->validator($request);
         $company->update($data);
 
-        return $this->message("Editora atualizada com sucesso!", $company->id, 200);
+        return response()->json([
+            "message" => "Editora atualizada com sucesso!",
+            "data" => $company,
+        ]);
     }
 
     /**
@@ -148,24 +154,24 @@ class CompanyController extends Controller
     }
 
     /**
-    * Get a validator.
-    *
-    * @param  array  $data
-    * @return \Illuminate\Contracts\Validation\Validator
-    */
-   protected function validator($data)
-   {
+     * Get a validator.
+     *
+     * @param  array  $data
+     * @return \Illuminate\Contracts\Validation\Validator
+     */
+    protected function validator($data)
+    {
         $fields = [
-            'name'  => ['required', 'string', 'max:190'],
+            'name' => ['required', 'string', 'max:190'],
             'about' => ['nullable', 'string', 'max:5000'],
         ];
 
         $messages = [
-            'required'  =>  'Preencha esse campo.',
-            'string'    =>  'Insira caracteres válidos.',
-            'max'       =>  'Campo deve ter no máximo :max caracteres.',
+            'required' => 'Preencha esse campo.',
+            'string' => 'Insira caracteres válidos.',
+            'max' => 'Campo deve ter no máximo :max caracteres.',
         ];
 
         return $data->validate($fields, $messages);
-   }
+    }
 }

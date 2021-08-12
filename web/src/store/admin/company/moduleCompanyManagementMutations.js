@@ -13,7 +13,10 @@ export default {
   SET_COMPANIES(state, companies) {
     state.companies = companies
   },
-  REMOVE_RECORD(state, itemId) {
+  UPDATE_COMPANY(state, company) {
+    state.companies = state.companies.map((item) => item.id === company.id ? company : item)
+  },
+  REMOVE_COMPANY(state, itemId) {
       const companyIndex = state.companies.findIndex((u) => u.id == itemId)
       state.companies.splice(companyIndex, 1)
   },

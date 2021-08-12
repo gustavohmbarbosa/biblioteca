@@ -22,13 +22,20 @@ export default {
     return new Promise((resolve, reject) => {
       axios.post("/admin/companies", company)
         .then((response) => {
-          commit('ADD_COMPANY', Object.assign(company, {id: response.data.id}))
+          commit('ADD_COMPANY', response.data.data)
           resolve(response)
         })
-        .catch((error) =>
-        {
-          reject(error)
-        })
+        .catch((error) => { reject(error) })
+    })
+  },
+  update({ commit }, company) {
+    return new Promise((resolve, reject) => {
+      axios.put(`/admin/companies/${company.id}`, company)
+      .then((response) => {
+        commit('UPDATE_COMPANY', response.data.data)
+        resolve(response)
+      })
+      .catch((error) => { reject(error) })
     })
   },
   show(context, companyId) {
@@ -44,7 +51,7 @@ export default {
     return new Promise((resolve, reject) => {
       axios.delete(`admin/companies/${companyId}`)
         .then((response) => {
-          commit('REMOVE_RECORD', companyId)
+          commit('REMOVE_COMPANY', companyId)
           resolve(response)
         })
         .catch((error) => { reject(error) })
