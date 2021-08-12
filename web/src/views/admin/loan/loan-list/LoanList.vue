@@ -37,6 +37,12 @@
           </vs-dropdown>
         </div>
 
+        <!-- CREATE A NEW LOAN -->
+        <vs-button @click="$router.push({ name: 'admin-loan-create' })" class="sm:mr-4" type="border">
+          <feather-icon icon="PlusIcon" svgClasses="h-4 w-4" />
+          Novo Empréstimo
+        </vs-button>
+
         <!-- SEARCH INPUT -->
         <vs-input class="sm:mr-4 mr-0 sm:w-auto w-full sm:order-normal order-3 sm:mt-0 mt-4" v-model="searchQuery" @input="updateSearchQuery" placeholder="Buscar..." />
 

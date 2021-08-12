@@ -244,6 +244,21 @@ const router = new Router({
             requiresAuth: true,
           },
         },
+        {
+          path: 'admin/emprestimos/cadastro',
+          name: 'admin-loan-create',
+          component: () => import('@/views/admin/loan/LoanCreate.vue'),
+          meta: {
+            breadcrumb: [
+              { title: 'Home', url: '/' },
+              { title: 'Empréstimos', url: '/admin/emprestimos' },
+              { title: 'Cadastrar', active: true },
+            ],
+            pageTitle: 'Cadastro de Empréstimo',
+            rule: 'editor',
+            requiresAuth: true,
+          },
+        },
         // Loans />
 
         // Authors
