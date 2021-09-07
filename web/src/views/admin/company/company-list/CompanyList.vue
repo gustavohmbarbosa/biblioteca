@@ -168,7 +168,7 @@ import moduleCompanyManagement from "@/store/admin/company/moduleCompanyManageme
 import CellRendererActions from "./cell-renderer/CellRendererActions.vue";
 
 // Components
-import CompanyCreateSidebar from "@/views/admin/company/CompanySidebar.vue";
+// import CompanyCreateSidebar from "@/views/admin/company/CompanySidebar.vue";
 
 export default {
   components: {
@@ -177,7 +177,7 @@ export default {
 
     // Cell Renderer
     CellRendererActions,
-    CompanyCreateSidebar
+    // CompanyCreateSidebar
   },
   data() {
     return {

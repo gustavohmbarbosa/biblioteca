@@ -247,9 +247,9 @@
   import * as lang from 'vuejs-datepicker/src/locale'
 
   import AuthorCreateSidebar from '@/views/admin/author/AuthorSidebar.vue'
-  import CompanyCreateSidebar from '@/views/admin/company/CompanyCreateSidebar.vue'
+  // import CompanyCreateSidebar from '@/views/admin/company/CompanyCreateSidebar.vue'
 
-  import ConvertDateToStandard from '@/utils/ConvertDateToStandard.js'
+  // import ConvertDateToStandard from '@/utils/ConvertDateToStandard.js'
 
   import moduleBookManagement from '@/store/admin/book/moduleBookManagement.js'
   import moduleCompanyManagement from '@/store/admin/company/moduleCompanyManagement.js'
@@ -314,7 +314,7 @@
     components: {
       vSelect,
       Datepicker,
-      CompanyCreateSidebar,
+      // CompanyCreateSidebar,
       AuthorCreateSidebar,
 
     },
@@ -325,7 +325,7 @@
         this.notifyBookStored(bookTreated)
       },
       treatBook(book) {
-        book['publication_date'] = ConvertDateToStandard(book['publication_date'])
+        // book['publication_date'] = ConvertDateToStandard(book['publication_date'])
         book = this.bookInFormData(book)
 
         return book

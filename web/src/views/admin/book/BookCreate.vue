@@ -468,7 +468,7 @@ import { VMoney } from "v-money";
 import RegistrationForm from "@/components/RegistrationForm";
 
 import AuthorCreateSidebar from "@/views/admin/author/AuthorSidebar.vue";
-import CompanyCreateSidebar from "@/views/admin/company/CompanySidebar.vue";
+// import CompanyCreateSidebar from "@/views/admin/company/CompanySidebar.vue";
 
 import moduleBookManagement from "@/store/admin/book/moduleBookManagement.js";
 import moduleCompanyManagement from "@/store/admin/company/moduleCompanyManagement.js";
@@ -547,7 +547,7 @@ export default {
   components: {
     vSelect,
     RegistrationForm,
-    CompanyCreateSidebar,
+    // CompanyCreateSidebar,
     AuthorCreateSidebar
   },
   directives: {
@@ -579,7 +579,7 @@ export default {
       book.authors_id.forEach((value, key) => {
         data.append("authors_id[" + key + "]", value);
       });
-      
+
       return data;
     },
     async storeBook(book) {
