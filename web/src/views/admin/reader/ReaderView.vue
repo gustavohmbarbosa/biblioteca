@@ -27,21 +27,21 @@
 
             <div class="vx-row actions">
 
-              <vx-tooltip class="vx-col"  position="top" text="Voltar">
+              <vx-tooltip class="vx-col" delay="1s" position="top" text="Voltar">
                 <feather-icon
                 icon="ArrowLeftIcon"
                 svgClasses="h-6 w-6 hover:text-dark cursor-pointer"
                 @click="$router.back()" />
               </vx-tooltip>
 
-              <vx-tooltip class="vx-col"  position="top" :text="'Editar dados de ' + reader.name">
+              <vx-tooltip class="vx-col" delay="1s" position="top" :text="'Editar dados de ' + reader.name">
                 <feather-icon
                 icon="Edit3Icon"
                 svgClasses="h-6 w-6 hover:text-primary cursor-pointer"
                 @click="editRecord" />
               </vx-tooltip>
 
-              <vx-tooltip class="vx-col"  position="top" :text="'Excluir ' + reader.name + ' do sistema'">
+              <vx-tooltip class="vx-col" delay="1s" position="top" :text="'Excluir ' + reader.name + ' do sistema'">
                 <feather-icon
                 icon="Trash2Icon"
                 svgClasses="h-6 w-6 hover:text-danger cursor-pointer"

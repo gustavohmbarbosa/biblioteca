@@ -1,9 +1,9 @@
 <template>
   <registration-form title="Formulário de Registro">
     <vs-tabs alignment="fixed" v-model="activeTab">
-      <!-- Tab 1 -->
-      <vs-tab label="Informações" icon-pack="feather" icon="icon-info" class="mt-4">
-        <!-- Name -->
+      <!-- Personal -->
+      <vs-tab label="Pessoal" icon-pack="feather" icon="icon-info" class="mt-4">
+        <!-- Nome -->
         <div class="w-full mb-6">
           <label>Nome</label>
           <vs-input
@@ -20,25 +20,7 @@
           </div>
         </div>
 
-        <!-- Phone -->
-        <div class="w-full mb-6">
-          <label>Telefone</label>
-          <vs-input
-            class="w-full"
-            icon-pack="feather"
-            icon="icon-phone"
-            icon-no-border
-            placeholder="Telefone"
-            v-mask="maskPhone"
-            v-model="reader.phone"
-          />
-
-          <div class="text-danger text-sm" v-if="validations.phone">
-            <span v-show="validations.phone">{{ validations.phone[0] }}</span>
-          </div>
-        </div>
-
-        <!-- Gender -->
+        <!-- Gênero -->
         <div class="w-full mb-6">
           <label>Sexo</label>
           <v-select
@@ -56,7 +38,178 @@
           </div>
         </div>
 
-        <!-- Registration -->
+        <!-- Telefone -->
+        <div class="w-full mb-6">
+          <label>Telefone</label>
+          <vs-input
+            class="w-full"
+            icon-pack="feather"
+            icon="icon-phone"
+            icon-no-border
+            placeholder="Telefone"
+            v-mask="maskPhone"
+            v-model="reader.phone"
+          />
+
+          <div class="text-danger text-sm" v-if="validations.phone">
+            <span v-show="validations.phone">{{ validations.phone[0] }}</span>
+          </div>
+        </div>
+
+        <!-- Imagem -->
+        <div class="vx-col w-full mb-6 cape-container">
+          <template v-if="!reader.image">
+            <input
+              type="file"
+              class="hidden"
+              ref="uploadImgInput"
+              @change="updateImg"
+              accept="image/*"
+            />
+            <vs-button
+              color="success"
+              class="w-full"
+              @click="$refs.uploadImgInput.click()"
+              >Selecionar Imagem
+            </vs-button>
+          </template>
+
+          <!-- Show -->
+          <template v-if="reader.image">
+            <template>
+              <div
+                class="img-container w-64 mx-auto flex items-center justify-center"
+              >
+                <img
+                  :src="reader.showImage"
+                  alt="img"
+                  class="responsive rounded"
+                />
+              </div>
+            </template>
+
+            <!-- Image Upload Buttons -->
+            <input
+              type="file"
+              class="hidden"
+              ref="uploadImgInput"
+              @change="updateImg"
+              accept="image/*"
+            />
+            <div class="mt-6 text-center">
+              <vs-button
+                color="success"
+                type="flat"
+                class="sm:w-1/2"
+                @click="$refs.uploadImgInput.click()"
+              >
+                Atualizar
+              </vs-button>
+              <vs-button
+                color="#999"
+                type="flat"
+                class="sm:w-1/2"
+                @click="
+                  reader.image = null;
+                  reader.showImage = null;
+                "
+              >
+                Remover
+              </vs-button>
+            </div>
+          </template>
+
+          <div class="text-danger text-sm" v-if="validations.image">
+            <span v-show="validations.image">{{ validations.image[0] }}</span>
+          </div>
+        </div>
+
+        <!-- Buttons -->
+        <div class="vx-col w-full">
+          <vs-button
+            color="#999"
+            type="flat"
+            class="float-left"
+            @click="$router.back()"
+          >
+            Cancelar
+          </vs-button>
+          <vs-button class="float-right" @click="activeTab = 1">Avançar</vs-button>
+        </div>
+      </vs-tab>
+
+      <!-- Account -->
+      <vs-tab label="Conta" icon-pack="feather" icon="icon-user">
+        <!-- Email -->
+        <div class="vx-col w-full mb-6">
+          <label>Email</label>
+          <vs-input
+            class="w-full"
+            icon-pack="feather"
+            icon="icon-mail"
+            icon-no-border
+            placeholder="Email"
+            v-model="reader.email"
+          />
+
+          <div class="text-danger text-sm" v-if="validations.email">
+            <span v-show="validations.email">{{ validations.email[0] }}</span>
+          </div>
+        </div>
+
+        <!-- Password -->
+        <div class="vx-row">
+          <div class="vx-col sm:w-1/2 w-full mb-6">
+            <label>Senha</label>
+            <vs-input
+              type="password"
+              class="w-full"
+              icon-pack="feather"
+              icon="icon-lock"
+              icon-no-border
+              placeholder="Senha"
+              v-model="reader.password"
+            />
+
+            <div class="text-danger text-sm" v-if="validations.password">
+              <span v-show="validations.password">{{ validations.password[0] }}</span>
+            </div>
+          </div>
+
+          <div class="vx-col sm:w-1/2 w-full mb-6">
+            <label>Confirmar Senha</label>
+            <vs-input
+              type="password"
+              class="w-full"
+              icon-pack="feather"
+              icon="icon-lock"
+              icon-no-border
+              placeholder="Confirme a senha"
+              v-model="reader.password_confirmation"
+            />
+
+            <div class="text-danger text-sm" v-if="validations.password_confirmation">
+              <span v-show="validations.password_confirmation">{{ validations.password_confirmation[0] }}</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Buttons -->
+        <div class="vx-col w-full">
+          <vs-button
+            color="#999"
+            type="flat"
+            class="float-left"
+            @click="$router.back()"
+          >
+            Cancelar
+          </vs-button>
+          <vs-button class="float-right" @click="activeTab = 2">Avançar</vs-button>
+        </div>
+      </vs-tab>
+
+      <vs-tab label="Escolar" icon-pack="feather" icon="icon-book-open">
+        <!-- Matrícula -->
         <div class="w-full mb-6">
           <label>Matrícula</label>
           <vs-input
@@ -74,7 +227,7 @@
           </div>
         </div>
 
-        <!-- Entry Year -->
+        <!-- Ano de Entrada -->
         <div class="w-full mb-6">
           <label>Ano de Entrada</label>
           <vs-input
@@ -92,7 +245,7 @@
           </div>
         </div>
 
-        <!-- Grade -->
+        <!-- Série -->
         <div class="vx-row">
           <div class="vx-col w-full mb-6">
             <label>Série</label>
@@ -133,7 +286,7 @@
           </div>
         </div>
 
-        <!-- Class -->
+        <!-- Turma -->
         <div class="vx-row">
           <div class="vx-col w-full mb-6">
             <label>Turma</label>
@@ -201,76 +354,6 @@
 
         <!-- Buttons -->
         <div class="vx-col w-full">
-          <vs-button
-            color="#999"
-            type="flat"
-            class="float-left"
-            @click="$router.back()"
-          >
-            Cancelar
-          </vs-button>
-          <vs-button class="float-right" @click="activeTab = 1">Avançar</vs-button>
-        </div>
-      </vs-tab>
-
-      <!-- Tab 2 -->
-      <vs-tab label="Conta" icon-pack="feather" icon="icon-user">
-        <!-- Email -->
-        <div class="vx-col w-full mb-6">
-          <label>Email</label>
-          <vs-input
-            class="w-full"
-            icon-pack="feather"
-            icon="icon-mail"
-            icon-no-border
-            placeholder="Email"
-            v-model="reader.email"
-          />
-
-          <div class="text-danger text-sm" v-if="validations.email">
-            <span v-show="validations.email">{{ validations.email[0] }}</span>
-          </div>
-        </div>
-
-        <!-- Password -->
-        <div class="vx-row">
-          <div class="vx-col sm:w-1/2 w-full mb-6">
-            <label>Senha</label>
-            <vs-input
-              type="password"
-              class="w-full"
-              icon-pack="feather"
-              icon="icon-lock"
-              icon-no-border
-              placeholder="Senha"
-              v-model="reader.password"
-            />
-
-            <div class="text-danger text-sm" v-if="validations.password">
-              <span v-show="validations.password">{{ validations.password[0] }}</span>
-            </div>
-          </div>
-
-          <div class="vx-col sm:w-1/2 w-full mb-6">
-            <label>Confirmar Senha</label>
-            <vs-input
-              type="password"
-              class="w-full"
-              icon-pack="feather"
-              icon="icon-lock"
-              icon-no-border
-              placeholder="Confirme a senha"
-              v-model="reader.password_confirmation"
-            />
-
-            <div class="text-danger text-sm" v-if="validations.password_confirmation">
-              <span v-show="validations.password_confirmation">{{ validations.password_confirmation[0] }}</span>
-            </div>
-          </div>
-        </div>
-
-        <!-- Buttons -->
-        <div class="vx-col w-full">
           <vs-button type="flat" color="#999" class="float-left" @click="activeTab = 0">Voltar</vs-button>
           <vs-button
             class="float-right"
@@ -298,6 +381,8 @@ export default {
         email: '',
         password: 'bibli@avs',
         password_confirmation: 'bibli@avs',
+        image: null,
+        showImage: null,
         phone: '',
         gender: '',
         grade: null,
@@ -342,14 +427,16 @@ export default {
   methods: {
     async storeReader() {
       this.$vs.loading({
-        container: '#form-container',
+        container: '.form-container',
         scale: 0.6
       });
 
       try {
-        const readerStored = await this.$store.dispatch('readerManagement/store', this.reader);
+        const treatedData = this.treatData(this.reader);
 
-        this.$vs.loading.close("#form-container > .con-vs-loading");
+        const readerStored = await this.$store.dispatch('readerManagement/store', treatedData);
+
+        this.$vs.loading.close(".form-container > .con-vs-loading");
 
         this.$vs.notify({
           title: "Leitor Cadastrado!",
@@ -361,7 +448,7 @@ export default {
 
         this.resetData();
       } catch (error) {
-        this.$vs.loading.close("#form-container > .con-vs-loading");
+        this.$vs.loading.close(".form-container > .con-vs-loading");
 
         this.$vs.notify({
           title: "Erro no Cadastro",
@@ -373,6 +460,25 @@ export default {
 
         console.log(error.response);
         this.validations = error.response.data.errors
+      }
+    },
+    treatData(data) {
+      const formData = new FormData();
+
+      Object.entries(data).forEach(([key, value]) => {
+        formData.append(key, value);
+      });
+
+      return formData;
+    },
+    updateImg(input) {
+      if (input.target.files && input.target.files[0]) {
+        var reader = new FileReader();
+        reader.onload = e => {
+          this.reader.showImage = e.target.result;
+        };
+        reader.readAsDataURL(input.target.files[0]);
+        this.reader.image = input.target.files[0];
       }
     },
     resetData() {

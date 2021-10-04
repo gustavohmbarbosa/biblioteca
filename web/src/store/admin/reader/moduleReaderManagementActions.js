@@ -20,8 +20,11 @@ export default {
   },
   store({ commit }, reader) {
     return new Promise((resolve, reject) => {
-      axios.post("admin/readers/", reader)
-        .then((response) => {
+      axios.post("admin/readers/", reader, {
+        headers: {
+          "Content-Type": 'multipart/form-data',
+        }
+      }).then((response) => {
           commit('ADD_READERS', Object.assign(reader , {id: response.data.id}))
           resolve(response)
         })
